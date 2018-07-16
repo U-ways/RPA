@@ -1,5 +1,5 @@
 /* Store Mongoose schema
-============================================================================ */
+============================================================================= */
 // Mongoose instance is a Singleton (goo.gl/Nw3TqU)
 import mongoose          from 'mongoose';
 import uniqueValidator   from 'mongoose-unique-validator';

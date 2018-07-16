@@ -1,5 +1,5 @@
 /* Import node modules
- ============================================================================ */
+============================================================================= */
 import createError    from 'http-errors';
 import cookieParser   from 'cookie-parser';
 import dotenv         from 'dotenv/config';
@@ -20,12 +20,12 @@ mongoose.connect(process.env.DB_URI, options).then(
 );
 
 /* Import BSA routes
- ============================================================================ */
+============================================================================= */
 import indexRouter   from './mvc/controllers/index';
 import sandboxRouter from './mvc/controllers/sandbox';
 
 /* Initialize express app
- ============================================================================ */
+============================================================================= */
 const app = express();
 
 /** View engine setup */
@@ -50,17 +50,17 @@ app.use('/iconfont', express.static(__dirname
         + '/node_modules/material-design-icons/iconfont'));
 
 /* Setting up GraphQL API
-============================================================================ */
+============================================================================= */
 // import graphql from './graphql';
 // app.use('/graphql', graphql);
 
 /* Dynamic routing
- ============================================================================ */
+============================================================================= */
 app.use('/', indexRouter);
 app.use('/sandbox', sandboxRouter);
 
 /* Error handlers
- ============================================================================ */
+============================================================================= */
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

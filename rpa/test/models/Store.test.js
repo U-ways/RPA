@@ -3,16 +3,6 @@
 import { expect } from 'chai';
 import Store from '../../mvc/models/Store.js';
 
-let tesco = new Store({
-  name: 'TEST-DOC: TESCO STORES LIMITED',
-  address: {
-    street: 'Tesco House, Shire Park, Kestrel Way',
-    county: 'Welwyn Garden City',
-    postcode: 'AL7 1GA',
-    country: 'United Kingdom'
-  }
-});
-
 export function valid() {
   let valid_doc  = new Store({
     name: 'TEST-DOC: ASDA STORES LIMITED',

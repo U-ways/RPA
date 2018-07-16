@@ -1,5 +1,5 @@
 /* Product Mongoose schema
- ============================================================================ */
+============================================================================= */
 import mongoose from 'mongoose';
 
 const TimelineSchema = new mongoose.Schema({

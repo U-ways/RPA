@@ -1,5 +1,5 @@
 /* Log Mongoose schema
- ============================================================================ */
+============================================================================= */
 import mongoose from 'mongoose';
 
 export const LogSchema = new mongoose.Schema({

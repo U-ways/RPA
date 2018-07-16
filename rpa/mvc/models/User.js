@@ -1,5 +1,5 @@
 /* User Mongoose schema
- ============================================================================ */
+============================================================================= */
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { LogSchema } from './Log.js';

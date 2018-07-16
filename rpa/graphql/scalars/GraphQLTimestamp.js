@@ -5,7 +5,7 @@
 
   - soruce:
   https://gist.github.com/langpavel/b30f3d507a47713b0c6e89016e4e9eb7
- ============================================================================ */
+============================================================================= */
 
 // Check Unix Epoch timestamp to understand:
 // - https://www.epochconverter.com/
