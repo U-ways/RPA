@@ -1,6 +1,6 @@
 #### MOCHA.OPTS file:
 # The https://mochajs.org/#mochaopts
---timeout 5000
+--timeout 10000
 --reporter spec
 --require babel-core/register
 

@@ -5,18 +5,20 @@ import Product from '../../mvc/models/Product.js';
 
 export function valid() {
   let valid_doc = new Product({
-  name: 'Beck\'s',
-  priceTimeline: [
-    {
-      price: 1.75,
-      date: 1531590281248
-    },
-    {
-      price: 2.00,
-      date: 1531500281248
-    }
-  ]
-});
+    name: 'Beck\'s',
+    timeline: [
+      {
+        price: 1.75,
+        date: 1531590281248,
+        sold: 5
+      },
+      {
+        price: 2.00,
+        date: 1531500281248,
+        sold: 2
+      }
+    ]
+  });
   return valid_doc.validate()
   .catch(
     e => {
@@ -29,10 +31,11 @@ export function valid() {
 export function invalid() {
   let invalid_doc = new Product({
     name: "",
-    priceTimeline: [
+    timeline: [
       {
         price: -1,
         date: "",
+        sold: -99
       }
     ]
   });
@@ -43,7 +46,7 @@ export function invalid() {
 export function defaultDate() {
   let valid_doc = new Product({
     name: "Weissbier",
-    priceTimeline: [
+    timeline: [
       {
         price: 1.80,
       }
@@ -57,6 +60,25 @@ export function defaultDate() {
     }
   )
   .then(
-    expect(valid_doc.priceTimeline[0].date).to.exist
+    expect(valid_doc.timeline[0].date).to.exist
   );
+}
+
+export function negativeSold() {
+  let invalid_doc = new Product({
+    name: "Corona",
+    timeline: [
+      {
+        price: 1.60,
+        sold: -9
+      }
+    ]
+  });
+  return invalid_doc.validate()
+  .catch(
+    e => {
+      let message = e.errors['timeline.0.sold'].message;
+      expect(message).to.match(/negative/);
+    }
+  )
 }

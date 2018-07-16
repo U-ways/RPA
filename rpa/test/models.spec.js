@@ -33,6 +33,7 @@ describe('/models', () => {
     it('should pass valid documents', test.valid);
     it('should reject invalid documents', test.invalid);
     it('should allow default date', test.defaultDate);
+    it('should invalidate negative units sold', test.negativeSold);
   });
 
   describe('User', () => {
