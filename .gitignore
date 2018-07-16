@@ -1,0 +1,14 @@
+# environment variables file
+.env
+
+# Dependency directories
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+*.pid
+*.pid.lock
