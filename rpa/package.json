@@ -1,0 +1,37 @@
+{
+  "name": "rpa",
+  "description": "Retail Pricing Analyst (RPA)",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www --exec babel-node",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~3.1.0",
+    "dotenv": "^6.0.0",
+    "ejs": "~2.6.1",
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "graphql": "^0.13.2",
+    "http-errors": "~1.6.2",
+    "material-design-icons": "^3.0.1",
+    "mongodb": "^3.1.0",
+    "mongoose": "^5.2.3",
+    "mongoose-unique-validator": "^2.0.1",
+    "morgan": "~1.9.0",
+    "node-sass-middleware": "^0.11.0",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-dynamic-import-node": "^2.0.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.2"
+  }
+}

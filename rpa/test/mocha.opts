@@ -1,0 +1,12 @@
+#### MOCHA.OPTS file:
+# The https://mochajs.org/#mochaopts
+--timeout 5000
+--reporter spec
+--require babel-core/register
+
+# exit command is not a good idea:
+# https://boneskull.com/mocha-v4-nears-release/#mochawontforceexit
+# --exit
+
+# not using recursive for a better architecture
+# --recursive
