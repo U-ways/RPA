@@ -1,11 +1,5 @@
 /* Data
-  - Creating some collections with documents to mock a converged database
-
-  TODO:
-  - create a script to demo the data:
-   - add the data on **demo init**
-   - remove it when demo done
-
+  Documents to mock a converged database
 ============================================================================= */
 import Store from '../mvc/models/Store.js';
 import User  from '../mvc/models/User.js';
