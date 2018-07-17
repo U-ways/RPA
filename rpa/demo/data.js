@@ -370,7 +370,7 @@ const uways = new User({
   email: 'u-ways@email.com'
 });
 
-const Joe = new User({
+const joe = new User({
   username: 'Joe',
   password: '1234abcd',
   email: 'Joe@email.com'
@@ -402,7 +402,7 @@ uways.log = [
   }
 ];
 
-Joe.log = [
+joe.log = [
   {
     activity: 'Logout',
     date: 1531799200
@@ -427,3 +427,8 @@ Joe.log = [
     date: 1531799200
   }
 ];
+
+export default {
+  asda, tesco, morrisons,
+  uways, joe
+}
