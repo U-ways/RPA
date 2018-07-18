@@ -2,23 +2,24 @@
 ============================================================================= */
 import mongoose from 'mongoose';
 import dotenv   from 'dotenv/config';
+import cl from '../modules/colorLogger.js';
 import { describe, before, after, it } from 'mocha';
 
 describe('/models', () => {
 
   /** Connect to DB **/
   before(() => {
-    console.log('\x1b[33m','   Connecting to DB');
+    console.log(cl.act, '    Connecting to DB');
     let options  = { useNewUrlParser: true };
     return mongoose.connect(process.env.DB_URI, options).then(
-      ()    => { console.log('\x1b[32m','   Connected to database\n');    },
-      error => { console.log('\x1b[31m',`   Database: ${error.message}`); }
+      ()    => { console.log(cl.ok, '    Connected to database\n');    },
+      error => { console.log(cl.err,`    Database: ${error.message}`); }
     );
   });
 
   after(() => {
     mongoose.connection.close(() =>
-    console.log('\x1b[32m','   Connection closed','\x1b[0m'));
+    console.log(cl.warn, '    Connection closed'));
   });
 
   describe('Store', () => {

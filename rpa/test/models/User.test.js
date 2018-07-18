@@ -5,7 +5,7 @@ import User from '../../mvc/models/User.js';
 
 export function valid() {
   let valid_doc = new User({
-    username: 'u-ways',
+    username: 'Test_u-ways',
     password: 'sandbox@!"£@"#~',
     email: 'u_ways@email.com'
   });
