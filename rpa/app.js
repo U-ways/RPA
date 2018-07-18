@@ -8,6 +8,7 @@ import favicon        from 'serve-favicon';
 import path           from 'path';
 import logger         from 'morgan';
 import sassMiddleware from 'node-sass-middleware';
+import cl             from './modules/colorLogger.js';
 
 /* Connecting database
 ============================================================================ */
@@ -15,14 +16,17 @@ import mongoose from 'mongoose';
 
 let options  = { useNewUrlParser: true };
 mongoose.connect(process.env.DB_URI, options).then(
-  ()    => { console.log('\x1b[32m','\n[app] Connected to database','\x1b[0m'); },
-  error => { console.log('\x1b[31m',`\n[app] Database: ${error.message}`,'\x1b[0m'); }
+  ()    => { console.log(cl.ok, '[app] Connected to database');      },
+  error => { console.log(cl.err,`[app] Database: ${error.message}`); }
 );
 
 /* Import BSA routes
 ============================================================================= */
 import indexRouter   from './mvc/controllers/index';
 import sandboxRouter from './mvc/controllers/sandbox';
+/** Demo **/
+let demo = true;
+if (demo) import('./demo');
 
 /* Initialize express app
 ============================================================================= */
@@ -51,8 +55,8 @@ app.use('/iconfont', express.static(__dirname
 
 /* Setting up GraphQL API
 ============================================================================= */
-// import graphql from './graphql';
-// app.use('/graphql', graphql);
+import graphql from './graphql';
+app.use('/graphql', graphql);
 
 /* Dynamic routing
 ============================================================================= */
