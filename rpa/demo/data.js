@@ -428,7 +428,21 @@ joe.log = [
   }
 ];
 
+/**
+ * NOTE:
+ * Export key values must be model's collection name as for/in loop at ./index
+ * relies on key values to drop/reset collections before demo.
+ *
+ * Why? Because it is more efficient this way (performance wise) in comparison
+ * to creating another loop to get each collection name before drop.
+ *
+ * TIP: To get collection name use: `Model.collection.name`
+ *
+ * FIXME:
+ * I think this degree of coupling is bad. Try to find an efficient walkaround.
+ * Perhaps generate the key values in here dynamically
+ */
 export default {
-  asda, tesco, morrisons,
-  uways, joe
+  stores: { asda, tesco, morrisons },
+  users : { uways, joe }
 }
