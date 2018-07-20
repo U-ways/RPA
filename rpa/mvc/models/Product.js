@@ -6,15 +6,13 @@ const TimelineSchema = new mongoose.Schema({
     date: {
       type: Date,
       required: [true, 'required'],
-      default: Date.now,
-      get: d => d.toDateString()
+      default: Date.now
     },
     price: {
       type: Number,
       required: [true, 'required'],
       min: [0, 'cannot be negative'],
-      set: n => Math.round(n * 100) / 100,
-      get: n => `£${n}`
+      set: n => Math.round(n * 100) / 100
     },
     sold: {
       type: Number,
