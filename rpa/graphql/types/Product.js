@@ -7,26 +7,25 @@ import {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLBoolean
 } from 'graphql/type';
 
 import GraphQLTimestamp from '../scalars/GraphQLTimestamp.js';
-import ProductModel     from '../../mvc/models/Product.js';
 
-const PriceTimelineType = new GraphQLObjectType({
-  name: 'PriceTimeline',
+const timelineType = new GraphQLObjectType({
+  name: 'timeline',
   fields: () => ({
-    price: { type: new GraphQLNonNull(GraphQLInt)  },
     date:  { type: new GraphQLNonNull(GraphQLTimestamp) },
+    price: { type: new GraphQLNonNull(GraphQLFloat)     },
+    sold:  { type: new GraphQLNonNull(GraphQLInt)       }
   })
 });
 
-const ProductType = new GraphQLObjectType({
+export const ProductType = new GraphQLObjectType({
   name: 'Product',
   fields: () => ({
-    name:           { type: new GraphQLNonNull(GraphQLString)  },
-    priceTimeline:  { type: new GraphQLList(PriceTimelineType) },
+    name:     { type: new GraphQLNonNull(GraphQLString)  },
+    timeline: { type: new GraphQLList(timelineType)      }
   })
 });
-
-export default ProductType;
