@@ -29,9 +29,9 @@ Reference:
 
 ============================================================================= */
 
-export const err  = `\x1b[31m%s\x1b[0m`;
-export const ok   = `\x1b[32m%s\x1b[0m`;
-export const warn = `\x1b[33m%s\x1b[0m`;
-export const act  = `\x1b[35m%s\x1b[0m`;
+const err  = `\x1b[31m%s\x1b[0m`;
+const ok   = `\x1b[32m%s\x1b[0m`;
+const warn = `\x1b[33m%s\x1b[0m`;
+const act  = `\x1b[35m%s\x1b[0m`;
 
-export default { cl: err, ok, warn, act };
+export default { err, ok, warn, act };
