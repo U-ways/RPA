@@ -53,10 +53,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/iconfont', express.static(__dirname
         + '/node_modules/material-design-icons/iconfont'));
 
-/* Setting up GraphQL API
+/* Setting up GraphQL APIs
 ============================================================================= */
-import graphql from './graphql';
-app.use('/graphql', graphql);
+import API from './graphql';
+app.use('/API', API);
 
 /* Dynamic routing
 ============================================================================= */
