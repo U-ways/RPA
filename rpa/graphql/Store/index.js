@@ -1,6 +1,6 @@
 /** Schema exports
 ============================================================================= */
-import { StoreQueries   as queries   } from './queries.js'
-import { StoreMutations as mutations } from './mutations.js'
+import query    from './queries.js'
+import mutation from './mutations.js'
 
-export default { queries, mutations };
+export default { query, mutation };

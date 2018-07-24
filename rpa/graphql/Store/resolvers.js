@@ -2,7 +2,7 @@
 ============================================================================= */
 import Store from '../../mvc/models/Store.js';
 
-export function read(obj, {name}) {
+export function find(obj, {name}) {
   let regex  = new RegExp(name,'i');
   let query  = Store.findOne({ name: regex }).exec();
   let result = query.then((doc, err) => {
@@ -12,7 +12,7 @@ export function read(obj, {name}) {
   return result;
 }
 
-export function readAll(obj, {limit}) {
+export function findAll(obj, {limit}) {
   let query  = Store.find().limit(limit).exec();
   let result = query.then((arr, err) => {
     if (err) console.log('err: ' + err);

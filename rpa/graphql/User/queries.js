@@ -11,30 +11,32 @@ import {
 } from 'graphql/type';
 
 import {
-  userType
+  UserType
 } from './types.js';
 
 import {
-  read,
-  readAll
+  find,
+  findAll
 } from './resolvers.js';
 
-export const UserQueries =
+const fields =
 {
-  User_read: {
-    type: userType,
+  findUser: {
+    type: UserType,
     description: 'Find a user by username (case insensitive) or email',
     args: {
       username: { type: GraphQLString },
       email:    { type: GraphQLString }
     },
-    resolve: (obj, args) => read(obj, args)
+    resolve: (obj, args) => find(obj, args)
   },
-  User_readAll: {
-    type: new GraphQLList(userType),
-    description: 'List the details of all users avaliable in collection.'
+  findAllUsers: {
+    type: new GraphQLList(UserType),
+    description: 'List the details of all users avaliable in collection. '
                + '(default query result limit: 30)',
     args: { limit: { type: GraphQLInt, defaultValue: 30 } },
-    resolve: (obj, args) => readAll(obj, args)
+    resolve: (obj, args) => findAll(obj, args)
   }
 };
+
+export default { fields: fields }

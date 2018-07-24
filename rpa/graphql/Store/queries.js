@@ -14,27 +14,29 @@ import {
 } from 'graphql/type';
 
 import {
-  storeType
+  StoreType
 } from './types.js';
 
 import {
-  read,
-  readAll
+  find,
+  findAll
 } from './resolvers.js';
 
-export const StoreQueries =
+const fields =
 {
-  Store_read: {
-    type: storeType,
+  findStore: {
+    type: StoreType,
     description: 'Find a store by name (case insensitive)',
     args: { name: { type: new GraphQLNonNull(GraphQLString) } },
-    resolve: (obj, args) => read(obj, args)
+    resolve: (obj, args) => find(obj, args)
   },
-  Store_readAll: {
-    type: new GraphQLList(storeType),
-    description: 'List the details of all stores avaliable in collection.'
+  findAllStores: {
+    type: new GraphQLList(StoreType),
+    description: 'List the details of all stores avaliable in collection. '
                + '(default query result limit: 30)',
     args: { limit: { type: GraphQLInt, defaultValue: 30 } },
-    resolve: (obj, args) => readAll(obj, args)
+    resolve: (obj, args) => findAll(obj, args)
   }
 };
+
+export default { fields: fields }

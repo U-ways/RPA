@@ -13,9 +13,9 @@ import {
 
 import {
   ProductTypeInput,
-  addressTypeInput,
-  storeTypeInput,
-  storeType
+  AddressTypeInput,
+  StoreTypeInput,
+  StoreType
 } from './types.js';
 
 import {
@@ -24,31 +24,33 @@ import {
   update
 } from './resolvers.js';
 
-export const StoreMutations =
+const fields =
 {
-  Store_create: {
-    type: storeType,
+  createStore: {
+    type: StoreType,
     description: 'Create a new store. (Please use the retailer business name) '
                + '(returns newly created store)',
     args: {
       name:    { type: new GraphQLNonNull(GraphQLString)    },
-      address: { type: new GraphQLNonNull(addressTypeInput) }
+      address: { type: new GraphQLNonNull(AddressTypeInput) }
     },
     resolve: (obj, args) => create(obj, args)
   },
-  Store_remove: {
-    type: storeType,
+  removeStore: {
+    type: StoreType,
     description: 'Remove a store by name (returns removed store)',
     args:        { name: { type: new GraphQLNonNull(GraphQLString) } },
     resolve: (obj, args) => remove(obj, args)
   },
-  Store_update: {
-    type: storeType,
+  updateStore: {
+    type: StoreType,
     description: 'Update store details by name (returns updated store)',
     args: {
       name:   { type: new GraphQLNonNull(GraphQLString)  },
-      update: { type: new GraphQLNonNull(storeTypeInput) }
+      update: { type: new GraphQLNonNull(StoreTypeInput) }
     },
     resolve: (obj, args) => update(obj, args)
   }
 };
+
+export default { fields: fields }

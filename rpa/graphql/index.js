@@ -7,7 +7,7 @@ import User  from './User';
 
 /** Query **/
 
-const queries = Object.assign({},Store.queries, User.queries);
+const queries = Object.assign({},Store.query.fields, User.query.fields);
 
 const QueryRootType = new GraphQLObjectType({
   name: 'query',
@@ -17,7 +17,7 @@ const QueryRootType = new GraphQLObjectType({
 
 /** Mutation **/
 
-const mutations = Object.assign({},Store.mutations, User.mutations);
+const mutations = Object.assign({},Store.mutation.fields, User.mutation.fields);
 
 const MutationRootType = new GraphQLObjectType({
   name: 'mutation',

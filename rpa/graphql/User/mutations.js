@@ -12,8 +12,8 @@ import {
 } from 'graphql/type';
 
 import {
-  userTypeInput,
-  userType
+  UserTypeInput,
+  UserType
 } from './types.js';
 
 import {
@@ -22,10 +22,10 @@ import {
   update
 } from './resolvers.js';
 
-export const UserMutations =
+const fields =
 {
-  User_create: {
-    type: userType,
+  createUser: {
+    type: UserType,
     description: 'Create a new user (returns newly created user)',
     args: {
       username: { type: new GraphQLNonNull(GraphQLString) },
@@ -34,8 +34,8 @@ export const UserMutations =
     },
     resolve: (obj, args) => create(obj, args)
   },
-  User_remove: {
-    type: userType,
+  removeUser: {
+    type: UserType,
     description: 'Remove a user by username or email (returns removed user)',
     args: {
       username: { type: GraphQLString },
@@ -43,13 +43,15 @@ export const UserMutations =
     },
     resolve: (obj, args) => remove(obj, args)
   },
-  User_update: {
-    type: userType,
+  updateUser: {
+    type: UserType,
     description: 'Update user details by username or email (returns updated user)',
     args: {
       username: { type: new GraphQLNonNull(GraphQLString) },
-      update:   { type: new GraphQLNonNull(userTypeInput) }
+      update:   { type: new GraphQLNonNull(UserTypeInput) }
     },
     resolve: (obj, args) => update(obj, args)
   }
 };
+
+export default { fields: fields }

@@ -3,7 +3,7 @@
 ============================================================================= */
 import User from '../../mvc/models/User.js';
 
-export function read(obj, {username, email}) {
+export function find(obj, {username, email}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
   let query  = User.findOne(conditions).exec();
@@ -14,7 +14,7 @@ export function read(obj, {username, email}) {
   return result;
 }
 
-export function readAll(obj, {limit}) {
+export function findAll(obj, {limit}) {
   let query  = User.find().limit(limit).exec();
   let result = query.then((arr, err) => {
     if (err) console.log('err: ' + err);
