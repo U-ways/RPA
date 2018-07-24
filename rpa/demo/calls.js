@@ -2,11 +2,10 @@
   - Queries and mutations to use for the demo
 ============================================================================= */
 
-/** Stores**/
-
-let create = `
+/************** Stores **************/
+`
 mutation {
-  create(
+  createStore(
     name: "Demo Stores LTD",
     address: {
       street: "Demo street" ,
@@ -26,9 +25,9 @@ mutation {
 }
 `;
 
-let update = `
+`
 mutation {
-  update(
+  updateStore(
     name: "Demo Stores LTD",
     update: {
       name: "Demo Stores LTD UPDATED",
@@ -51,9 +50,9 @@ mutation {
 }
 `;
 
-let read = `
+`
 {
-  read(name: "demo") {
+  findStore(name: "demo") {
     name,
     address {
       street,
@@ -65,27 +64,28 @@ let read = `
 }
 `;
 
-let read = `
+`
 mutation {
-	remove(name: "demo") {
+	removeStore(name: "demo") {
     name
   }
 }
 `;
 
-let readAll = `
+`
 {
-  readAll {
+  findAllStores {
     name
   }
 }
 `;
 
-/** Users **/
 
-let create = `
+/************** Users **************/
+
+`
 mutation {
-  create(
+  createUser(
     username: "Tester",
     password: "123easy",
     email:    "valid@email.com"
@@ -97,9 +97,9 @@ mutation {
 }
 `;
 
-let update = `
+`
 mutation {
-  update(
+  updateUser(
     username: "Tester",
     update: {
       username: "UPDATE_Tester",
@@ -114,9 +114,9 @@ mutation {
 }
 `;
 
-let read = `
+`
 {
-  read(username: "UPDATE_Tester") {
+  findUser(username: "UPDATE_Tester") {
     username,
     password,
     email
@@ -124,9 +124,9 @@ let read = `
 }
 `;
 
-let read = `
+`
 {
-  read(email: "UPDATE_valid@email.com") {
+  findUser(email: "UPDATE_valid@email.com") {
     username,
     password,
     email
@@ -134,17 +134,17 @@ let read = `
 }
 `;
 
-let remove = `
+`
 mutation {
-	remove(username: "UPDATE_Tester") {
+	removeUser(username: "UPDATE_Tester") {
     username
   }
 }
 `;
 
-let readAll = `
+`
 {
-  readAll {
+  findAllUsers {
     username,
     email
   }
