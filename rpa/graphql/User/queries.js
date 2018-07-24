@@ -19,27 +19,22 @@ import {
   readAll
 } from './resolvers.js';
 
-
-
-export const UserQueries = new GraphQLObjectType({
-  name: 'UserQueries',
-  description: 'Query resolvers for User',
-  fields: () => ({
-    read: {
-      type: userType,
-      description: 'Find a user by username (case insensitive) or email',
-      args: {
-        username: { type: GraphQLString },
-        email:    { type: GraphQLString }
-      },
-      resolve: (obj, args) => read(obj, args)
+export const UserQueries =
+{
+  User_read: {
+    type: userType,
+    description: 'Find a user by username (case insensitive) or email',
+    args: {
+      username: { type: GraphQLString },
+      email:    { type: GraphQLString }
     },
-    readAll: {
-      type: new GraphQLList(userType),
-      description: 'List the details of all users avaliable in collection.'
-                 + '(default query result limit: 30)',
-      args: { limit: { type: GraphQLInt, defaultValue: 30 } },
-      resolve: (obj, args) => readAll(obj, args)
-    }
-  })
-});
+    resolve: (obj, args) => read(obj, args)
+  },
+  User_readAll: {
+    type: new GraphQLList(userType),
+    description: 'List the details of all users avaliable in collection.'
+               + '(default query result limit: 30)',
+    args: { limit: { type: GraphQLInt, defaultValue: 30 } },
+    resolve: (obj, args) => readAll(obj, args)
+  }
+};

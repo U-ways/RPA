@@ -22,37 +22,34 @@ import {
   update
 } from './resolvers.js';
 
-export const UserMutations = new GraphQLObjectType({
-  name: 'UserMutations',
-  description: 'Mutation resolvers for User',
-  fields: () => ({
-    create: {
-      type: userType,
-      description: 'Create a new user (returns newly created user)',
-      args: {
-        username: { type: new GraphQLNonNull(GraphQLString) },
-        password: { type: new GraphQLNonNull(GraphQLString) },
-        email:    { type: new GraphQLNonNull(GraphQLString) }
-      },
-      resolve: (obj, args) => create(obj, args)
+export const UserMutations =
+{
+  User_create: {
+    type: userType,
+    description: 'Create a new user (returns newly created user)',
+    args: {
+      username: { type: new GraphQLNonNull(GraphQLString) },
+      password: { type: new GraphQLNonNull(GraphQLString) },
+      email:    { type: new GraphQLNonNull(GraphQLString) }
     },
-    remove: {
-      type: userType,
-      description: 'Remove a user by username or email (returns removed user)',
-      args: {
-        username: { type: GraphQLString },
-        email:    { type: GraphQLString }
-      },
-      resolve: (obj, args) => remove(obj, args)
+    resolve: (obj, args) => create(obj, args)
+  },
+  User_remove: {
+    type: userType,
+    description: 'Remove a user by username or email (returns removed user)',
+    args: {
+      username: { type: GraphQLString },
+      email:    { type: GraphQLString }
     },
-    update: {
-      type: userType,
-      description: 'Update user details by username or email (returns updated user)',
-      args: {
-        username: { type: new GraphQLNonNull(GraphQLString) },
-        update:   { type: new GraphQLNonNull(userTypeInput) }
-      },
-      resolve: (obj, args) => update(obj, args)
-    }
-  })
-});
+    resolve: (obj, args) => remove(obj, args)
+  },
+  User_update: {
+    type: userType,
+    description: 'Update user details by username or email (returns updated user)',
+    args: {
+      username: { type: new GraphQLNonNull(GraphQLString) },
+      update:   { type: new GraphQLNonNull(userTypeInput) }
+    },
+    resolve: (obj, args) => update(obj, args)
+  }
+};

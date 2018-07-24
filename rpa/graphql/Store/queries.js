@@ -22,22 +22,19 @@ import {
   readAll
 } from './resolvers.js';
 
-export const StoreQueries = new GraphQLObjectType({
-  name: 'StoreQueries',
-  description: 'Query resolvers for Store',
-  fields: () => ({
-    read: {
-      type: storeType,
-      description: 'Find a store by name (case insensitive)',
-      args: { name: { type: new GraphQLNonNull(GraphQLString) } },
-      resolve: (obj, args) => read(obj, args)
-    },
-    readAll: {
-      type: new GraphQLList(storeType),
-      description: 'List the details of all stores avaliable in collection.'
-                 + '(default query result limit: 30)',
-      args: { limit: { type: GraphQLInt, defaultValue: 30 } },
-      resolve: (obj, args) => readAll(obj, args)
-    }
-  })
-});
+export const StoreQueries =
+{
+  Store_read: {
+    type: storeType,
+    description: 'Find a store by name (case insensitive)',
+    args: { name: { type: new GraphQLNonNull(GraphQLString) } },
+    resolve: (obj, args) => read(obj, args)
+  },
+  Store_readAll: {
+    type: new GraphQLList(storeType),
+    description: 'List the details of all stores avaliable in collection.'
+               + '(default query result limit: 30)',
+    args: { limit: { type: GraphQLInt, defaultValue: 30 } },
+    resolve: (obj, args) => readAll(obj, args)
+  }
+};

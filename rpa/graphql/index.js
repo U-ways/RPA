@@ -7,36 +7,22 @@ import User  from './User';
 
 /** Query **/
 
+const queries = Object.assign({},Store.queries, User.queries);
+
 const QueryRootType = new GraphQLObjectType({
   name: 'query',
   description: 'Root query',
-  fields: () => ({
-    store: {
-      type: Store.queries,
-      description: 'Store root query'
-    },
-    user: {
-      type: User.queries,
-      description: 'User root query'
-    }
-  })
+  fields: () => (queries)
 });
 
 /** Mutation **/
 
+const mutations = Object.assign({},Store.mutations, User.mutations);
+
 const MutationRootType = new GraphQLObjectType({
   name: 'mutation',
   description: 'Root mutation',
-  fields: () => ({
-    store: {
-      type: Store.mutations,
-      description: 'Store root mutation'
-    },
-    user: {
-      type: User.mutations,
-      description: 'User root mutation'
-    }
-  })
+  fields: () => (mutations)
 });
 
 /** Schema **/

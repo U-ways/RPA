@@ -12,7 +12,7 @@ import {
   GraphQLBoolean
 } from 'graphql/type';
 
-import GraphQLTimestamp from '../_scalars/GraphQLTimestamp.js';
+import GraphQLTimestamp from '../scalars/GraphQLTimestamp.js';
 
 /** Log **/
 
