@@ -1,7 +1,6 @@
 /** Schema exports
 ============================================================================= */
-import { QueryRootType    } from './queries.js'
-import { MutationRootType } from './mutations.js'
-import { storeType        } from './types.js'
+import { StoreQueries   as queries   } from './queries.js'
+import { StoreMutations as mutations } from './mutations.js'
 
-export default { QueryRootType, MutationRootType, storeType };
+export default { queries, mutations };

@@ -24,9 +24,9 @@ import {
   update
 } from './resolvers.js';
 
-export const MutationRootType = new GraphQLObjectType({
-  name: 'StoreMutation',
-  description: 'Root mutation resolvers for Store object.',
+export const StoreMutations = new GraphQLObjectType({
+  name: 'StoreMutations',
+  description: 'Mutation resolvers for Store',
   fields: () => ({
     create: {
       type: storeType,

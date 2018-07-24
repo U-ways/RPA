@@ -16,7 +16,7 @@ import GraphQLTimestamp from '../_scalars/GraphQLTimestamp.js';
 /** Product **/
 
 const timelineType = new GraphQLObjectType({
-  name: 'timeline',
+  name: 'timelineType',
   fields: () => ({
     date:  { type: new GraphQLNonNull(GraphQLTimestamp) },
     price: { type: new GraphQLNonNull(GraphQLFloat)     },
@@ -24,7 +24,7 @@ const timelineType = new GraphQLObjectType({
   })
 });
 const timelineTypeInput = new GraphQLInputObjectType({
-  name: 'timelineInput',
+  name: 'timelineTypeInput',
   fields: () => ({
     date:  { type: GraphQLTimestamp },
     price: { type: GraphQLFloat     },
@@ -33,14 +33,14 @@ const timelineTypeInput = new GraphQLInputObjectType({
 });
 
 const productType = new GraphQLObjectType({
-  name: 'Product',
+  name: 'productType',
   fields: () => ({
     name:     { type: new GraphQLNonNull(GraphQLString)  },
     timeline: { type: new GraphQLList(timelineType)      }
   })
 });
 export const productTypeInput = new GraphQLInputObjectType({
-  name: 'ProductInput',
+  name: 'productTypeInput',
   fields: () => ({
     name:     { type: GraphQLString },
     timeline: { type: new GraphQLList(timelineTypeInput) }
@@ -50,7 +50,7 @@ export const productTypeInput = new GraphQLInputObjectType({
 /** Address **/
 
 const addressType = new GraphQLObjectType({
-  name: 'Address',
+  name: 'addressType',
   fields: () => ({
     street:   { type: new GraphQLNonNull(GraphQLString) },
     county:   { type: GraphQLString                     },
@@ -59,7 +59,7 @@ const addressType = new GraphQLObjectType({
   })
 });
 export const addressTypeInput = new GraphQLInputObjectType({
-  name: 'AddressInput',
+  name: 'addressTypeInput',
   fields: () => ({
     street:   { type: new GraphQLNonNull(GraphQLString) },
     county:   { type: GraphQLString                     },
@@ -71,7 +71,7 @@ export const addressTypeInput = new GraphQLInputObjectType({
 /** Store **/
 
 export const storeType = new GraphQLObjectType({
-  name: 'Store',
+  name: 'storeType',
   fields: () => ({
     name:     { type: new GraphQLNonNull(GraphQLString) },
     address:  { type: new GraphQLNonNull(addressType)   },
@@ -79,7 +79,7 @@ export const storeType = new GraphQLObjectType({
   })
 });
 export const storeTypeInput = new GraphQLInputObjectType({
-  name: 'StoreInput',
+  name: 'storeTypeInput',
   fields: () => ({
     name:     { type: GraphQLString    },
     address:  { type: addressTypeInput },

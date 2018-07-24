@@ -1,6 +1,6 @@
 /** Root exports
 ============================================================================= */
-import { QueryRootType    } from './queries.js'
-import { MutationRootType } from './mutations.js'
+import { UserQueries   as queries    } from './queries.js'
+import { UserMutations as mutations } from './mutations.js'
 
-export default { QueryRootType, MutationRootType };
+export default { queries, mutations };

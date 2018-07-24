@@ -22,9 +22,9 @@ import {
   update
 } from './resolvers.js';
 
-export const MutationRootType = new GraphQLObjectType({
-  name: 'UserMutation',
-  description: 'Root mutation resolvers for User object',
+export const UserMutations = new GraphQLObjectType({
+  name: 'UserMutations',
+  description: 'Mutation resolvers for User',
   fields: () => ({
     create: {
       type: userType,

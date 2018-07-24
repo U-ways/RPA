@@ -21,9 +21,9 @@ import {
 
 
 
-export const QueryRootType = new GraphQLObjectType({
-  name: 'UserQuery',
-  description: 'Root query resolvers for User object.',
+export const UserQueries = new GraphQLObjectType({
+  name: 'UserQueries',
+  description: 'Query resolvers for User',
   fields: () => ({
     read: {
       type: userType,

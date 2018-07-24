@@ -1,7 +1,4 @@
-/* API exports
-Nice example of GraphQL structuring:
-- https://goo.gl/e7Zp4Q
-- https://goo.gl/UJXbSQ
+/* GraphQL API
 ============================================================================= */
 import { GraphQLObjectType, GraphQLSchema } from 'graphql/type';
 import graphqlHTTP from 'express-graphql';
@@ -12,10 +9,16 @@ import User  from './User';
 
 const QueryRootType = new GraphQLObjectType({
   name: 'query',
-  description: 'Root query resolvers for all objects',
+  description: 'Root query',
   fields: () => ({
-    Store: { type: Store.QueryRootType },
-    User:  { type: User.QueryRootType  }
+    store: {
+      type: Store.queries,
+      description: 'Store root query'
+    },
+    user: {
+      type: User.queries,
+      description: 'User root query'
+    }
   })
 });
 
@@ -23,10 +26,16 @@ const QueryRootType = new GraphQLObjectType({
 
 const MutationRootType = new GraphQLObjectType({
   name: 'mutation',
-  description: 'Root mutation resolvers for all object.',
+  description: 'Root mutation',
   fields: () => ({
-    Store: { type: Store.MutationRootType },
-    User:  { type: User.MutationRootType  }
+    store: {
+      type: Store.mutations,
+      description: 'Store root mutation'
+    },
+    user: {
+      type: User.mutations,
+      description: 'User root mutation'
+    }
   })
 });
 

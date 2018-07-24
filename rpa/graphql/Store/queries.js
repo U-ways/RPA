@@ -22,11 +22,9 @@ import {
   readAll
 } from './resolvers.js';
 
-
-
-export const QueryRootType = new GraphQLObjectType({
-  name: 'StoreQuery',
-  description: 'Root query resolvers for Store object.',
+export const StoreQueries = new GraphQLObjectType({
+  name: 'StoreQueries',
+  description: 'Query resolvers for Store',
   fields: () => ({
     read: {
       type: storeType,

@@ -18,7 +18,7 @@ import GraphQLTimestamp from '../_scalars/GraphQLTimestamp.js';
 
 // https://graphql.org/graphql-js/type/#graphqlenumtype
 const activityType = new GraphQLEnumType({
-  name: 'activity',
+  name: 'activityType',
   values: {
     Login:  { value: 0 },
     Logout: { value: 1 },
@@ -30,7 +30,7 @@ const activityType = new GraphQLEnumType({
 });
 
 const logType = new GraphQLObjectType({
-  name: 'log',
+  name: 'logType',
   fields: () => ({
     activity:    { type: new GraphQLNonNull(activityType) },
     date:        { type: GraphQLTimestamp                 },
@@ -38,7 +38,7 @@ const logType = new GraphQLObjectType({
   })
 });
 const logTypeInput = new GraphQLInputObjectType({
-  name: 'logInput',
+  name: 'logTypeInput',
   fields: () => ({
     activity:    { type: new GraphQLNonNull(activityType) },
     description: { type: GraphQLString                    }
@@ -48,7 +48,7 @@ const logTypeInput = new GraphQLInputObjectType({
 /** User **/
 
 export const userType = new GraphQLObjectType({
-  name: 'User',
+  name: 'userType',
   fields: () => ({
     username: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
@@ -57,7 +57,7 @@ export const userType = new GraphQLObjectType({
   })
 });
 export const userTypeInput = new GraphQLInputObjectType({
-  name: 'UserInput',
+  name: 'userTypeInput',
   fields: () => ({
     username: { type: GraphQLString },
     password: { type: GraphQLString },
