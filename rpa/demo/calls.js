@@ -1,8 +1,9 @@
 /* API calls
-  - Queries and mutations to use for the demo
+  - Queries and mutations samples
 ============================================================================= */
 
-/************** Stores **************/
+/** Store  ***********************************/
+
 `
 mutation {
   createStore(
@@ -23,9 +24,8 @@ mutation {
     }
   }
 }
-`;
 
-`
+
 mutation {
   updateStore(
     name: "Demo Stores LTD",
@@ -48,9 +48,8 @@ mutation {
     }
   }
 }
-`;
 
-`
+
 {
   findStore(name: "demo") {
     name,
@@ -62,26 +61,24 @@ mutation {
     }
   }
 }
-`;
 
-`
+
 mutation {
 	removeStore(name: "demo") {
     name
   }
 }
-`;
 
-`
+
 {
   findAllStores {
     name
   }
 }
-`;
+`
 
 
-/************** Users **************/
+/** User ***********************************/
 
 `
 mutation {
@@ -95,9 +92,8 @@ mutation {
     email
   }
 }
-`;
 
-`
+
 mutation {
   updateUser(
     username: "Tester",
@@ -112,9 +108,8 @@ mutation {
     email
   }
 }
-`;
 
-`
+
 {
   findUser(username: "UPDATE_Tester") {
     username,
@@ -122,9 +117,8 @@ mutation {
     email
   }
 }
-`;
 
-`
+
 {
   findUser(email: "UPDATE_valid@email.com") {
     username,
@@ -132,21 +126,19 @@ mutation {
     email
   }
 }
-`;
 
-`
+
 mutation {
 	removeUser(username: "UPDATE_Tester") {
     username
   }
 }
-`;
 
-`
+
 {
   findAllUsers {
     username,
     email
   }
 }
-`;
+`
