@@ -19,8 +19,7 @@ import {
   findAll
 } from './resolvers.js';
 
-const fields =
-{
+const fields = {
   findUser: {
     type: UserType,
     description: 'Find a user by username (case insensitive) or email',

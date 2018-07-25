@@ -1,5 +1,4 @@
 /** Mutation
-  - https://medium.com/@HurricaneJames/graphql-mutations-fb3ad5ae73c4
 ============================================================================= */
 import {
   GraphQLInputObjectType,
@@ -24,8 +23,7 @@ import {
   update
 } from './resolvers.js';
 
-const fields =
-{
+const fields = {
   createStore: {
     type: StoreType,
     description: 'Create a new store. (Please use the retailer business name) '

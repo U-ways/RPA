@@ -1,5 +1,4 @@
 /** Resolvers
-  - FIXME: Learn how to handle and reutnr errors correctly with HTTP and status stuff
 ============================================================================= */
 import User from '../../mvc/models/User.js';
 

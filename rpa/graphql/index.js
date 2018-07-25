@@ -38,7 +38,7 @@ const Schema = new GraphQLSchema({
   mutation: MutationRootType
 });
 
-/** API **/
+/** HTTP API **/
 
 const API = graphqlHTTP({
   schema: Schema,

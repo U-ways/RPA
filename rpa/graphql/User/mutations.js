@@ -1,5 +1,4 @@
 /** Mutation
-  - https://medium.com/@HurricaneJames/graphql-mutations-fb3ad5ae73c4
 ============================================================================= */
 import {
   GraphQLInputObjectType,
@@ -22,8 +21,7 @@ import {
   update
 } from './resolvers.js';
 
-const fields =
-{
+const fields = {
   createUser: {
     type: UserType,
     description: 'Create a new user (returns newly created user)',

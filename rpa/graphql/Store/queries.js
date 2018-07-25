@@ -1,7 +1,4 @@
 /** Queries
-- TODO:
-  - Create new quries and nest them inside the root query
-  - something like: https://medium.freecodecamp.org/organizing-graphql-mutations-653306699f3d
 ============================================================================= */
 import {
   GraphQLInputObjectType,
@@ -22,8 +19,7 @@ import {
   findAll
 } from './resolvers.js';
 
-const fields =
-{
+const fields = {
   findStore: {
     type: StoreType,
     description: 'Find a store by name (case insensitive)',

@@ -16,7 +16,6 @@ import GraphQLTimestamp from '../scalars/GraphQLTimestamp.js';
 
 /** Log **/
 
-// https://graphql.org/graphql-js/type/#graphqlenumtype
 const ActivityType = new GraphQLEnumType({
   name: 'ActivityType',
   values: {
