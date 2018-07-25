@@ -12,7 +12,7 @@ const queries = Object.assign({},
   User.query.fields
 );
 
-const QueryRootType = new GraphQLObjectType({
+export const QueryRootType = new GraphQLObjectType({
   name: 'query',
   description: 'Root query',
   fields: () => (queries)
@@ -25,7 +25,7 @@ const mutations = Object.assign({},
   User.mutation.fields
 );
 
-const MutationRootType = new GraphQLObjectType({
+export const MutationRootType = new GraphQLObjectType({
   name: 'mutation',
   description: 'Root mutation',
   fields: () => (mutations)
@@ -42,7 +42,7 @@ const Schema = new GraphQLSchema({
 
 const API = graphqlHTTP({
   schema: Schema,
-  graphiql: true,
+  graphiql: true
 });
 
 export default API;
