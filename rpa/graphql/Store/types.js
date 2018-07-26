@@ -61,10 +61,10 @@ const AddressType = new GraphQLObjectType({
 export const AddressTypeInput = new GraphQLInputObjectType({
   name: 'AddressTypeInput',
   fields: () => ({
-    street:   { type: new GraphQLNonNull(GraphQLString) },
-    county:   { type: GraphQLString                     },
-    postcode: { type: new GraphQLNonNull(GraphQLString) },
-    country:  { type: new GraphQLNonNull(GraphQLString) }
+    street:   { type: GraphQLString },
+    county:   { type: GraphQLString },
+    postcode: { type: GraphQLString },
+    country:  { type: GraphQLString }
   })
 });
 
