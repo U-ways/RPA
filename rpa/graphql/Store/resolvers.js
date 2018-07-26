@@ -1,6 +1,7 @@
 /** Resolvers
 ============================================================================= */
-import Store from '../../mvc/models/Store.js';
+import Store   from '../../mvc/models/Store.js';
+import flatten from 'flat';
 
 export function find(obj, {name}) {
   let regex  = new RegExp(name,'i');
@@ -52,7 +53,7 @@ export function update(obj, {name, update}) {
   let regex    = new RegExp(name,'i');
   let query    = { name: regex };
   let options  = { new: true };
-  let mutation = Store.findOneAndUpdate(query, update, options).exec();
+  let mutation = Store.findOneAndUpdate(query, flatten(update), options).exec();
   let result   = mutation.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
