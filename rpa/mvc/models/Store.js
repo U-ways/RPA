@@ -43,4 +43,4 @@ const StoreSchema = new mongoose.Schema({
 });
 
 StoreSchema.plugin(uniqueValidator);
-export default mongoose.model('Store', StoreSchema);
+export const StoreModel = mongoose.model('Store', StoreSchema);

@@ -1,11 +1,11 @@
 /** Resolvers
 ============================================================================= */
-import User from '../../mvc/models/User.js';
+import { UserModel } from '../../mvc/models/User.js';
 
 export function find(obj, {username, email}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
-  let query  = User.findOne(conditions).exec();
+  let query  = UserModel.findOne(conditions).exec();
   let result = query.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
@@ -14,7 +14,7 @@ export function find(obj, {username, email}) {
 }
 
 export function findAll(obj, {limit}) {
-  let query  = User.find().limit(limit).exec();
+  let query  = UserModel.find().limit(limit).exec();
   let result = query.then((arr, err) => {
     if (err) console.log('err: ' + err);
     else     return arr;
@@ -23,7 +23,7 @@ export function findAll(obj, {limit}) {
 }
 
 export function create(obj, {username, password, email}) {
-  let mutation = User.create({
+  let mutation = UserModel.create({
     username: username,
     password: password,
     email:    email
@@ -38,7 +38,7 @@ export function create(obj, {username, password, email}) {
 export function remove(obj, {username, email}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
-  let mutation = User.findOneAndDelete(conditions).exec();
+  let mutation = UserModel.findOneAndDelete(conditions).exec();
   let result   = mutation.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
@@ -50,7 +50,7 @@ export function update(obj, {username, email, update}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
   let options  = { new: true };
-  let mutation = User.findOneAndUpdate(conditions, update, options).exec();
+  let mutation = UserModel.findOneAndUpdate(conditions, update, options).exec();
   let result   = mutation.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;

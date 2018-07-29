@@ -1,11 +1,11 @@
 /** Resolvers
 ============================================================================= */
-import Store   from '../../mvc/models/Store.js';
-import flatten from 'flat';
+import { StoreModel } from '../../mvc/models/Store.js';
+import flatten    from 'flat';
 
 export function find(obj, {name}) {
   let regex  = new RegExp(name,'i');
-  let query  = Store.findOne({ name: regex }).exec();
+  let query  = StoreModel.findOne({ name: regex }).exec();
   let result = query.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
@@ -14,7 +14,7 @@ export function find(obj, {name}) {
 }
 
 export function findAll(obj, {limit}) {
-  let query  = Store.find().limit(limit).exec();
+  let query  = StoreModel.find().limit(limit).exec();
   let result = query.then((arr, err) => {
     if (err) console.log('err: ' + err);
     else     return arr;
@@ -23,7 +23,7 @@ export function findAll(obj, {limit}) {
 }
 
 export function create(obj, {name, address}) {
-  let mutation = Store.create({
+  let mutation = StoreModel.create({
     name: name,
     address: {
       street:   address.street,
@@ -41,7 +41,7 @@ export function create(obj, {name, address}) {
 
 export function remove(obj, {name}) {
   let regex    = new RegExp(name,'i');
-  let mutation = Store.findOneAndDelete({ name: regex }).exec();
+  let mutation = StoreModel.findOneAndDelete({ name: regex }).exec();
   let result   = mutation.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
@@ -53,7 +53,7 @@ export function update(obj, {name, update}) {
   let regex    = new RegExp(name,'i');
   let query    = { name: regex };
   let options  = { new: true };
-  let mutation = Store.findOneAndUpdate(query, flatten(update), options).exec();
+  let mutation = StoreModel.findOneAndUpdate(query, flatten(update), options).exec();
   let result   = mutation.then((doc, err) => {
     if (err) console.log('err: ' + err);
     else     return doc;
