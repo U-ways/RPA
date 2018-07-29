@@ -1,6 +1,6 @@
 import { expect }   from 'chai';
-import { UserType } from '../../graphql/User/types';
-import { QueryRootType, MutationRootType } from '../../graphql';
+import { UserType } from '../../../graphql/User/types';
+import { QueryRootType, MutationRootType } from '../../../graphql';
 
 export function types() {
   let user = UserType.getFields();

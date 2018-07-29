@@ -1,7 +1,7 @@
 /* Store test
  ============================================================================ */
 import { expect } from 'chai';
-import Store from '../../mvc/models/Store.js';
+import Store from '../../../mvc/models/Store.js';
 
 export function valid() {
   let valid_doc  = new Store({

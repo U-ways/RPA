@@ -2,8 +2,8 @@
 ============================================================================= */
 import mongoose from 'mongoose';
 import { expect }    from 'chai';
-import { StoreType } from '../../graphql/Store/types';
-import { QueryRootType, MutationRootType } from '../../graphql';
+import { StoreType } from '../../../graphql/Store/types';
+import { QueryRootType, MutationRootType } from '../../../graphql';
 
 /* Prepare
 ============================================================================= */

@@ -1,7 +1,7 @@
 /* User test
 ============================================================================= */
 import { expect } from 'chai';
-import User from '../../mvc/models/User.js';
+import User from '../../../mvc/models/User.js';
 
 export function valid() {
   let valid_doc = new User({
