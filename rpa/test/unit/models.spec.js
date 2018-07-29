@@ -11,7 +11,7 @@ describe('/models', () => {
   before(() => {
     console.log(cl.act, '    Connecting to DB');
     let options  = { useNewUrlParser: true };
-    return mongoose.connect(process.env.DB_URI, options).then(
+    return mongoose.connect(process.env.DB_URI_ADMIN, options).then(
       ()    => { console.log(cl.ok, '    Connected to database\n');    },
       error => { console.log(cl.err,`    Database: ${error.message}`); }
     );
