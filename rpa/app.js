@@ -15,7 +15,7 @@ import cl             from './modules/colorLogger.js';
 import mongoose from 'mongoose';
 
 let options  = { useNewUrlParser: true };
-mongoose.connect(process.env.DB_URI, options).then(
+mongoose.connect(process.env.DB_URI_USER, options).then(
   ()    => { console.log(cl.ok, '[app] Connected to database');      },
   error => { console.log(cl.err,`[app] Database: ${error.message}`); }
 );
@@ -24,9 +24,6 @@ mongoose.connect(process.env.DB_URI, options).then(
 ============================================================================= */
 import indexRouter   from './mvc/controllers/index';
 import sandboxRouter from './mvc/controllers/sandbox';
-/** Demo **/
-let demo = true;
-if (demo) import('./demo');
 
 /* Initialize express app
 ============================================================================= */
