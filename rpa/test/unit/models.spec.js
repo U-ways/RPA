@@ -7,17 +7,21 @@ import { describe, before, after, it } from 'mocha';
 
 describe('/models', () => {
 
-  /** Connect to DB **/
-  before(() => {
+  /** Connect and clean database **/
+
+  before('connect to database', () => {
     console.log(cl.act, '    Connecting to DB');
     let options  = { useNewUrlParser: true };
     return mongoose.connect(process.env.DB_URI_ADMIN, options).then(
-      ()    => { console.log(cl.ok, '    Connected to database\n');    },
+      mongoose => {
+        console.log(cl.ok, '    Connected to database');
+        console.log(cl.warn, '    Cleaning database\n');
+        return mongoose.connection.db.dropDatabase();
+      },
       error => { console.log(cl.err,`    Database: ${error.message}`); }
-    );
+    )
   });
-
-  after(() => {
+  after('disconnect from database', () => {
     mongoose.connection.close(() =>
     console.log(cl.warn, '    Connection closed'));
   });

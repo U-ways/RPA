@@ -1,25 +1,25 @@
 /* User test
 ============================================================================= */
 import { expect } from 'chai';
-import User from '../../../mvc/models/User.js';
+import { UserModel } from '../../../mvc/models/User.js';
+import { UserData  } from '../../data/data.js';
+
+/** Pass a valid document and validate **/
 
 export function valid() {
-  let valid_doc = new User({
-    username: 'Test_u-ways',
-    password: 'sandbox@!"£@"#~',
-    email: 'u_ways@email.com'
-  });
+  let valid_doc = new UserModel(UserData.uways);
   return valid_doc.validate()
   .catch(
     e => {
-      console.log(e.errors);
-      expect(e.errors).to.not.exist;
+      expect(e.errors, `${e.errors}`).to.not.exist;
     }
   );
 }
 
+/** Pass an invalid document and validate **/
+
 export function invalid() {
-  let invalid_doc = new User({
+  let invalid_doc = new UserModel({
     username: '_u-ways',
     password: '',
     email: '@u_ways@email'
@@ -28,8 +28,10 @@ export function invalid() {
   .catch( e => expect(e.errors).to.exist );
 }
 
+/** Pass an invalid username to a document and validate **/
+
 export function invalidUsername() {
-  let invalid_doc = new User({
+  let invalid_doc = new UserModel({
     username: '_u-ways'
   });
   return invalid_doc.validate()
@@ -41,8 +43,10 @@ export function invalidUsername() {
   );
 }
 
+/** Pass an invalid password to a document and validate **/
+
 export function invalidPassword() {
-  let invalid_doc = new User({
+  let invalid_doc = new UserModel({
     password: ''
   });
   return invalid_doc.validate()
@@ -54,8 +58,10 @@ export function invalidPassword() {
   );
 }
 
+/** Pass an invalid email to a document and validate **/
+
 export function invalidEmail() {
-  let invalid_doc = new User({
+  let invalid_doc = new UserModel({
     email: '@u_ways@email'
   });
   return invalid_doc.validate()
