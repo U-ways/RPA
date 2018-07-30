@@ -1,0 +1,11 @@
+#### Environment variables Config
+#
+## Process.env docs:
+# https://nodejs.org/api/process.html#process_process_env
+
+# PORT
+PORT=
+
+### Full URI w/ username & password
+DB_URI_USER=
+DB_URI_ADMIN=
