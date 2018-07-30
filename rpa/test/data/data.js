@@ -1,13 +1,11 @@
 /* Data
-  Documents to mock a converged database
+  - Documents to mock a converged database
 ============================================================================= */
-import Store from '../mvc/models/Store.js';
-import User  from '../mvc/models/User.js';
 
 /* Stores
 ============================================================================= */
 
-const asda  = new Store({
+const asda = {
   name: 'ASDA STORES LIMITED',
   address: {
     street: 'Asda House, South Bank, Great Wilson Street',
@@ -15,9 +13,9 @@ const asda  = new Store({
     postcode: 'LS11 5AD',
     country: 'United Kingdom'
   }
-});
+};
 
-const tesco = new Store({
+const tesco = {
   name: 'TESCO STORES LIMITED',
   address: {
     street: 'Tesco House, Shire Park, Kestrel Way',
@@ -25,9 +23,9 @@ const tesco = new Store({
     postcode: 'AL7 1GA',
     country: 'United Kingdom'
   }
-});
+};
 
-const morrisons = new Store({
+const morrisons = {
   name: 'WM MORRISON SUPERMARKETS PLC',
   address: {
     street: 'Hilmore House, Gain Lane, Bradford',
@@ -35,7 +33,7 @@ const morrisons = new Store({
     postcode: 'BD3 7DL',
     country: 'United Kingdom'
   }
-});
+};
 
 asda.products = [
   {
@@ -364,19 +362,19 @@ morrisons.products = [
 /* User
 ============================================================================= */
 
-const uways = new User({
+const uways = {
   username: 'u-ways',
   password: '1234abcd',
   email: 'u-ways@email.com'
-});
+};
 
-const joe = new User({
+const joe = {
   username: 'Joe',
   password: '1234abcd',
   email: 'Joe@email.com'
-});
+};
 
-uways.log = [
+uways.logs = [
   {
     activity: 'Logout',
     date: 1531699200
@@ -402,7 +400,7 @@ uways.log = [
   }
 ];
 
-joe.log = [
+joe.logs = [
   {
     activity: 'Logout',
     date: 1531799200
@@ -428,21 +426,5 @@ joe.log = [
   }
 ];
 
-/**
- * NOTE:
- * Export key values must be model's collection name as for/in loop at ./index
- * relies on key values to drop/reset collections before demo.
- *
- * Why? Because it is more efficient this way (performance wise) in comparison
- * to creating another loop to get each collection name before drop.
- *
- * TIP: To get collection name use: `Model.collection.name`
- *
- * FIXME:
- * I think this degree of coupling is bad. Try to find an efficient walkaround.
- * Perhaps generate the key values in here dynamically
- */
-export default {
-  stores: { asda, tesco, morrisons },
-  users : { uways, joe }
-}
+export const StoreData = { asda, tesco, morrisons };
+export const UserData  = { uways, joe };
