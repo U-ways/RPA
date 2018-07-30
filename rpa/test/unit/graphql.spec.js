@@ -5,11 +5,11 @@ import dotenv   from 'dotenv/config';
 import cl       from '../../modules/colorLogger.js';
 import { describe, before, after, it } from 'mocha';
 
-describe.only('/graphql', () => {
+describe('/graphql', () => {
 
   /** Connect and clean database **/
 
-  before(() => {
+  before('connect to database', () => {
     console.log(cl.act, '    Connecting to DB');
     let options  = { useNewUrlParser: true };
     return mongoose.connect(process.env.DB_URI_ADMIN, options).then(
@@ -21,15 +21,14 @@ describe.only('/graphql', () => {
       error => { console.log(cl.err,`    Database: ${error.message}`); }
     )
   });
-
-  after(() => {
+  after('disconnect from database', () => {
     mongoose.connection.close(() =>
     console.log(cl.warn, '    Connection closed'));
   });
 
   /** Store API tests **/
 
-  describe.only('Store', () => {
+  describe('Store', () => {
     let test = require(`./graphql/Store.test.js`);
 
     describe('types', () => {
@@ -37,20 +36,21 @@ describe.only('/graphql', () => {
     })
 
     describe('queries', () => {
-      // before(() => { test.addFakeData })
-      // after(()  => { test.cleanFakeData })
+      beforeEach('add fake data', test.addFakeData);
+      afterEach('clean database', test.cleanDatabase);
 
-      // it('should resolve', test.find);
-      // it('should resolve', test.findAll);
+      it('findStore by returning the found store', test.find);
+      it('findAllStores by returning an array of found stores', test.findAll);
     })
 
     describe('mutations', () => {
-      beforeEach(() => { test.addFakeData })
-      afterEach(()  => { test.cleanFakeData })
 
-      it('should resolve createStore by returning the new store', test.create);
-      it('should resolve updateStore by returning the updated store', test.update);
-      it('should resolve deleteStore by returning the deleted store', test.remove);
+      beforeEach('add fake data', test.addFakeData);
+      afterEach('clean database', test.cleanDatabase);
+
+      it('createStore by returning the new store', test.create);
+      it('updateStore by returning the updated store', test.update);
+      it('deleteStore by returning the deleted store', test.remove);
     })
   });
 
@@ -60,17 +60,25 @@ describe.only('/graphql', () => {
     let test = require(`./graphql/User.test.js`);
 
     describe('types', () => {
-      it('should have correct values for each field', test.types);
+      it('should have the correct value for each field', test.types);
     })
 
     describe('queries', () => {
-      it('should test', test.sth);
-      it('should test', test.sth);
+      beforeEach('add fake data', test.addFakeData);
+      afterEach('clean database', test.cleanDatabase);
+
+      it('findUser by returning the found user', test.find);
+      it('findAllUsers by returning an array of found users', test.findAll);
     })
 
     describe('mutations', () => {
-      it('should test', test.sth);
-      it('should test', test.sth);
+
+      beforeEach('add fake data', test.addFakeData);
+      afterEach('clean database', test.cleanDatabase);
+
+      it('createUser by returning the new user', test.create);
+      it('updateUser by returning the updated user', test.update);
+      it('deleteUser by returning the deleted user', test.remove);
     })
   });
 

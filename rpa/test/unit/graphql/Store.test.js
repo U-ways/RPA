@@ -1,24 +1,35 @@
 /* Store test
 ============================================================================= */
 import mongoose from 'mongoose';
-import { expect }    from 'chai';
-import { StoreType } from '../../../graphql/Store/types';
+import { expect } from 'chai';
+import { StoreData  } from '../../data/data.js';
+import { StoreType  } from '../../../graphql/Store/types';
+import { StoreModel } from '../../../mvc/models/Store.js';
 import { QueryRootType, MutationRootType } from '../../../graphql';
 
 /* Prepare
 ============================================================================= */
 
+/** Create stores collection with sample documents to preform tests on **/
+
 export function addFakeData() {
-  const connection = mongoose.connection;
+  // Convert stores objects to an array of stores without key mapping.
+  let docs = Object.entries(StoreData).map(value => value[1]);
 
-  connection.on('connected', () => {
-    // add fake data
-  });
-
+  return StoreModel.insertMany(docs)
+  .catch(error =>
+    expect(error, `${error}`).to.not.exist
+  );
 }
 
+/** Drops database to reset environment for next tests **/
 
-
+export function cleanDatabase() {
+  return mongoose.connection.db.dropDatabase()
+  .catch(error =>
+    expect(error, `${error}`).to.not.exist
+  );
+}
 
 /* Types
 ============================================================================= */
@@ -48,7 +59,32 @@ export function types() {
 
 const query = QueryRootType.getFields();
 
+/** Should return the found documents **/
 
+export function find() {
+  let condition = { name: StoreData.morrisons.name };
+  let find = query.findStore.resolve({}, condition);
+
+  return find.then(
+    result => {
+      expect(result.name).to.equal(StoreData.morrisons.name);
+      expect(result.address).to.deep.include(StoreData.morrisons.address);
+    }
+  )
+}
+
+/** Should return an array of found documents **/
+
+export function findAll() {
+  let find = query.findAllStores.resolve({}, 3);
+
+  return find.then(
+    result => {
+      expect(result).to.have.lengthOf(3);
+      expect(result[0]).to.be.an.instanceof(Object);
+    }
+  )
+}
 
 /* Mutations
 ============================================================================= */
@@ -59,12 +95,12 @@ const mutation = MutationRootType.getFields();
 
 export function create() {
   let doc = {
-    name: "Demo Stores LTD",
+    name: "New Store LTD",
     address: {
-      street: "Demo street" ,
-      county: "Demo country",
-      postcode: "DM0 0UE",
-      country: "Demo World"
+      street: 'City of Westminster, London',
+      county: 'Middlesex',
+      postcode: 'W1S 1DW',
+      country: 'United Kingdom'
     }
   }
   let create = mutation.createStore.resolve({}, doc);
@@ -77,15 +113,15 @@ export function create() {
   )
 }
 
-/** TODO Should return the updated document **/
+/** Should return the updated document **/
 
 export function update() {
   let changes = {
-    name: "Demo Stores LTD",
+    name: StoreData.asda.name,
     update: {
-      name: "Updated Stores LTD",
+      name: "Updated",
       address: {
-        street: "Updated street"
+        street: "Updated"
       }
     }
   };
@@ -93,23 +129,24 @@ export function update() {
 
   return update.then(
     result => {
+      expect(result).to.not.be.null;
       expect(result.name).to.equal(changes.update.name);
       expect(result.address).to.deep.include(changes.update.address);
     }
   )
 }
 
-/** TODO Should return the deleted document **/
+/** Should return the deleted document **/
 
 export function remove() {
-  let name = { name: "Updated Stores LTD" }
-  let remove = mutation.removeStore.resolve({}, name);
+  let name   = StoreData.tesco.name;
+  let remove = mutation.removeStore.resolve({}, {name: name});
 
   return remove.then(
     result => {
-      // console.log(result);
-      expect(result.name).to.include(name.name);
-      // expect(result.address).to.deep.include(doc.address);
+      expect(result).to.not.be.null;
+      expect(result.name).to.include(name);
+      expect(result).to.have.property('address');
     }
   )
 }
