@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www --exec babel-node",
-    "test": "mocha"
+    "test": "mocha ./test/unit"
   },
   "dependencies": {
     "body-parser": "~1.18.3",
@@ -15,6 +15,7 @@
     "ejs": "~2.6.1",
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
+    "flat": "^4.1.0",
     "graphql": "^0.13.2",
     "graphql-iso-date": "^3.5.0",
     "http-errors": "~1.6.2",
