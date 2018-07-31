@@ -1,8 +1,9 @@
 /* User Mongoose schema
 ============================================================================= */
+import dotenv   from 'dotenv/config';
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import { LogSchema } from './Log.js';
+import { LogSchema }   from './Log.js';
 
 /** Must starts with a letter then can include underscores (_) & hyphens (-) **/
 const username_regex = /^[a-zA-Z][\w-]+$/;
@@ -33,6 +34,41 @@ const UserSchema = new mongoose.Schema({
   },
   logs: [LogSchema]
 });
+
+/* User instance methods
+============================================================================= */
+import bcrypt from 'bcrypt';
+
+/**
+ * A middleware to automatically hash the password
+ * before it's saved to the database.
+ *
+ * @param  {String}  password  clear password
+ * @return {String}            hashed password
+ */
+
+function bcryptHash(password) {
+  const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
+  return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+/**
+ * Compares both input and actual password togther
+ *
+ * @param  {String}  password  user input
+ * @return {boolean}           true if password match, false otherwise.
+ *                             also returns false if errors found.
+ */
+
+function comaprePassword(password) {
+  bcrypt.compare(password, UserSchema.password, (err, match) => {
+    if (err) console.log(`validPassword error - ${err}`);
+    return err ? false : match;
+  });
+}
+
+UserSchema.methods.hashPassword  = bcryptHash;
+UserSchema.methods.validPassword = comaprePassword;
 
 UserSchema.plugin(uniqueValidator);
 export const UserModel = mongoose.model('User', UserSchema);

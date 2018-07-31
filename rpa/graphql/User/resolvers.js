@@ -6,18 +6,16 @@ export function find(obj, {username, email}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
   let query  = UserModel.findOne(conditions).exec();
-  let result = query.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result = query.then(doc => {
+    return doc;
   });
   return result;
 }
 
 export function findAll(obj, {limit}) {
   let query  = UserModel.find().limit(limit).exec();
-  let result = query.then((arr, err) => {
-    if (err) console.log('err: ' + err);
-    else     return arr;
+  let result = query.then(arr => {
+    return arr;
   });
   return result;
 }
@@ -28,10 +26,17 @@ export function create(obj, {username, password, email}) {
     password: password,
     email:    email
   })
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
-  });
+  let result   = mutation.then(
+    doc => {
+      let hash = doc.hashPassword(password);
+      return hash.then(
+        hashedPassword => {
+          doc.password = hashedPassword;
+          return doc.save();
+        }
+      )
+    }
+  );
   return result;
 }
 
@@ -39,9 +44,8 @@ export function remove(obj, {username, email}) {
   if (!username && !email) console.log('err: please input username or email');
   let conditions = !!username ? {username: username} : {email: email};
   let mutation = UserModel.findOneAndDelete(conditions).exec();
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result   = mutation.then(doc => {
+    return doc;
   });
   return result;
 }
@@ -51,9 +55,8 @@ export function update(obj, {username, email, update}) {
   let conditions = !!username ? {username: username} : {email: email};
   let options  = { new: true };
   let mutation = UserModel.findOneAndUpdate(conditions, update, options).exec();
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result   = mutation.then(doc => {
+    return doc;
   });
   return result;
 }
