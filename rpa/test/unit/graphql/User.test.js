@@ -105,7 +105,11 @@ export function create() {
   return create.then(
     result => {
       expect(result.username).to.equal(doc.username);
+      expect(result.password).to.not.equal(doc.password);
       expect(result.email).to.equal(doc.email);
+
+      return result.validPassword(doc.password, result.password)
+      .then(match => expect(match).to.be.true);
     }
   )
 }
