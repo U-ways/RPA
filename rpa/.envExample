@@ -4,8 +4,11 @@
 # https://nodejs.org/api/process.html#process_process_env
 
 # PORT
-PORT=
+PORT=3000
 
-### Full URI w/ username & password
-DB_URI_USER=
-DB_URI_ADMIN=
+### DB URI w/ username & password
+DB_URI_USER="mongodb+srv://USER:PASSWORD@prototype-db-hituj.mongodb.net/DATABASE"
+DB_URI_ADMIN="mongodb+srv://ADMIN:PASSWORD@prototype-db-hituj.mongodb.net/DATABASE"
+
+### bcrypt salt rounds (default: 10)
+SALT_ROUNDS=10
