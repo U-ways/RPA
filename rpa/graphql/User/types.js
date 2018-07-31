@@ -50,7 +50,6 @@ export const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
     username: { type: new GraphQLNonNull(GraphQLString) },
-    password: { type: new GraphQLNonNull(GraphQLString) },
     email:    { type: new GraphQLNonNull(GraphQLString) },
     logs:     { type: new GraphQLList(LogType)          }
   })
