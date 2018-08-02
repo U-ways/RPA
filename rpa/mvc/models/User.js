@@ -60,11 +60,8 @@ function bcryptHash(password) {
  *                             also returns false if errors found.
  */
 
-function comaprePassword(password) {
-  bcrypt.compare(password, UserSchema.password, (err, match) => {
-    if (err) console.log(`validPassword error - ${err}`);
-    return err ? false : match;
-  });
+function comaprePassword(password, hash) {
+  return bcrypt.compare(password, hash);
 }
 
 UserSchema.methods.hashPassword  = bcryptHash;
