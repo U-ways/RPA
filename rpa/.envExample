@@ -3,6 +3,9 @@
 ## Process.env docs:
 # https://nodejs.org/api/process.html#process_process_env
 
+#### Environment
+NODE_ENV="development"
+
 ### HOST
 HOST="localhost"
 
