@@ -18,34 +18,6 @@ import cl             from './modules/colorLogger.js';
 const ENV = process.env;
 const APP = express();
 
-/** setup the server logger **/
-
-const LOG_DIR = path.join(__dirname, 'log')
-fileSystem.existsSync(LOG_DIR) || fileSystem.mkdirSync(LOG_DIR);
-
-// create a rotating write stream
-let rotationLogging = rfs('access.log', {
-  size: '10M',
-  interval: '1d',
-  compress: 'gzip',
-  maxFiles: 180, // remove logs older than 6 months
-  maxSize: '500M',
-  path: LOG_DIR
-})
-
-let logFormat =
-':method :url :status :response-time ms :res[content-length] B';
-
-APP.use(logger(
-  ENV.NODE_ENV === 'development' ? 'dev' :
-    logFormat, {
-      // Log only 4xx and 5xx responses to console for non-dev environments
-      skip: (req, res) => res.statusCode < 400,
-      stream: rotationLogging
-    }
-  )
-);
-
 /** prepare express body-parser **/
 
 APP.use(express.json());
@@ -64,6 +36,48 @@ APP.use(sassMiddleware({
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
 }));
+
+/* Server logger setup
+============================================================================= */
+
+const LOG_DIR = path.join(__dirname, 'log')
+fileSystem.existsSync(LOG_DIR) || fileSystem.mkdirSync(LOG_DIR);
+
+/** creates a rotating write stream */
+
+let rotationLogging = rfs('http-server.log', {
+  size: '5M',
+  interval: '1d',
+  compress: 'gzip',
+  maxFiles: 90, // remove logs older than 3 months
+  maxSize: '250M',
+  path: LOG_DIR
+});
+
+let reqLogFormat =
+'REQ :remote-addr     :method :url :req[header] :user-agent';
+
+APP.use(logger(
+  (ENV.NODE_ENV === 'development') ? 'dev' :
+    (reqLogFormat, {
+      immediate: true,
+      skip: (req, res) => res.statusCode < 400,
+      stream: rotationLogging
+    })
+  )
+);
+
+let resLogFormat =
+'RES :remote-addr :status :method :url :res[header] :res[content-length] :response-time ms';
+
+if (ENV.NODE_ENV === 'production') {
+  APP.use(logger(resLogFormat, {
+        skip: (req, res) => res.statusCode < 400,
+        stream: rotationLogging
+      }
+    )
+  );
+}
 
 /* Session set-up
 ============================================================================= */
