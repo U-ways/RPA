@@ -6,18 +6,16 @@ import flatten    from 'flat';
 export function find(obj, {name}) {
   let regex  = new RegExp(name,'i');
   let query  = StoreModel.findOne({ name: regex }).exec();
-  let result = query.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result = query.then(doc => {
+    return doc;
   });
   return result;
 }
 
 export function findAll(obj, {limit}) {
   let query  = StoreModel.find().limit(limit).exec();
-  let result = query.then((arr, err) => {
-    if (err) console.log('err: ' + err);
-    else     return arr;
+  let result = query.then(arr => {
+    return arr;
   });
   return result;
 }
@@ -32,9 +30,8 @@ export function create(obj, {name, address}) {
       country:  address.country
     }
   })
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result   = mutation.then(doc => {
+    return doc;
   });
   return result;
 }
@@ -42,9 +39,8 @@ export function create(obj, {name, address}) {
 export function remove(obj, {name}) {
   let regex    = new RegExp(name,'i');
   let mutation = StoreModel.findOneAndDelete({ name: regex }).exec();
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result   = mutation.then(doc => {
+    return doc;
   });
   return result;
 }
@@ -54,9 +50,8 @@ export function update(obj, {name, update}) {
   let query    = { name: regex };
   let options  = { new: true };
   let mutation = StoreModel.findOneAndUpdate(query, flatten(update), options).exec();
-  let result   = mutation.then((doc, err) => {
-    if (err) console.log('err: ' + err);
-    else     return doc;
+  let result   = mutation.then(doc => {
+    return doc;
   });
   return result;
 }
