@@ -8,6 +8,7 @@ import createError    from 'http-errors';
 import favicon        from 'serve-favicon';
 import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';
+import mustache       from 'mustache-express';
 import logger         from 'morgan';
 import rfs            from 'rotating-file-stream';
 import cl             from './modules/colorLogger.js';
@@ -25,7 +26,8 @@ APP.use(express.urlencoded({ extended: true }));
 
 /** view engine setup */
 
-APP.set('view engine', 'ejs');
+APP.engine('mst', mustache());
+APP.set('view engine', 'mst');
 APP.set('views', path.join(__dirname, 'mvc/views'));
 
 /** css preprocessor setup **/
@@ -124,8 +126,12 @@ APP.use(trackSession);
 function restrictAccess(req, res, next) {
   if (req.session.auth)
     return next();
-  else
-    return next(new Error('Please login to access this resource'));
+  else {
+    let error = new Error(`Please login to access this resource.`);
+    error.name = 'Unauthorized';
+    error.status = 401;
+    return next(error);
+  }
 }
 
 /* Static routing
@@ -147,12 +153,14 @@ import loginRouter from './mvc/controllers/login';
 import logoutRouter from './mvc/controllers/logout';
 import sandboxRouter from './mvc/controllers/sandbox';
 import dashboardRouter from './mvc/controllers/dashboard';
+import registrationRouter from './mvc/controllers/registration';
 
 APP.use('/', indexRouter);
 APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
-APP.use('/sandbox', sandboxRouter);
+APP.use('/register', registrationRouter);
 APP.use('/dashboard', restrictAccess, dashboardRouter);
+APP.use('/sandbox', sandboxRouter);
 
 /* Connecting database
 ============================================================================ */
@@ -177,18 +185,28 @@ APP.use('/API', restrictAccess, API);
 
 // catch 404 and forward to error handler
 APP.use(function(req, res, next) {
-  next(createError(404));
+  let error = new Error('The server has not found anything matching the Request-URI.');
+  error.name = 'Not Found';
+  error.status = 404;
+  next(error);
 });
 
 // error handler
 APP.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error   = req.app.get('env') === 'development' ? err : {};
+  let devView = (ENV.NODE_ENV === 'development') ?
+    { caught: err.caught, stack: err.stack }
+    : null;
 
-  // render the error page
+  let view = {
+    title: err.name,
+    status: err.status,
+    message: err.message,
+    error: devData
+  }
+
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', view);
 });
 
 export default APP;
