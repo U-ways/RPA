@@ -1,0 +1,9 @@
+<h1> {{title}} </h1>
+<h2> {{status}} </h2>
+<h3> {{message}} </h3>
+
+<h4> Caught Error infromation: </h4>
+<pre> {{error.caught.stack}} </pre>
+
+<h4> Error Stack </h4>
+<pre> {{error.stack}} </pre>

@@ -11,7 +11,8 @@ import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
 import logger         from 'morgan';
 import rfs            from 'rotating-file-stream';
-import cl             from './lib/colorLogger.js';
+import cl             from '../lib/colorLogger.js';
+
 
 /* Initialize express app
 ============================================================================= */
@@ -42,7 +43,7 @@ APP.use(sassMiddleware({
 /* Server logger setup
 ============================================================================= */
 
-const LOG_DIR = path.join(__dirname, 'log')
+const LOG_DIR = path.join(__dirname, '../log')
 fileSystem.existsSync(LOG_DIR) || fileSystem.mkdirSync(LOG_DIR);
 
 /** creates a rotating write stream */
