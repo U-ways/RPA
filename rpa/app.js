@@ -11,7 +11,7 @@ import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
 import logger         from 'morgan';
 import rfs            from 'rotating-file-stream';
-import cl             from './modules/colorLogger.js';
+import cl             from './lib/colorLogger.js';
 
 /* Initialize express app
 ============================================================================= */
@@ -184,7 +184,7 @@ APP.use('/API', restrictAccess, API);
 ============================================================================= */
 
 // catch 404 and forward to error handler
-APP.use(function(req, res, next) {
+APP.use((req, res, next) => {
   let error = new Error('The server has not found anything matching the Request-URI.');
   error.name = 'Not Found';
   error.status = 404;
@@ -192,7 +192,7 @@ APP.use(function(req, res, next) {
 });
 
 // error handler
-APP.use(function(err, req, res, next) {
+APP.use((err, req, res, next) => {
   // set locals, only providing error in development
   let devView = (ENV.NODE_ENV === 'development') ?
     { caught: err.caught, stack: err.stack }
@@ -202,7 +202,7 @@ APP.use(function(err, req, res, next) {
     title: err.name,
     status: err.status,
     message: err.message,
-    error: devData
+    error: devView
   }
 
   res.status(err.status || 500);
