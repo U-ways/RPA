@@ -1,7 +1,7 @@
 /* User test
 ============================================================================= */
 import { expect } from 'chai';
-import { UserModel } from '../../../mvc/models/User.js';
+import { UserModel } from '../../../app/mvc/models/User.js';
 import { UserData  } from '../../data/data.js';
 
 /** Pass a valid document and validate **/

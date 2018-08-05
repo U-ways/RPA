@@ -1,7 +1,7 @@
 /* Store test
  ============================================================================ */
 import { expect } from 'chai';
-import { StoreModel } from '../../../mvc/models/Store.js';
+import { StoreModel } from '../../../app/mvc/models/Store.js';
 import { StoreData  } from '../../data/data.js';
 
 /** Pass a valid document and validate **/

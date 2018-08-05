@@ -1,7 +1,7 @@
 /* Product test
 ============================================================================= */
 import { expect } from 'chai';
-import Product from '../../../mvc/models/Product.js';
+import Product from '../../../app/mvc/models/Product.js';
 
 export function valid() {
   let valid_doc = new Product({

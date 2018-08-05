@@ -1,7 +1,7 @@
 /* Log test
 ============================================================================= */
 import { expect } from 'chai';
-import Log from '../../../mvc/models/Log.js';
+import Log from '../../../app/mvc/models/Log.js';
 
 export function valid() {
   let valid_doc = new Log({

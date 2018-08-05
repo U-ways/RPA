@@ -3,9 +3,9 @@
 import mongoose from 'mongoose';
 import { expect } from 'chai';
 import { UserData  } from '../../data/data.js';
-import { UserType  } from '../../../graphql/User/types';
-import { UserModel } from '../../../mvc/models/User.js';
-import { QueryRootType, MutationRootType } from '../../../graphql';
+import { UserType  } from '../../../app/graphql/User/types';
+import { UserModel } from '../../../app/mvc/models/User.js';
+import { QueryRootType, MutationRootType } from '../../../app/graphql';
 
 /* Prepare
 ============================================================================= */
