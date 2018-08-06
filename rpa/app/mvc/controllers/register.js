@@ -49,13 +49,13 @@ function registerUser (req, res, next) {
   UserModel.find({ $or: [{username: username}, {email: email}] })
   .then(docs => {
     if (docs.length > 1) {
-      res.status(409);
-      return res.json({ error: 'Username and email already exists.' });
+      return res.status(409)
+        .json({ error: 'Username and email already exists.' });
     }
     else if (docs.length === 1) {
-      res.status(409);
       let duplicate = (docs[0].username === username) ? 'Username' : 'Email';
-      return res.json({ error: `${duplicate} already exists.` });
+      return res.status(409)
+        .json({ error: `${duplicate} already exists.` });
     }
     else {
       let createUser   = UserModel.create({
@@ -79,8 +79,8 @@ function registerUser (req, res, next) {
     }
   })
   .catch(err => {
-    res.status(500);
-    return res.json({ error: 'Unable to verify if username and email already taken.' });
+    return res.status(500)
+      .json({ error: 'Unable to verify if username and email already taken.' });
   });
 }
 
