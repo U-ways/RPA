@@ -376,52 +376,52 @@ const joe = {
 
 uways.logs = [
   {
-    activity: 'Logout',
+    activity: 1,
     date: 1531699200
   },
   {
-    activity: 'Create',
+    activity: 2,
     date: 1531699200,
     description: 'Store (WM MORRISON SUPERMARKETS PLC)'
   },
   {
-    activity: 'Create',
+    activity: 2,
     date: 1531699200,
     description: 'Store (TESCO STORES LIMITED)'
   },
   {
-    activity: 'Create',
+    activity: 2,
     date: 1531699200,
     description: 'Store (ASDA STORES LIMITED)'
   },
   {
-    activity: 'Login',
+    activity: 0,
     date: 1531699200
   }
 ];
 
 joe.logs = [
   {
-    activity: 'Logout',
+    activity: 1,
     date: 1531799200
   },
   {
-    activity: 'Update',
+    activity: 4,
     date: 1531799200,
     description: 'Store (WM MORRISON SUPERMARKETS PLC)'
   },
   {
-    activity: 'Update',
+    activity: 4,
     date: 1531799200,
     description: 'Store (TESCO STORES LIMITED)'
   },
   {
-    activity: 'Update',
+    activity: 4,
     date: 1531799200,
     description: 'Store (ASDA STORES LIMITED)'
   },
   {
-    activity: 'Login',
+    activity: 0,
     date: 1531799200
   }
 ];

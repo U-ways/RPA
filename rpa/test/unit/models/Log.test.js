@@ -5,7 +5,7 @@ import Log from '../../../app/mvc/models/Log.js';
 
 export function valid() {
   let valid_doc = new Log({
-    activity: 'Read',
+    activity: 3,
     description: 'path/to/resoruce'
   })
   return valid_doc.validate()
@@ -35,14 +35,14 @@ export function invalidActivity() {
   .catch(
     e => {
       let message = e.errors['activity'].message;
-      expect(message).to.match(/not a valid enum/);
+      expect(message).to.match(/Cast to Number failed for value/);
     }
   );
 }
 
 export function defaultDate() {
   let valid_doc = new Log({
-    activity: 'Login',
+    activity: 0,
   })
   return valid_doc.validate()
   .catch(
