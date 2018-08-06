@@ -88,6 +88,7 @@ if (ENV.NODE_ENV === 'production') {
 import session from 'express-session';
 import redis   from 'redis';
 import connectRedis from 'connect-redis';
+import { preserveLocalsOnRedirection } from './middleware/preserveLocalsOnRedirection.js';
 
 /** initialize express session */
 
@@ -120,19 +121,33 @@ const trackSession = (() => {
 })();
 
 APP.use(trackSession);
+/**
+ * NOTE:
+ * You might as well do that manually if possible.
+ *
+ * FIXME TODO IDEA:
+ * Maybe change as "garbage collect session values"
+ * Just define some static values to keep and remove eveything else everytime.
+ * This way you can use whaever value you want and don't have to worry about
+ * memeory leaking.
+ *
+ * use:
+ * - req.session.error
+ * - req.session.feedback
+ * to pass as locals on redirection.
+ */
+APP.use(preserveLocalsOnRedirection);
 
 /* Restrict-access middleware
 ============================================================================= */
 
 function restrictAccess(req, res, next) {
-  if (req.session.auth)
-    return next();
-  else {
-    let error = new Error(`Please login to access this resource.`);
-    error.name = 'Unauthorized';
-    error.status = 401;
-    return next(error);
+  if (req.session.auth) return next();
+  req.session.error = {
+    status: 401,
+    message:'unauthorised: please login to access protected resources.'
   }
+  return res.redirect('/');
 }
 
 /* Static routing
@@ -152,14 +167,14 @@ APP.use(express.static(path.join(__dirname, 'public')));
 import indexRouter from './mvc/controllers/index';
 import loginRouter from './mvc/controllers/login';
 import logoutRouter from './mvc/controllers/logout';
+import registerRouter from './mvc/controllers/register';
 import sandboxRouter from './mvc/controllers/sandbox';
 import dashboardRouter from './mvc/controllers/dashboard';
-import registrationRouter from './mvc/controllers/registration';
 
 APP.use('/', indexRouter);
 APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
-APP.use('/register', registrationRouter);
+APP.use('/register', registerRouter);
 APP.use('/dashboard', restrictAccess, dashboardRouter);
 APP.use('/sandbox', sandboxRouter);
 
