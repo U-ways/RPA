@@ -13,6 +13,9 @@ import logger         from 'morgan';
 import rfs            from 'rotating-file-stream';
 import cl             from '../lib/colorLogger.js';
 
+/** middleware to restrict-access on protected pages */
+import { restrictAccess } from './middleware/restrictAccess.js';
+
 
 /* Initialize express app
 ============================================================================= */
@@ -127,18 +130,6 @@ APP.use(trackSession);
  */
 APP.use(sessionGarbageCollector);
 
-/* Restrict-access middleware
-============================================================================= */
-
-function restrictAccess(req, res, next) {
-  if (req.session.auth) return next();
-  req.session.error = {
-    status: 401,
-    message:'unauthorised: please login to access protected resources.'
-  }
-  return res.redirect('/');
-}
-
 /* Static routing
 ============================================================================= */
 
@@ -183,7 +174,7 @@ mongoose.connect(ENV.DB_URI_USER, options).then(
 
 import API from './graphql';
 
-APP.use('/API', restrictAccess, API);
+APP.use('/api', restrictAccess, API);
 
 /* Error handlers
 ============================================================================= */
