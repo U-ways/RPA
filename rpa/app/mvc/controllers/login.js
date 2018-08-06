@@ -7,34 +7,51 @@ import { authenticateUser } from '../../middleware/authenticateUser.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/',  getLogic);
+router.post('/', authenticateUser, postLogic);
+
+/* logic
+============================================================================= */
+
+/**
+ * Respond with an error if user already logged in,.
+ * Render the login page otherwise.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        render login page on success, error resposne otherwise.
+ */
+function getLogic (req, res, next) {
+  /** check if user already logged in */
+  if (req.session.auth) {
+    return res.status(400)
+      .json({ error: `Already logged in as ${req.session.user.username}, `
+                     + 'please sign out first to log in as another user.' });
+  }
+
   let view = {
     title: 'Login',
     message: res.locals.message
   };
 
   res.status(res.locals.status || 200);
-  res.render('login', view);
-});
-
-router.post('/', authenticateUser, login);
-
-/* logic
-============================================================================= */
+  return res.render('login', view);
+}
 
 /**
- * Creates a new session and set the session as authenticated.
+ * Creates a new session, set the user session to authenticated,
+ * log user activity, and redirect to the dashboard.
  *
- * NOTE: For security reasons, If the session is unable to regenerate,
- * the user won't be authenticated and receive an error response.
+ * For security reasons, If the session is unable to regenerate,
+ * the user won't be authenticated and server will abort with an error response.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {Function}        pass the request to the next middleware on success.
- *                           pass to error middleware on failure otherwise.
+ * @return {response}        redirect on success, error resposne otherwise.
  */
-function login (req, res, next) {
+function postLogic (req, res, next) {
   let user = req.locals.user;
 
   /** create new session for authenticated user */
@@ -44,20 +61,21 @@ function login (req, res, next) {
         .json({ error: 'Unable to create a new session for authenticated user.' });
     }
 
+    /** set auth to true so user can access protected pages */
     req.session.auth = true;
     req.session.user = {
       id: user._id,
       username: user.username,
       email: user.email
     }
-    /** increase session age to 30 minutes for authenticated users */
+    /** increase session timeout to 30 minutes for authenticated users */
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
     /** log user activity and then redirect to dashboard */
     user.logs.push({activity: 0});
-    user.save().then(user => {
+    return user.save().then(user => {
       req.session.temp = {
-        message: `welcome back ${user.username},`
+        message: `Welcome back ${user.username}, `
                + `last login: [find last login using API].`
       };
       return res.redirect('/dashboard');
