@@ -11,10 +11,10 @@ router.get('/', verifyEmail);
 
 // TODO: use https://nodemailer.com/about/
 function verifyEmail (req, res, next) {
-  req.session.feedback = {
+  req.session.temp = {
     status: 200,
     message:'success: you\'ve successfully verified your email.'
-  }
+  };
   return res.redirect('/');
 }
 

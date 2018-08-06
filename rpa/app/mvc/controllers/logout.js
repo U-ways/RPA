@@ -23,7 +23,7 @@ router.get('/', destorySession);
  */
 function destorySession (req, res, next) {
   if (!req.session.user) {
-    req.session.error = {
+    req.session.temp = {
       status: 400,
       message: 'user already logged out: no active session found to destroy.'
     };
@@ -38,7 +38,7 @@ function destorySession (req, res, next) {
         /** log user activity and then redirect to dashboard */
         user.logs.push({ activity: 1 });
         user.save().then(user => {
-          req.session.feedback = {
+          req.session.temp = {
             status: 200,
             message:'success: you\'ve securely logged out.'
           }

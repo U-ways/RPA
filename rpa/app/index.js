@@ -88,7 +88,7 @@ if (ENV.NODE_ENV === 'production') {
 import session from 'express-session';
 import redis   from 'redis';
 import connectRedis from 'connect-redis';
-import { preserveLocalsOnRedirection } from './middleware/preserveLocalsOnRedirection.js';
+import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js';
 
 /** initialize express session */
 
@@ -122,21 +122,10 @@ const trackSession = (() => {
 
 APP.use(trackSession);
 /**
- * NOTE:
- * You might as well do that manually if possible.
- *
- * FIXME TODO IDEA:
- * Maybe change as "garbage collect session values"
- * Just define some static values to keep and remove eveything else everytime.
- * This way you can use whaever value you want and don't have to worry about
- * memeory leaking.
- *
- * use:
- * - req.session.error
- * - req.session.feedback
- * to pass as locals on redirection.
+ * Anything passed to `req.session.temp` will be passed to `req.locals`
+ * and garbage collected on every subsequent request.
  */
-APP.use(preserveLocalsOnRedirection);
+APP.use(sessionGarbageCollector);
 
 /* Restrict-access middleware
 ============================================================================= */

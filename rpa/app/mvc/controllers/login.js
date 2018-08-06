@@ -56,8 +56,9 @@ function login (req, res, next) {
     /** log user activity and then redirect to dashboard */
     user.logs.push({activity: 0});
     user.save().then(user => {
-      req.session.feedback = {
-        message: `welcome back ${user.username}, last login: [find last login using API].`
+      req.session.temp = {
+        message: `welcome back ${user.username},`
+               + `last login: [find last login using API].`
       };
       return res.redirect('/dashboard');
     });
