@@ -22,6 +22,7 @@ router.get('/', destorySession);
  *                           pass to error middleware on failure otherwise.
  */
 function destorySession (req, res, next) {
+  /** check if a user doesn't session exists */
   if (!req.session.user) {
     req.session.temp = {
       status: 400,
@@ -30,22 +31,22 @@ function destorySession (req, res, next) {
     return res.redirect('/');
   }
 
+  /** get user ID before destroying session for logging activity */
   let id = req.session.user.id;
+
+  /** destroy user session and create a new anonymous session */
   req.session.regenerate(() => {
     /** find the user with the active session */
-    UserModel.findById(id).then(
-      user => {
-        /** log user activity and then redirect to dashboard */
-        user.logs.push({ activity: 1 });
-        user.save().then(user => {
-          req.session.temp = {
-            status: 200,
-            message:'success: you\'ve securely logged out.'
-          }
-          return res.redirect('/');
-        });
-      }
-    );
+    UserModel.findById(id).then(user => {
+      /** log user activity and then redirect to dashboard */
+      user.logs.push({ activity: 1 });
+      return user.save().then(user => {
+        req.session.temp = {
+          message:'success: you\'ve securely logged out.'
+        }
+        return res.redirect('/');
+      });
+    });
   });
 }
 
