@@ -74,9 +74,17 @@ function postLogic (req, res, next) {
     /** log user activity and then redirect to dashboard */
     user.logs.push({activity: 0});
     return user.save().then(user => {
+
+      /** sort user log based on login activity and time */
+      user.logs.sort((a,b) => {
+        return (a.activity === 0 && a.date > b.date) ? -1 : 1;
+      });
+      /** User's last login session date */
+      let lastLogin = new Date(user.logs[1].date);
+
       req.session.temp = {
         message: `Welcome back ${user.username}, `
-               + `last login: [find last login using API].`
+               + `You last logged-in on: ${lastLogin.toUTCString()}.`
       };
       return res.redirect('/dashboard');
     });
