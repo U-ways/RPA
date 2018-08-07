@@ -4,10 +4,13 @@ import { Recaptcha } from 'express-recaptcha';
 const ENV = process.env;
 
 /**
- * Doc me within the middleware
+ * Google reCaptcha v2 middleware.
+ *
+ * Docs: https://developers.google.com/recaptcha/intro
+ *
  * @type {Recaptcha}
  */
-export const recaptcha = new Recaptcha(ENV.SITE_KEY, ENV.SECRET_KEY, {
+export const reCaptcha = new Recaptcha(ENV.SITE_KEY, ENV.SECRET_KEY, {
   type: 'image',
   size: 'compact',
 });
