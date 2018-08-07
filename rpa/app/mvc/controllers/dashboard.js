@@ -34,9 +34,7 @@ function getLogic (req, res, next) {
       `scripts/${FILE_NAME}.js`
     ],
     message: res.locals.message,
-    id:    req.session.user.id,
-    user:  req.session.user.username,
-    email: req.session.user.email,
+    user: req.session.user,
   };
 
   return res.render(FILE_NAME, view);

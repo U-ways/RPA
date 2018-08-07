@@ -37,7 +37,8 @@ function getLogic (req, res, next) {
       `scripts/${FILE_NAME}.js`
     ],
     message: res.locals.message,
-    captcha: res.recaptcha
+    captcha: res.recaptcha,
+    user: req.session.user,
   };
 
   return res.render(FILE_NAME, view);
