@@ -1,3 +1,5 @@
+{{>header}}
+
 <h1> {{title}} </h1>
 <h2> {{status}} </h2>
 <h3> {{message}} </h3>
@@ -7,3 +9,5 @@
 
 <h4> Error Stack </h4>
 <pre> {{error.stack}} </pre>
+
+{{>footer}}
