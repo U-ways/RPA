@@ -4,11 +4,11 @@
 import path from 'path';
 import express from 'express';
 
-import { recaptcha } from '../../middleware/recaptcha.js';
+import { reCaptcha } from '../../middleware/reCaptcha.js';
 
 const router = express.Router();
 
-router.get('/', recaptcha.middleware.render, getLogic);
+router.get('/', reCaptcha.middleware.render, getLogic);
 
 /* logic
 ============================================================================= */

@@ -4,14 +4,14 @@
 import express from 'express';
 import { UserModel } from '../models/User.js';
 
-import { recaptcha }    from '../../middleware/recaptcha.js';
+import { reCaptcha }    from '../../middleware/reCaptcha.js';
 import { checkSession } from '../../middleware/checkSession.js';
 
 const router = express.Router();
 
 router.post('/',
   checkSession,
-  recaptcha.middleware.verify,
+  reCaptcha.middleware.verify,
   registerUser,
   postLogic);
 
