@@ -4,29 +4,56 @@
 import express from 'express';
 import { UserModel } from '../models/User.js';
 
+import { recaptcha }    from '../../middleware/recaptcha.js';
+import { checkSession } from '../../middleware/checkSession.js';
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.render('register', { title: 'register' });
-});
+router.post('/',
+  checkSession,
+  recaptcha.middleware.verify,
+  registerUser,
+  postLogic);
 
-router.post('/', registerUser, (req, res, next) => {
+/* logic
+============================================================================= */
+
+/**
+ * Creates a new session, set the user session to authenticated,
+ * log user activity, and redirect to the dashboard.
+ *
+ * For security reasons, If the session is unable to regenerate,
+ * the user won't be authenticated and server will abort with an error response.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        redirect on success, error resposne otherwise.
+ */
+function postLogic (req, res, next) {
+  /** newly registered user */
   let user = req.locals.user;
 
-  /** Create new session for registered user */
+  /** create new session for newly registered user */
   req.session.regenerate(err => {
-    if (err) return next(err);
+    if (err) {
+      return res.status(500)
+        .json({ error: 'Unable to create a new session for authenticated user.' });
+    }
 
+    /** set auth to true so new user can access protected pages */
     req.session.auth = true;
+    /** new user flag */
     req.session.new  = true;
     req.session.user = {
       id: user._id,
       username: user.username,
       email: user.email
     };
-    /** increase to 30 minutes for authenticated users */
-    req.session.cookie.maxAge = 30 * 60 * 1000, //
+    /** increase session timeout to 30 minutes for authenticated users */
+    req.session.cookie.maxAge = 30 * 60 * 1000;
 
+    /** log user activity and then redirect to dashboard */
     user.logs.push({
       activity: 0,
       description: 'user registered'
@@ -34,14 +61,26 @@ router.post('/', registerUser, (req, res, next) => {
     user.save().then(user => {
       res.redirect('/dashboard');
     });
-
   });
-});
+}
 
-/* logic
-============================================================================= */
-
+/**
+ * TODO:
+ *   Finish me off, create a better recaptcha handler.
+ *   infact, create a middleware for it?
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {Function}        pass the request to the next middleware on success.
+ *                           pass an error resposne otherwise.
+ */
 function registerUser (req, res, next) {
+  if (req.recaptcha.error) {
+    return res.status(401)
+      .json({ error: `Failed recaptcha - ${req.recaptcha.error}` });
+  }
+
   let username = req.body.username,
       password = req.body.password,
       email    = req.body.email;
