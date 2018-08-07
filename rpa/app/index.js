@@ -146,13 +146,13 @@ APP.use(express.static(path.join(__dirname, 'public')));
 
 /** Import controllers **/
 
-import indexRouter from './mvc/controllers/index';
+import landingRouter from './mvc/controllers/landing';
 import loginRouter from './mvc/controllers/login';
 import logoutRouter from './mvc/controllers/logout';
 import registerRouter from './mvc/controllers/register';
 import dashboardRouter from './mvc/controllers/dashboard';
 
-APP.use('/', indexRouter);
+APP.use('/', landingRouter);
 APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
 APP.use('/register', registerRouter);
