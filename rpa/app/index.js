@@ -30,9 +30,11 @@ APP.use(express.urlencoded({ extended: true }));
 
 /** view engine setup */
 
-APP.engine('mst', mustache());
+let VIEWS_PATH = path.join(__dirname, 'mvc/views');
+
+APP.engine('mst', mustache(VIEWS_PATH + '/partials', '.mst'));
 APP.set('view engine', 'mst');
-APP.set('views', path.join(__dirname, 'mvc/views'));
+APP.set('views', VIEWS_PATH);
 
 /** css preprocessor setup **/
 
@@ -148,7 +150,6 @@ import indexRouter from './mvc/controllers/index';
 import loginRouter from './mvc/controllers/login';
 import logoutRouter from './mvc/controllers/logout';
 import registerRouter from './mvc/controllers/register';
-import sandboxRouter from './mvc/controllers/sandbox';
 import dashboardRouter from './mvc/controllers/dashboard';
 
 APP.use('/', indexRouter);
@@ -156,7 +157,6 @@ APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
 APP.use('/register', registerRouter);
 APP.use('/dashboard', restrictAccess, dashboardRouter);
-APP.use('/sandbox', sandboxRouter);
 
 /* Connecting database
 ============================================================================ */
@@ -169,7 +169,7 @@ mongoose.connect(ENV.DB_URI_USER, options).then(
   error => { console.log(cl.err,`[app] Database: ${error.message}`); }
 );
 
-/* Setting up GraphQL APIs
+/* Setting up GraphQL API
 ============================================================================= */
 
 import API from './graphql';
