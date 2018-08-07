@@ -1,0 +1,28 @@
+{{>header}}
+
+<h1> {{title}} </h1>
+<h3> {{message}} </h3>
+<p>Welcome to RPA</p>
+
+<h4> login </h4>
+
+<form id="login-form" method="POST" action="/login">
+  <input id="username-or-email" type="text" placeholder="Username or Email" required/>
+  <input type="password" name="password" placeholder="Password"  required/>
+  <input type="submit"/>
+</form>
+
+<br>
+
+<h4> register </h4>
+
+<form id="register-form" method="POST" action="/register">
+  <input type="text"     name="username" placeholder="Username" required/>
+  <input type="email"    name="email"    placeholder="Email"    required/>
+  <input type="password" name="password" placeholder="Password" required/>
+  <input type="submit"/>
+  {{{captcha}}}
+</form>
+
+
+{{>footer}}
