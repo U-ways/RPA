@@ -3,7 +3,9 @@
 
 import express from 'express';
 import { UserModel } from '../models/User.js';
+
 import { authenticateUser } from '../../middleware/authenticateUser.js';
+import { checkSession }     from '../../middleware/checkSession.js';
 
 const router = express.Router();
 
@@ -11,27 +13,6 @@ router.post('/', checkSession, authenticateUser, postLogic);
 
 /* logic
 ============================================================================= */
-
-/**
- * Check if user already logged in.
- * (user should log out before starting a new authenticated session)
- *
- * @param  {request}   req   request object
- * @param  {response}  res   response object
- * @param  {Function}  next  callback to the next middleware
- * @return {Function | response}  pass request to the next middleware on success.
- *                                responsed with an error on failure.
- */
-function checkSession (req, res, next) {
-  /** Check if user is authenticated (logged in) */
-  if (req.session.auth) {
-    return res.status(400)
-      .json({ error: `Already logged in as ${req.session.user.username}, `
-                     + 'please sign out first to log in as another user.' });
-  }
-
-  return next();
-}
 
 /**
  * Creates a new session, set the user session to authenticated,
@@ -46,6 +27,7 @@ function checkSession (req, res, next) {
  * @return {response}        redirect on success, error resposne otherwise.
  */
 function postLogic (req, res, next) {
+  /** current logged-in user */
   let user = req.locals.user;
 
   /** create new session for authenticated user */
