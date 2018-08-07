@@ -13,3 +13,7 @@ npm-debug.log*
 # Runtime data
 *.pid
 *.pid.lock
+
+# processed css
+*.css
+*.css.*
