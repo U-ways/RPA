@@ -1,20 +1,45 @@
 /* dashboard controller
 ============================================================================= */
 
+import path from 'path';
 import express from 'express';
 
 const  router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', getLogic);
+
+/* logic
+============================================================================= */
+
+/** get current file name and remove extension */
+const FILE_NAME = path.basename(__filename).slice(0, -3);
+
+/**
+ * Render the dashboard.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        render dashboard on success, error resposne otherwise.
+ */
+function getLogic (req, res, next) {
   let view = {
-    title: 'dashboard',
+    title: FILE_NAME,
+    stylesheets: [
+      'iconfont/material-icons.css',
+      'stylesheets/core.css',
+      `stylesheets/${FILE_NAME}.css`
+    ],
+    scripts: [
+      `scripts/${FILE_NAME}.js`
+    ],
+    message: res.locals.message,
     id:    req.session.user.id,
     user:  req.session.user.username,
     email: req.session.user.email,
-  }
+  };
 
-  res.render('dashboard', view);
-});
+  return res.render(FILE_NAME, view);
+}
 
 export default router;
