@@ -1,5 +1,12 @@
 <footer>
-  <p> ____ Footer ____ </p>
+  <p> ________________________ </p>
+
+  {{#user}}
+    <a href="./">home</a> -
+    <a href="./api">api</a> -
+    <a href="./dashboard">dashboard</a> -
+    <a href="./logout">Logout</a>
+  {{/user}}
 </footer>
 </body>
 </html>
