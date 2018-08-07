@@ -7,36 +7,30 @@ import { authenticateUser } from '../../middleware/authenticateUser.js';
 
 const router = express.Router();
 
-router.get('/',  getLogic);
-router.post('/', authenticateUser, postLogic);
+router.post('/', checkSession, authenticateUser, postLogic);
 
 /* logic
 ============================================================================= */
 
 /**
- * Respond with an error if user already logged in,.
- * Render the login page otherwise.
+ * Check if user already logged in.
+ * (user should log out before starting a new authenticated session)
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {response}        render login page on success, error resposne otherwise.
+ * @return {Function | response}  pass request to the next middleware on success.
+ *                                responsed with an error on failure.
  */
-function getLogic (req, res, next) {
-  /** check if user already logged in */
+function checkSession (req, res, next) {
+  /** Check if user is authenticated (logged in) */
   if (req.session.auth) {
     return res.status(400)
       .json({ error: `Already logged in as ${req.session.user.username}, `
                      + 'please sign out first to log in as another user.' });
   }
 
-  let view = {
-    title: 'Login',
-    message: res.locals.message
-  };
-
-  res.status(res.locals.status || 200);
-  return res.render('login', view);
+  return next();
 }
 
 /**
@@ -74,7 +68,6 @@ function postLogic (req, res, next) {
     /** log user activity and then redirect to dashboard */
     user.logs.push({activity: 0});
     return user.save().then(user => {
-
       /** sort user log based on login activity and time */
       user.logs.sort((a,b) => {
         return (a.activity === 0 && a.date > b.date) ? -1 : 1;
