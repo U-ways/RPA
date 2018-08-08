@@ -4,7 +4,9 @@
 # https://nodejs.org/api/process.html#process_process_env
 
 #### Environment
-NODE_ENV="development"
+# 0 = production
+# 1 = development
+NODE_ENV="1"
 
 ### HOST
 HOST="localhost"

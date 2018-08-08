@@ -66,7 +66,7 @@ let reqLogFormat =
 'REQ :remote-addr     :method :url :req[header] :user-agent';
 
 APP.use(logger(
-  (ENV.NODE_ENV === 'development') ? 'dev' :
+  (ENV.NODE_ENV === '1') ? 'dev' :
     (reqLogFormat, {
       immediate: true,
       skip: (req, res) => res.statusCode < 400,
@@ -78,7 +78,7 @@ APP.use(logger(
 let resLogFormat =
 'RES :remote-addr :status :method :url :res[header] :res[content-length] :response-time ms';
 
-if (ENV.NODE_ENV === 'production') {
+if (ENV.NODE_ENV === '0') {
   APP.use(logger(resLogFormat, {
         skip: (req, res) => res.statusCode < 400,
         stream: rotationLogging
@@ -108,7 +108,7 @@ const trackSession = (() => {
     host: ENV.HOST,
     port: parseInt(ENV.REDIS_PORT),
     client: client,
-    logErrors: ENV.NODE_ENV === 'development' ? true : false
+    logErrors: ENV.NODE_ENV === '1' ? true : false
   }
   let options = {
     name: 'RPA_session_cookie',
@@ -190,7 +190,7 @@ APP.use((req, res, next) => {
 // error handler
 APP.use((err, req, res, next) => {
   // set locals, only providing error in development
-  let devView = (ENV.NODE_ENV === 'development') ?
+  let devView = (ENV.NODE_ENV === '1') ?
     { caught: err.caught, stack: err.stack }
     : null;
 
