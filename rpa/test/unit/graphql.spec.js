@@ -12,7 +12,7 @@ describe('/graphql', () => {
   before('connect to database', () => {
     console.log(cl.act, '    Connecting to DB');
     let options  = { useNewUrlParser: true };
-    return mongoose.connect(process.env.DB_URI_ADMIN, options).then(
+    return mongoose.connect(process.env.DEV_DB_URI_ADMIN, options).then(
       mongoose => {
         console.log(cl.ok, '    Connected to database');
         console.log(cl.warn, '    Cleaning database\n');
