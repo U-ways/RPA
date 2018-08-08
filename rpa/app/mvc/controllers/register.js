@@ -7,6 +7,7 @@ import { UserModel } from '../models/User.js';
 import { reCaptcha }    from '../../middleware/reCaptcha.js';
 import { checkSession } from '../../middleware/checkSession.js';
 
+const ENV    = process.env;
 const router = express.Router();
 
 router.post('/',
@@ -19,72 +20,32 @@ router.post('/',
 ============================================================================= */
 
 /**
- * Creates a new session, set the user session to authenticated,
- * log user activity, and redirect to the dashboard.
- *
- * For security reasons, If the session is unable to regenerate,
- * the user won't be authenticated and server will abort with an error response.
+ * Collects user registration input, checks if username and/or email are of
+ * duplicate entry, respond with an error if duplicate entry found,
+ * create a new user and pass to the next middleware otherwise.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {response}        redirect on success, error resposne otherwise.
- */
-function postLogic (req, res, next) {
-  /** newly registered user */
-  let user = req.locals.user;
-
-  /** create new session for newly registered user */
-  req.session.regenerate(err => {
-    if (err) {
-      return res.status(500)
-        .json({ error: 'Unable to create a new session for authenticated user.' });
-    }
-
-    /** set auth to true so new user can access protected pages */
-    req.session.auth = true;
-    /** new user flag */
-    req.session.new  = true;
-    req.session.user = {
-      id: user._id,
-      username: user.username,
-      email: user.email
-    };
-    /** increase session timeout to 30 minutes for authenticated users */
-    req.session.cookie.maxAge = 30 * 60 * 1000;
-
-    /** log user activity and then redirect to dashboard */
-    user.logs.push({
-      activity: 0,
-      description: 'user registered'
-    });
-    user.save().then(user => {
-      res.redirect('/dashboard');
-    });
-  });
-}
-
-/**
- * TODO:
- *   Finish me off, create a better recaptcha handler.
- *   infact, create a middleware for it?
- *
- * @param  {request}   req   request object
- * @param  {response}  res   response object
- * @param  {Function}  next  callback to the next middleware
- * @return {Function}        pass the request to the next middleware on success.
- *                           pass an error resposne otherwise.
+ * @return {Function | response} pass to the next middleware on success.
+ *                               return an error resposne otherwise.
  */
 function registerUser (req, res, next) {
+  /** check if user failed reCaptcha */
   if (req.recaptcha.error) {
-    return res.status(401)
-      .json({ error: `Failed recaptcha - ${req.recaptcha.error}` });
+    let error = {
+      error: 'Failed to verify user through reCaptcha, please try again.',
+    };
+    if (ENV.NODE_ENV === '1') error.dev = req.recaptcha.error;
+    return res.status(401).json(error);
   }
 
+  /** get user registration input */
   let username = req.body.username,
       password = req.body.password,
       email    = req.body.email;
 
+  /** check if username or email are a duplicate entry */
   UserModel.find({ $or: [{username: username}, {email: email}] })
   .then(docs => {
     if (docs.length > 1) {
@@ -96,6 +57,7 @@ function registerUser (req, res, next) {
       return res.status(409)
         .json({ error: `${duplicate} already exists.` });
     }
+    /** create new user otherwise */
     else {
       let createUser   = UserModel.create({
         username: username,
@@ -118,8 +80,61 @@ function registerUser (req, res, next) {
     }
   })
   .catch(err => {
-    return res.status(500)
-      .json({ error: 'Unable to verify if username and email already taken.' });
+    let error = {
+      error: 'Unable to verify if username and email already taken.',
+    };
+    if (ENV.NODE_ENV === '1') error.dev = err;
+    return res.status(500).json(error);
+  });
+}
+
+/**
+ * Creates a new session, set the user session to authenticated,
+ * log user activity, and redirect to the dashboard.
+ *
+ * For security reasons, If the session is unable to regenerate,
+ * the user won't be authenticated and server will abort with an error response.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        redirect on success, error resposne otherwise.
+ */
+function postLogic (req, res, next) {
+  /** newly registered user */
+  let user = req.locals.user;
+
+  /** create new session for newly registered user */
+  req.session.regenerate(err => {
+    /** check if session regeneration failed */
+    if (err) {
+      let error = {
+        error: 'Unable to create a new session for authenticated user.',
+      };
+      if (ENV.NODE_ENV === '1') error.dev = err;
+      return res.status(500).json(error);
+    }
+
+    /** set auth to true so new user can access protected pages */
+    req.session.auth = true;
+    /** new user flag */
+    req.session.new  = true;
+    req.session.user = {
+      id: user._id,
+      username: user.username,
+      email: user.email
+    };
+    /** increase session timeout to 30 minutes for authenticated users */
+    req.session.cookie.maxAge = 30 * 60 * 1000;
+
+    /** log user activity and then redirect to dashboard */
+    user.logs.push({
+      activity: 0,
+      description: 'user registered'
+    });
+    user.save().then(user => {
+      res.redirect('/dashboard');
+    });
   });
 }
 
