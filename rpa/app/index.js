@@ -177,10 +177,35 @@ APP.use('/dashboard', restrictAccess, dashboardRouter);
 import mongoose from 'mongoose';
 
 let options  = { useNewUrlParser: true };
-mongoose.connect(ENV.DB_URI_USER, options).then(
-  ()    => { console.log(cl.ok, '[app] Connected to database');      },
-  error => { console.log(cl.err,`[app] Database: ${error.message}`); }
-);
+
+console.log(cl.warn, '[app] connecting to database');
+
+/** use development database on development environment */
+if (ENV.NODE_ENV === '1') {
+  mongoose.connect(ENV.DEV_DB_URI_ADMIN, options).then(
+    mongoose => {
+      console.log(cl.ok, '[app] connected to development database');
+      return mongoose.connection.db.dropDatabase(() => {
+        console.log(cl.warn, '[app] flushed development database');
+      });
+    },
+  ).catch(
+    error => {
+      console.log(cl.err,`[app] database: ${error.message}`);
+      process.exit(1);
+    }
+  );
+}
+/** else use production database */
+else {
+  mongoose.connect(ENV.PRO_DB_URI_USER, options).then(
+    ()    => console.log(cl.ok, '[app] connected to production database'),
+    error => {
+      console.log(cl.err,`[app] database: ${error.message}`);
+      process.exit(1);
+    }
+  );
+}
 
 /* Setting up GraphQL API
 ============================================================================= */
