@@ -33,8 +33,11 @@ function postLogic (req, res, next) {
   /** create new session for authenticated user */
   req.session.regenerate(err => {
     if (err) {
-      return res.status(500)
-        .json({ error: 'Unable to create a new session for authenticated user.' });
+      let error = {
+        error: 'Unable to create a new session for authenticated user.',
+      };
+      if (ENV.NODE_ENV === '1') error.dev = err;
+      return res.status(500).json(error);
     }
 
     /** set auth to true so user can access protected pages */
