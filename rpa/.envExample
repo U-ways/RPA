@@ -14,7 +14,7 @@ HOST="localhost"
 HTTP_PORT="3000"
 REDIS_PORT="6379"
 
-## db uri + username & password
+## database uri + username & password
 #   development
 DEV_DB_URI_USER="mongodb+srv://USER:PASSWORD@prototype-db-hituj.mongodb.net/DATABASE"
 DEV_DB_URI_ADMIN="mongodb+srv://ADMIN:PASSWORD@prototype-db-hituj.mongodb.net/DATABASE"
@@ -30,6 +30,12 @@ SECRET_1="99F557F87E1CFD7CF5AB23F21E7D1"
 SECRET_2="5DC554673B99DD4B83BF8E766E722"
 SECRET_3="496A7AE21CDF3EC67217DAD89A1B1"
 
-## Recaptcha keys:
+## reCaptcha keys:
 SITE_KEY=
 SECRET_KEY=
+
+## admin account
+#    root account within RPA that always exist
+ADMIN_USERNAME="admin"
+ADMIN_EMAIL="admin@email.com"
+ADMIN_PASSWORD="root"
