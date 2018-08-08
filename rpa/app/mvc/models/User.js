@@ -20,11 +20,6 @@ const UserSchema = new mongoose.Schema({
     match: [username_regex, 'invalid format'],
     maxlength: [30, 'max length (40) exceeded']
   },
-  password: {
-    type: String,
-    required: [true, 'required'],
-    maxlength: [100, 'max length (100) exceeded']
-  },
   email: {
     type: String,
     required: [true, 'required'],
@@ -32,7 +27,42 @@ const UserSchema = new mongoose.Schema({
     /** The maximum length specified in RFC 5321 **/
     maxlength: [254, 'max length (254) exceeded']
   },
+  password: {
+    type: String,
+    required: [true, 'required'],
+    maxlength: [100, 'max length (100) exceeded']
+  },
+  loginAttempts: {
+    type: Number,
+    required: [true, 'required'],
+    min: [0, 'login attempts cannot be negative'],
+    max: [5, 'user allowed 5 login attempts max'],
+    default: 0,
+  },
+  lockedUntil: {
+    type: Date,
+  },
   logs: [LogSchema]
+});
+
+/* User pre-save
+============================================================================= */
+
+UserSchema.pre('save', function (next) {
+  let user = this;
+
+  /** only hash password if it has been modified (or new) */
+  if (!user.isModified('password')) return next();
+
+  /** salt and hash the user's password*/
+  let hash = user.hashPassword(user.password);
+
+  /** set the hashed password as the user's password */
+  hash.then(hashedPassword => {
+    user.password = hashedPassword;
+    return next();
+  });
+
 });
 
 /* User instance methods

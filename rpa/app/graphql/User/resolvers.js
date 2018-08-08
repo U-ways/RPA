@@ -25,17 +25,9 @@ export function create(obj, {username, password, email}) {
     password: password,
     email:    email
   })
-  let result   = mutation.then(
-    doc => {
-      let hash = doc.hashPassword(password);
-      return hash.then(
-        hashedPassword => {
-          doc.password = hashedPassword;
-          return doc.save();
-        }
-      )
-    }
-  );
+  let result   = mutation.then(doc => {
+    return doc;
+  });
   return result;
 }
 

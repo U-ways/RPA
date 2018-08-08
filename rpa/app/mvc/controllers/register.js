@@ -59,21 +59,12 @@ function registerUser (req, res, next) {
     }
     /** create new user otherwise */
     else {
-      let createUser   = UserModel.create({
+      let createUser = UserModel.create({
         username: username,
         password: password,
         email:    email
       });
-      let hashPassword = createUser.then(user => {
-        let hash = user.hashPassword(password);
-        return hash.then(
-          hashedPassword => {
-            user.password = hashedPassword;
-            return user.save();
-          });
-        }
-      );
-      hashPassword.then(user => {
+      createUser.then(user => {
         req.locals = { user: user };
         return next();
       });
