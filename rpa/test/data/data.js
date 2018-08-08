@@ -46,7 +46,7 @@ asda.products = [
       // 30 July 2018
       { date: 1532908800, price: 1.05, sold: 1 },
       // 6 August 2018
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.05, sold: 1 },
       // 13 August 2018
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
@@ -57,7 +57,7 @@ asda.products = [
       { date: 1531699200, price: 1.30, sold: 1 },
       { date: 1532304000, price: 1.50, sold: 1 },
       { date: 1532908800, price: 1.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -77,7 +77,7 @@ asda.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 3.50, sold: 1 },
       { date: 1532908800, price: 3.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 3.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -87,7 +87,7 @@ asda.products = [
       { date: 1531699200, price: 1.15, sold: 1 },
       { date: 1532304000, price: 1.15, sold: 1 },
       { date: 1532908800, price: 1.15, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.15, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -97,7 +97,7 @@ asda.products = [
       { date: 1531699200, price: 1.00, sold: 1 },
       { date: 1532304000, price: 0.75, sold: 1 },
       { date: 1532908800, price: 0.79, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 0.79, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -107,7 +107,7 @@ asda.products = [
       { date: 1531699200, price: 2.50, sold: 1 },
       { date: 1532304000, price: 2.50, sold: 1 },
       { date: 1532908800, price: 2.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -117,7 +117,7 @@ asda.products = [
       { date: 1531699200, price: 1.50, sold: 1 },
       { date: 1532304000, price: 1.50, sold: 1 },
       { date: 1532908800, price: 1.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -127,7 +127,7 @@ asda.products = [
       { date: 1531699200, price: 2.50, sold: 1 },
       { date: 1532304000, price: 2.50, sold: 1 },
       { date: 1532908800, price: 2.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -137,7 +137,7 @@ asda.products = [
       { date: 1531699200, price: 1.78, sold: 1 },
       { date: 1532304000, price: 1.78, sold: 1 },
       { date: 1532908800, price: 1.78, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.78, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   }
@@ -154,7 +154,7 @@ tesco.products = [
       // 30 July 2018
       { date: 1532908800, price: 1.05, sold: 1 },
       // 2 August 2018
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.05, sold: 1 },
       // 9 August 2018
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
@@ -165,7 +165,7 @@ tesco.products = [
       { date: 1531699200, price: 1.50, sold: 1 },
       { date: 1532304000, price: 1.50, sold: 1 },
       { date: 1532908800, price: 1.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -175,7 +175,7 @@ tesco.products = [
       { date: 1531699200, price: 1.85, sold: 1 },
       { date: 1532304000, price: 1.85, sold: 1 },
       { date: 1532908800, price: 1.85, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.85, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -185,7 +185,7 @@ tesco.products = [
       { date: 1531699200, price: 3.50, sold: 1 },
       { date: 1532304000, price: 3.00, sold: 1 },
       { date: 1532908800, price: 3.00, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 3.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -205,7 +205,7 @@ tesco.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 2.00, sold: 1 },
       { date: 1532908800, price: 2.00, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.10, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -215,7 +215,7 @@ tesco.products = [
       { date: 1531699200, price: 2.50, sold: 1 },
       { date: 1532304000, price: 2.50, sold: 1 },
       { date: 1532908800, price: 2.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -225,7 +225,7 @@ tesco.products = [
       { date: 1531699200, price: 3.00, sold: 1 },
       { date: 1532304000, price: 1.50, sold: 1 },
       { date: 1532908800, price: 1.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 3.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -235,7 +235,7 @@ tesco.products = [
       { date: 1531699200, price: 3.00, sold: 1 },
       { date: 1532304000, price: 3.00, sold: 1 },
       { date: 1532908800, price: 3.00, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 4.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -245,7 +245,7 @@ tesco.products = [
       { date: 1531699200, price: 1.80, sold: 1 },
       { date: 1532304000, price: 1.80, sold: 1 },
       { date: 1532908800, price: 1.80, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.80, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   }
@@ -262,7 +262,7 @@ morrisons.products = [
       // 30 July 2018
       { date: 1532908800, price: 1.05, sold: 1 },
       // 2 August 2018
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.05, sold: 1 },
       // 9 August 2018
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
@@ -273,7 +273,7 @@ morrisons.products = [
       { date: 1531699200, price: 1.50, sold: 1 },
       { date: 1532304000, price: 1.50, sold: 1 },
       { date: 1532908800, price: 1.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -283,7 +283,7 @@ morrisons.products = [
       { date: 1531699200, price: 1.00, sold: 1 },
       { date: 1532304000, price: 1.00, sold: 1 },
       { date: 1532908800, price: 1.86, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.86, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -293,7 +293,7 @@ morrisons.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 3.50, sold: 1 },
       { date: 1532908800, price: 3.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -303,7 +303,7 @@ morrisons.products = [
       { date: 1531699200, price: 1.00, sold: 1 },
       { date: 1532304000, price: 1.00, sold: 1 },
       { date: 1532908800, price: 1.15, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.15, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -313,7 +313,7 @@ morrisons.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 2.00, sold: 1 },
       { date: 1532908800, price: 2.00, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -323,7 +323,7 @@ morrisons.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 2.50, sold: 1 },
       { date: 1532908800, price: 2.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -333,7 +333,7 @@ morrisons.products = [
       { date: 1531699200, price: 2.00, sold: 1 },
       { date: 1532304000, price: 3.00, sold: 1 },
       { date: 1532908800, price: 3.00, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.00, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -343,7 +343,7 @@ morrisons.products = [
       { date: 1531699200, price: 2.50, sold: 1 },
       { date: 1532304000, price: 2.50, sold: 1 },
       { date: 1532908800, price: 2.50, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 2.50, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   },
@@ -353,7 +353,7 @@ morrisons.products = [
       { date: 1531699200, price: 1.87, sold: 1 },
       { date: 1532304000, price: 1.87, sold: 1 },
       { date: 1532908800, price: 1.87, sold: 1 },
-      { date: 1533513600, price: 1.00, sold: 1 },
+      { date: 1533513600, price: 1.87, sold: 1 },
       { date: 1534118400, price: 1.00, sold: 1 }
     ]
   }
