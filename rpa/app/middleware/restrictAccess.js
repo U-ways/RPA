@@ -13,10 +13,22 @@
  *                           redirect to homepage otherwise.
  */
 export function restrictAccess(req, res, next) {
-  if (req.session.auth) return next();
-  req.session.temp = {
-    status: 401,
-    message:'unauthorised: please login to access protected resources.'
+  /** check the session connection */
+  if (!req.session) {
+    return res.status(412)
+      .json({ error: 'No user session found, if you suspect '
+        + 'your connection was lost, please login and try again.' });
   }
-  return res.redirect('/');
+
+  /** if authenticated pass to the next middleware */
+  if (req.session.auth) return next();
+
+  /** else redirect with an error */
+  else {
+    req.session.temp = {
+      status: 401,
+      message:'unauthorised: please login to access protected resources.'
+    }
+    return res.redirect('/');
+  }
 }
