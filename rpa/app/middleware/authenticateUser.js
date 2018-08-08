@@ -40,7 +40,10 @@ export function authenticateUser (req, res, next) {
     if (!user) {
       let input = Object.keys(conditions);
       return res.status(401)
-        .json({ error: `Incorrect ${input}, please try again.` });
+        .json({
+          error: `${input} ${conditions[input]} isn't registered with any account. `
+               + `Please try again or register ${conditions[input]} with a new account.`
+        });
     };
 
     /** if a user found, attempt to validate with the requested password */
