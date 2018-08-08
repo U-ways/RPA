@@ -178,23 +178,34 @@ import mongoose from 'mongoose';
 
 let options  = { useNewUrlParser: true };
 
-console.log(cl.warn, '[app] connecting to database');
+console.log(cl.act, '[app] connecting to database');
 
 /** use development database on development environment */
 if (ENV.NODE_ENV === '1') {
-  mongoose.connect(ENV.DEV_DB_URI_ADMIN, options).then(
-    mongoose => {
-      console.log(cl.ok, '[app] connected to development database');
-      return mongoose.connection.db.dropDatabase(() => {
-        console.log(cl.warn, '[app] flushed development database');
+  mongoose.connect(ENV.DEV_DB_URI_ADMIN, options).then(mongoose => {
+    console.log(cl.ok, '[app] connected to development database');
+
+    return mongoose.connection.db.dropDatabase(() => {
+      console.log(cl.warn, '[app] flushed development database');
+
+      import('./mvc/models/User.js').then(({UserModel}) => {
+        UserModel.create({
+          username: ENV.ADMIN_USERNAME,
+          password: ENV.ADMIN_PASSWORD,
+          email:    ENV.ADMIN_EMAIL,
+          logs: [{ activity: 0, description: 'root registration' }]
+        }).then(admin => {
+          console.log(cl.ok, `[app] created root account `
+            + `named: ${admin.username} - email: ${admin.email}`);
+        });
       });
-    },
-  ).catch(
-    error => {
-      console.log(cl.err,`[app] database: ${error.message}`);
-      process.exit(1);
-    }
-  );
+
+    });
+  })
+  .catch(err => {
+    console.log(cl.err,`[app] database: ${err.message}`);
+    process.exit(1);
+  });
 }
 /** else use production database */
 else {
