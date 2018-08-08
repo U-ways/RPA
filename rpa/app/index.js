@@ -100,6 +100,18 @@ import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js
 const trackSession = (() => {
   const client     = redis.createClient();
   const RedisStore = connectRedis(session);
+
+  /** delete all existing keys within redis */
+  client.flushall('ASYNC', (err, success) => {
+    if (err) {
+      let error = {
+        error: 'Unable to flush existing session store.',
+      };
+      if (ENV.NODE_ENV === '1') error.dev = err;
+      return res.status(500).json(error);
+    }
+  });
+
   let secret  = [
     ENV.SECRET_1,
     ENV.SECRET_2,
@@ -122,6 +134,7 @@ const trackSession = (() => {
       maxAge: 15 * 60 * 1000, // 15 minutes
     }
   }
+
   return session(options);
 })();
 
