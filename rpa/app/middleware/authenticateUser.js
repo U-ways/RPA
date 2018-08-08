@@ -3,6 +3,8 @@
 
 import { UserModel } from '../mvc/models/User.js';
 
+const ENV = process.env;
+
 /**
  * Authenticate a client based on username (or email) and password input.
  * The function will lookup for the user requested and will test the supplemented
@@ -26,14 +28,22 @@ export function authenticateUser (req, res, next) {
 
   /** find user based on query conditions */
   UserModel.findOne(conditions, (err, user) => {
-    if (err)   return next(err);
+    if (err) {
+      let error = {
+        error: 'Internal error - unable to query database, contact administrator',
+      };
+      if (ENV.NODE_ENV === '1') error.dev = err;
+      return res.status(500).json(error);
+    }
+
+    /** check if user exists */
     if (!user) {
       let input = Object.keys(conditions);
       return res.status(401)
         .json({ error: `Incorrect ${input}, please try again.` });
     };
 
-    /** if a user is found, attempt to validate with the requested password */
+    /** if a user found, attempt to validate with the requested password */
     return user.validPassword(password, user.password)
     .then(match => {
       if (match) {
@@ -45,11 +55,11 @@ export function authenticateUser (req, res, next) {
       };
     })
     .catch(err => {
-      let message =
-        'Sorry, we\'re unable to validated your password.\n' +
-        'This error had been logged and our staff will investigate the problem asap.';
-      return res.status(500)
-        .json({ error: message });
+      let error = {
+        error: 'Internal error - unable to validated password, contact administrator.',
+      };
+      if (ENV.NODE_ENV === '1') error.dev = err;
+      return res.status(500).json(error);
     });
 
   });
