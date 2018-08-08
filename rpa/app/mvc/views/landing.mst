@@ -21,10 +21,10 @@
 
   <h4> register </h4>
 
-  <form id="register-form" method="POST" action="/register">
-    <input type="text"     name="username" placeholder="Username" required/>
-    <input type="email"    name="email"    placeholder="Email"    required/>
-    <input type="password" name="password" placeholder="Password" required/>
+  <form id="register-form" autocomplete="off" method="POST" action="/register">
+    <input type="text"     name="username" placeholder="Username" autocomplete="new-username" required/>
+    <input type="email"    name="email"    placeholder="Email"    autocomplete="new-email" required/>
+    <input type="password" name="password" placeholder="Password" autocomplete="new-password" required/>
     <input type="submit"/>
     {{{captcha}}}
   </form>
