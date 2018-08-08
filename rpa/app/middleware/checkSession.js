@@ -14,7 +14,7 @@ export function checkSession (req, res, next) {
   if (req.session.auth) {
     return res.status(400)
       .json({ error: `Already logged in as ${req.session.user.username}, `
-                     + 'please sign out first to processed.' });
+        + 'please sign out first to processed.' });
   }
 
   else return next();
