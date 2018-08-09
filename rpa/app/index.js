@@ -16,7 +16,6 @@ import cl             from '../lib/colorLogger.js';
 /** middleware to restrict-access on protected pages */
 import { restrictAccess } from './middleware/restrictAccess.js';
 
-
 /* Initialize express app
 ============================================================================= */
 
@@ -95,7 +94,7 @@ import redis   from 'redis';
 import connectRedis from 'connect-redis';
 import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js';
 
-/** initialize express session */
+/** initialize express session middleware */
 
 const trackSession = (() => {
   const client     = redis.createClient();
@@ -104,11 +103,9 @@ const trackSession = (() => {
   /** delete all existing keys within redis */
   client.flushall('ASYNC', (err, success) => {
     if (err) {
-      let error = {
-        error: 'Unable to flush existing session store.',
-      };
+      let error = new Error('unable to flush existing session store.');
       if (ENV.NODE_ENV === '1') error.dev = err;
-      return res.status(500).json(error);
+      return next(error);
     }
   });
 
@@ -138,6 +135,7 @@ const trackSession = (() => {
   return session(options);
 })();
 
+/** track sessions by assigning a unique hash for each connection */
 APP.use(trackSession);
 /**
  * Anything passed to `req.session.temp` will be passed to `req.locals`
@@ -228,30 +226,33 @@ APP.use('/api', restrictAccess, API);
 /* Error handlers
 ============================================================================= */
 
-// catch 404 and forward to error handler
+/** catch 404 errors and render 404 view  */
 APP.use((req, res, next) => {
-  let error = new Error('The server has not found anything matching the Request-URI.');
-  error.name = 'Not Found';
-  error.status = 404;
-  next(error);
+  let view = {
+    title: `404 - Page Not Found`,
+    stylesheets: [
+      'iconfont/material-icons.css',
+      'stylesheets/core.css',
+      `stylesheets/404.css`
+    ],
+    message: 'No resource found matching the request-URI.',
+    user: req.session.user,
+  };
+  return res.status(404).render('404', view);
 });
 
-// error handler
+/** main error handler */
 APP.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  let devView = (ENV.NODE_ENV === '1') ?
-    { caught: err.caught, stack: err.stack }
-    : null;
+  /** prepare response as a JSON object */
+  let error = (ENV.NODE_ENV === '1') ? {
+    dev: err.dev,
+    stack: err.stack,
+    filename: err.filename,
+    error: err.message,
+  } :
+  { error: err.message };
 
-  let view = {
-    title: err.name,
-    status: err.status,
-    message: err.message,
-    error: devView
-  }
-
-  res.status(err.status || 500);
-  res.render('error', view);
+  return res.status(err.status || 500).json(error);
 });
 
 export default APP;

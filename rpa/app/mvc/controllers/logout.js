@@ -24,11 +24,10 @@ router.get('/', destorySession);
 function destorySession (req, res, next) {
   /** check if a user doesn't session exists */
   if (!req.session.user) {
-    req.session.temp = {
-      status: 400,
-      message: 'user already logged out: no active session found to destroy.'
-    };
-    return res.redirect('/');
+    let error = new Error(
+      'user already logged out: no active session found to destroy.');
+    error.status = 400;
+    return next(error);
   }
 
   /** get user ID before destroying session for logging activity */

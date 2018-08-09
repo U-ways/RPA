@@ -33,11 +33,11 @@ router.post('/',
 function registerUser (req, res, next) {
   /** check if user failed reCaptcha */
   if (req.recaptcha.error) {
-    let error = {
-      error: 'Failed to verify user through reCaptcha, please try again.',
-    };
+    let error = new Error(
+      'Failed to verify user through reCaptcha, please try again.');
     if (ENV.NODE_ENV === '1') error.dev = req.recaptcha.error;
-    return res.status(401).json(error);
+    error.status = 401;
+    return next(error);
   }
 
   /** get user registration input */
@@ -49,13 +49,15 @@ function registerUser (req, res, next) {
   UserModel.find({ $or: [{username: username}, {email: email}] })
   .then(docs => {
     if (docs.length > 1) {
-      return res.status(409)
-        .json({ error: 'Username and email already exists.' });
+      let error = new Error('Username and email already exists.');
+      error.status = 409;
+      return next(error);
     }
     else if (docs.length === 1) {
       let duplicate = (docs[0].username === username) ? 'Username' : 'Email';
-      return res.status(409)
-        .json({ error: `${duplicate} already exists.` });
+      let error = new Error(`${duplicate} already exists.`);
+      error.status = 409;
+      return next(error);
     }
     /** create new user otherwise */
     else {
@@ -71,11 +73,10 @@ function registerUser (req, res, next) {
     }
   })
   .catch(err => {
-    let error = {
-      error: 'Unable to verify if username and email already taken.',
-    };
+    let error = new Error(
+      'Unable to verify if username and email already taken.');
     if (ENV.NODE_ENV === '1') error.dev = err;
-    return res.status(500).json(error);
+    return next(error);
   });
 }
 
@@ -99,11 +100,10 @@ function postLogic (req, res, next) {
   req.session.regenerate(err => {
     /** check if session regeneration failed */
     if (err) {
-      let error = {
-        error: 'Unable to create a new session for authenticated user.',
-      };
+      let error = new Error(
+        'Unable to create a new session for authenticated user.');
       if (ENV.NODE_ENV === '1') error.dev = err;
-      return res.status(500).json(error);
+      return next(error);
     }
 
     /** set auth to true so new user can access protected pages */

@@ -15,9 +15,11 @@
 export function restrictAccess(req, res, next) {
   /** check the session connection */
   if (!req.session) {
-    return res.status(412)
-      .json({ error: 'No user session found, if you suspect '
-        + 'your connection was lost, please login and try again.' });
+    let error = new Error(
+      'No user session found, if you suspect '
+      + 'your connection was lost, please login and try again.');
+    error.status = 412;
+    return next(error);
   }
 
   /** if authenticated pass to the next middleware */

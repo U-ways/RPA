@@ -29,21 +29,20 @@ export function authenticateUser (req, res, next) {
   /** find user based on query conditions */
   UserModel.findOne(conditions, (err, user) => {
     if (err) {
-      let error = {
-        error: 'Internal error - unable to query database, contact administrator',
-      };
+      let error = new Error(
+        'Internal error - unable to query database, contact administrator.');
       if (ENV.NODE_ENV === '1') error.dev = err;
-      return res.status(500).json(error);
+      return next(error);
     }
 
     /** check if user exists */
     if (!user) {
       let input = Object.keys(conditions);
-      return res.status(401)
-        .json({
-          error: `${input} ${conditions[input]} isn't registered with any account. `
-               + `Please try again or register ${conditions[input]} with a new account.`
-        });
+      let error = new Error(
+        `${input} ${conditions[input]} isn't registered with any account. `
+        + `Please try again or register ${conditions[input]} with a new account.`);
+      error.status = 401;
+      return next(error);
     };
 
     /** if a user found, attempt to validate with the requested password */
@@ -53,16 +52,16 @@ export function authenticateUser (req, res, next) {
         req.locals = { user: user };
         return next();
       } else {
-        return res.status(401)
-          .json({ error: `Incorrect password, please try again.` });
+        let error = new Error('error: `Incorrect password, please try again.');
+        error.status = 401;
+        return next(error);
       };
     })
     .catch(err => {
-      let error = {
-        error: 'Internal error - unable to validated password, contact administrator.',
-      };
+      let error = new Error(
+        'Internal error - unable to validated password, contact administrator.');
       if (ENV.NODE_ENV === '1') error.dev = err;
-      return res.status(500).json(error);
+      return next(error);
     });
 
   });

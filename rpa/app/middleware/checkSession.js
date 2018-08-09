@@ -12,9 +12,11 @@
 export function checkSession (req, res, next) {
   /** Check if user is authenticated (logged in) */
   if (req.session.auth) {
-    return res.status(400)
-      .json({ error: `Already logged in as ${req.session.user.username}, `
-        + 'please sign out first to processed.' });
+    let error = new Error(
+      `Already logged in as ${req.session.user.username}, `
+      + 'please sign out first to processed.');
+    error.status = 400;
+    return next(error);
   }
 
   else return next();
