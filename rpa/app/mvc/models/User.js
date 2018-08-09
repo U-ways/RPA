@@ -32,11 +32,16 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'required'],
     maxlength: [100, 'max length (100) exceeded']
   },
+  loggedIn: {
+    type: Boolean,
+    required: [true, 'required'],
+    default: false,
+  },
   loginAttempts: {
     type: Number,
     required: [true, 'required'],
     min: [0, 'login attempts cannot be negative'],
-    max: [5, 'user allowed 5 login attempts max'],
+    max: [5, 'user allowed 5 invalid login attempts max'],
     default: 0,
   },
   lockedUntil: {

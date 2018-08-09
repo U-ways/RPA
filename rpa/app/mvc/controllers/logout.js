@@ -38,8 +38,11 @@ function destorySession (req, res, next) {
   req.session.regenerate(() => {
     /** find the user with the active session */
     UserModel.findById(id).then(user => {
-      /** log user activity and then redirect to dashboard */
+      /** update user meta data */
+      user.loggedIn = false;
       user.logs.push({ activity: 1 });
+
+      /** log user activity and then redirect to dashboard */
       return user.save().then(user => {
         req.session.temp = {
           message:'success: you\'ve securely logged out.'

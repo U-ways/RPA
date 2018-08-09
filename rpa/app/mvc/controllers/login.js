@@ -31,14 +31,22 @@ function postLogic (req, res, next) {
   /** current logged-in user */
   let user = req.locals.user;
 
+  /** check if user already logged-in */
+  if (user.loggedIn) {
+    let error = new Error(
+      'user already logged-in. '
+      + 'Please request a password reset if this is not you.');
+    error.status = 401;
+    return next(error);
+  }
+
   /** create new session for authenticated user */
   req.session.regenerate(err => {
     if (err) {
-      let error = {
-        error: 'Unable to create a new session for authenticated user.',
-      };
+      let error = new Error(
+        'unable to create a new session for authenticated user.');
       if (ENV.NODE_ENV === '1') error.dev = err;
-      return res.status(500).json(error);
+      return next(error);
     }
 
     /** set auth to true so user can access protected pages */
@@ -51,8 +59,12 @@ function postLogic (req, res, next) {
     /** increase session timeout to 30 minutes for authenticated users */
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
-    /** log user activity and then redirect to dashboard */
+    /** update user meta data */
     user.logs.push({activity: 0});
+    user.loggedIn = true;
+    user.loginAttempts = 0;
+
+    /** log user activity and then redirect to dashboard */
     return user.save().then(user => {
       /** sort user log based on login activity and time */
       user.logs.sort((a,b) => {
