@@ -120,6 +120,8 @@ function postLogic (req, res, next) {
 
     /** log user activity and then redirect to dashboard */
     user.createLog('LOGIN', 'user registered');
+    user.save();
+    
     res.redirect('/dashboard');
   });
 }

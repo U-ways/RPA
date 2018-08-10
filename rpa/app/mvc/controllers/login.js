@@ -62,17 +62,13 @@ function postLogic (req, res, next) {
     /** update user meta data */
     user.loggedIn = true;
     user.loginAttempts = 0;
-    /** createLog will save above meta data as a side effect */
     user.createLog('LOGIN');
+    user.save();
 
-    /** log user activity and then redirect to dashboard */
-    // return user.save().then(user => {
-      req.session.temp = {
-        message: `Welcome back ${user.username}, `
-               + `You last logged-in on: ${user.getLastLogin()}.`
-      };
-      return res.redirect('/dashboard');
-    // });
+    req.session.temp = {
+      message: `Welcome back ${user.username}, `
+      + `You last logged-in on: ${user.getLastLogin()}.`};
+    return res.redirect('/dashboard');
   });
 }
 
