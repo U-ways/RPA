@@ -119,13 +119,8 @@ function postLogic (req, res, next) {
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
     /** log user activity and then redirect to dashboard */
-    user.logs.push({
-      activity: 0,
-      description: 'user registered'
-    });
-    user.save().then(user => {
-      res.redirect('/dashboard');
-    });
+    user.createLog('LOGIN', 'user registered');
+    res.redirect('/dashboard');
   });
 }
 

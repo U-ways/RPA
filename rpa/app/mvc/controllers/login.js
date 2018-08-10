@@ -60,25 +60,19 @@ function postLogic (req, res, next) {
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
     /** update user meta data */
-    user.logs.push({activity: 0});
     user.loggedIn = true;
     user.loginAttempts = 0;
+    /** createLog will save above meta data as a side effect */
+    user.createLog('LOGIN');
 
     /** log user activity and then redirect to dashboard */
-    return user.save().then(user => {
-      /** sort user log based on login activity and time */
-      user.logs.sort((a,b) => {
-        return (a.activity === 0 && a.date > b.date) ? -1 : 1;
-      });
-      /** User's last login session date */
-      let lastLogin = new Date(user.logs[1].date);
-
+    // return user.save().then(user => {
       req.session.temp = {
         message: `Welcome back ${user.username}, `
-               + `You last logged-in on: ${lastLogin.toUTCString()}.`
+               + `You last logged-in on: ${user.getLastLogin()}.`
       };
       return res.redirect('/dashboard');
-    });
+    // });
   });
 }
 

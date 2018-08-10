@@ -39,15 +39,12 @@ function destorySession (req, res, next) {
     UserModel.findById(id).then(user => {
       /** update user meta data */
       user.loggedIn = false;
-      user.logs.push({ activity: 1 });
+      /** createLog will save above meta data as a side effect */
+      user.createLog('LOGOUT');
 
-      /** log user activity and then redirect to dashboard */
-      return user.save().then(user => {
-        req.session.temp = {
-          message:'success: you\'ve securely logged out.'
-        }
-        return res.redirect('/');
-      });
+      /** redirect to dashboard */
+      req.session.temp = { message:'success: you\'ve securely logged out.' }
+      return res.redirect('/');
     });
   });
 }
