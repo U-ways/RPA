@@ -4,11 +4,10 @@ import mongoose from 'mongoose';
 
 export const LogSchema = new mongoose.Schema({
   /**
-  * The activity object is a number enum represneted as follow:
-  *  0 = 'Login',  1 = 'Logout',
-  *  2 = 'Create', 3 = 'Read',
-  *  4 = 'Update', 5 = 'Delete'
-  * @type {Number}
+  * The activity property is a number enum represneted as follow:
+  * LOGIN:  0, LOGOUT: 1,
+  * CREATE: 2, READ:   3,
+  * UPDATE: 4, DELETE: 5,
   */
   activity: {
     type: Number,
