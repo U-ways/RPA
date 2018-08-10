@@ -67,7 +67,7 @@ function postLogic (req, res, next) {
 
     req.session.temp = {
       message: `Welcome back ${user.username}, `
-      + `You last logged-in on: ${user.getLastLogin()}.`};
+      + `You last logged-in on: ${user.getLastLoginDate().toUTCString()}.`};
     return res.redirect('/dashboard');
   });
 }

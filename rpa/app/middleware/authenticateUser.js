@@ -45,16 +45,43 @@ export function authenticateUser (req, res, next) {
       return next(error);
     };
 
-    /** if a user found, attempt to validate with the requested password */
+    /** check if account is locked */
+    if (user.lockedUntil > Date.now()) {
+      let error = new Error(
+        `Your account is locked until ${user.lockedUntil}`
+        + `An email has been sent to password reset your account or terminate your locked session.`);
+      error.status = 403;
+      return next(error);
+    }
+
+    /** else attempt to authenticate with the requested password */
     return user.validPassword(password, user.password)
     .then(match => {
       if (match) {
         req.locals = { user: user };
         return next();
-      } else {
-        let error = new Error('error: `Incorrect password, please try again.');
-        error.status = 401;
-        return next(error);
+      }
+      /** incorrect password, increase login attempts */
+      else {
+        user.incLoginAttempts()
+        .then(user => {
+          /** check if account ran out of login attempts (got locked) */
+          if (user.lockedUntil > Date.now()) {
+            let error = new Error(
+              `Exceeded maximum login attempts, your account is locked until ${user.lockedUntil.toUTCString()}. `
+              + `An email has been sent to password reset your account or terminate your locked session.`);
+            error.status = 403;
+            return next(error);
+          }
+
+          /** else warn user about incorrect password */
+          let loginAttemptsLeft = UserModel.MAX_LOGIN_ATTEMPTS - user.loginAttempts;
+          let error = new Error(
+            'Incorrect password, please try again. '
+            + `(You have ${loginAttemptsLeft} login attempts left)`);
+          error.status = 401;
+          return next(error);
+        });
       };
     })
     .catch(err => {

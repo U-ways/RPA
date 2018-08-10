@@ -5,11 +5,20 @@ import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 import { LogSchema }   from './Log.js';
 
-/** Must starts with a letter then can include underscores (_) & hyphens (-) **/
-const username_regex = /^[a-zA-Z][\w-]+$/;
-/** W3C Email regex: goo.gl/NQgCtK (Based on RFC5322) **/
-const email_regex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+/** Must starts with a letter then can include underscores (_) & hyphens (-) */
+const USERNAME_REGEX = /^[a-zA-Z][\w-]+$/;
+/** W3C Email regex: goo.gl/NQgCtK (Based on RFC5322) */
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+/** The maximum login attempts the user can try before getting locked out */
+const MAX_LOGIN_ATTEMPTS = 5;
+/** 2 hours lock time */
+const LOCK_TIME = 2 * 3600000;
 
+/**
+ * TODO: learn how to doc database models
+ *
+ * @type {Schema}
+ */
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -17,13 +26,13 @@ const UserSchema = new mongoose.Schema({
     uniqueCaseInsensitive: true,
     unique: [true, 'already exists'],
     required: [true, 'required'],
-    match: [username_regex, 'invalid format'],
+    match: [USERNAME_REGEX, 'invalid format'],
     maxlength: [30, 'max length (40) exceeded']
   },
   email: {
     type: String,
     required: [true, 'required'],
-    match: [email_regex, 'invalid format'],
+    match: [EMAIL_REGEX, 'invalid format'],
     /** The maximum length specified in RFC 5321 **/
     maxlength: [254, 'max length (254) exceeded']
   },
@@ -41,7 +50,7 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'required'],
     min: [0, 'login attempts cannot be negative'],
-    max: [5, 'user allowed 5 invalid login attempts max'],
+    max: [MAX_LOGIN_ATTEMPTS, 'user allowed 5 invalid login attempts max'],
     default: 0,
   },
   lockedUntil: {
@@ -69,6 +78,11 @@ UserSchema.pre('save', function (next) {
   });
 
 });
+
+/* User static methods
+============================================================================= */
+
+UserSchema.statics.MAX_LOGIN_ATTEMPTS = MAX_LOGIN_ATTEMPTS;
 
 /* User instance methods
 ============================================================================= */
@@ -103,11 +117,11 @@ function createLog (type, description) {
 }
 
 /**
- * Get user's last login
+ * Get user's last login date.
  *
  * @return {String}  user's last login session date in UTC format
  */
-function getLastLogin () {
+function getLastLoginDate () {
   /** sort a shallow copy of user's logs */
   let logs = this.logs.slice();
 
@@ -119,7 +133,27 @@ function getLastLogin () {
   });
 
   /** return user's last login session date */
-  return new Date(logs[1].date).toUTCString();
+  return new Date(logs[1].date);
+}
+
+/**
+ * Increment login attempts on password failure.
+ * 
+ * If maximum login attempts exceeded, lock account.
+ *
+ * @return {Promise<User>} The updated User instance
+ */
+function incLoginAttempts () {
+  let user = this;
+
+  /** increment login attempts and check if account got locked */
+  if (++user.loginAttempts === MAX_LOGIN_ATTEMPTS) {
+    user.lockedUntil   = Date.now() + LOCK_TIME;
+    user.loginAttempts = 0;
+  }
+
+  /** save and return user */
+  return user.save();
 }
 
 /**
@@ -145,8 +179,9 @@ function comaprePassword (password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-UserSchema.methods.createLog     = createLog;
-UserSchema.methods.getLastLogin  = getLastLogin;
+UserSchema.methods.createLog = createLog;
+UserSchema.methods.getLastLoginDate = getLastLoginDate;
+UserSchema.methods.incLoginAttempts = incLoginAttempts;
 UserSchema.methods.hashPassword  = bcryptHash;
 UserSchema.methods.validPassword = comaprePassword;
 
