@@ -79,24 +79,27 @@ import bcrypt from 'bcrypt';
  *
  * @param  {String} type          activity type based on enum
  * @param  {String} [description] optional description of activity
- * @return {promise}
+ * @return {log}
  */
 function createLog (type, description) {
   let user = this;
 
-  /** create activity type as enum for easier reference */
+  /** activity type as enum for easier reference */
   let activity = {
     LOGIN:  0, LOGOUT: 1,
     CREATE: 2, READ:   3,
     UPDATE: 4, DELETE: 5,
   };
 
-  user.logs.push({
+  let log = {
     activity: activity[type],
     description: description
-  });
+  };
 
-  return user.save();
+  /** insert the created log into user logs */
+  user.logs.push(log);
+
+  return log;
 }
 
 /**
