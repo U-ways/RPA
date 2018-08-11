@@ -40,7 +40,7 @@
  */
 export function sessionGarbageCollector (req, res, next) {
   /** pass each object to temp to `res.locals` */
-  if (req.session.temp) {
+  if (req.session && req.session.temp) {
     let temp = req.session.temp;
     for (let key of Object.keys(temp)) {
       res.locals[key] = temp[key];
