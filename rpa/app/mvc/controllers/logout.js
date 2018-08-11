@@ -1,10 +1,10 @@
 /* logout controller
 ============================================================================= */
 
-import express from 'express';
+import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', destorySession);
 

@@ -1,14 +1,14 @@
 /* registration controller
 ============================================================================= */
 
-import express from 'express';
+import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
 import { reCaptcha }    from '../../middleware/reCaptcha.js';
 import { checkSession } from '../../middleware/checkSession.js';
 
 const ENV    = process.env;
-const router = express.Router();
+const router = Router();
 
 router.post('/',
   checkSession,
@@ -121,7 +121,7 @@ function postLogic (req, res, next) {
     /** log user activity and then redirect to dashboard */
     user.createLog('LOGIN', 'user registered');
     user.save();
-    
+
     res.redirect('/dashboard');
   });
 }

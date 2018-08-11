@@ -2,11 +2,11 @@
 ============================================================================= */
 
 import path from 'path';
-import express from 'express';
+import { Router } from 'express';
 
 import { reCaptcha } from '../../middleware/reCaptcha.js';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', reCaptcha.middleware.render, getLogic);
 

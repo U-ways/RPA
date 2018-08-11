@@ -1,14 +1,14 @@
 /* login controller
 ============================================================================= */
 
-import express from 'express';
+import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
 import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { checkSession }     from '../../middleware/checkSession.js';
 
 const ENV    = process.env;
-const router = express.Router();
+const router = Router();
 
 router.post('/', checkSession, authenticateUser, postLogic);
 
