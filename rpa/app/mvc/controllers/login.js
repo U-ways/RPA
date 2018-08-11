@@ -29,7 +29,7 @@ router.post('/', checkSession, authenticateUser, postLogic);
  */
 function postLogic (req, res, next) {
   /** current logged-in user */
-  let user = req.locals.user;
+  let user = res.locals.user;
 
   /** check if user already logged-in */
   if (user.loggedIn) {

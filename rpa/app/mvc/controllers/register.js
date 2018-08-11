@@ -67,7 +67,7 @@ function registerUser (req, res, next) {
         email:    email
       });
       createUser.then(user => {
-        req.locals = { user: user };
+        res.locals = { user: user };
         return next();
       });
     }
@@ -94,7 +94,7 @@ function registerUser (req, res, next) {
  */
 function postLogic (req, res, next) {
   /** newly registered user */
-  let user = req.locals.user;
+  let user = res.locals.user;
 
   /** create new session for newly registered user */
   req.session.regenerate(err => {

@@ -58,7 +58,7 @@ export function authenticateUser (req, res, next) {
     return user.validPassword(password, user.password)
     .then(match => {
       if (match) {
-        req.locals = { user: user };
+        res.locals = { user: user };
         return next();
       }
       /** incorrect password, increase login attempts */
