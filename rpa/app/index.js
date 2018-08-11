@@ -96,7 +96,7 @@ import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js
 
 /** initialize express session middleware */
 
-const trackSession = (() => {
+const sessionTracker = () => {
   const client     = redis.createClient();
   const RedisStore = connectRedis(session);
 
@@ -133,10 +133,10 @@ const trackSession = (() => {
   }
 
   return session(options);
-})();
+};
 
 /** track sessions by assigning a unique hash for each connection */
-APP.use(trackSession);
+APP.use(new sessionTracker);
 /**
  * Anything passed to `req.session.temp` will be passed to `req.locals`
  * and garbage collected on every subsequent request.
