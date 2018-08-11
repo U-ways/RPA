@@ -94,9 +94,9 @@ import redis   from 'redis';
 import connectRedis from 'connect-redis';
 import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js';
 
-/** initialize express session middleware */
+/** prepare express session middleware */
 
-const sessionTracker = () => {
+function sessionTracker () {
   const client     = redis.createClient();
   const RedisStore = connectRedis(session);
 
