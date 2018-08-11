@@ -3,8 +3,9 @@
 <h1> {{title}} </h1>
 
 <p> {{message}} </p>
-<p> You're {{user.username}} </p>
-<p> Email  {{user.email}} </p>
-<p> id     {{user.id}} </p>
+<p> You're    {{user.username}} </p>
+<p> Email     {{user.email}} </p>
+<p> id        {{user.id}} </p>
+<b> sessionID {{sessionID}}</b>
 
 {{>footer}}

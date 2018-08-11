@@ -35,6 +35,7 @@ function getLogic (req, res, next) {
     ],
     message: res.locals.message,
     user: req.session.user,
+    sessionID: req.session.id,
   };
 
   return res.render(FILE_NAME, view);
