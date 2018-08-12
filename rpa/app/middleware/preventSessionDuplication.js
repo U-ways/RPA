@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-
+ 
 /**
  * Prevent session duplication by checking if the user already have an active
  * stored session within its own instance.
