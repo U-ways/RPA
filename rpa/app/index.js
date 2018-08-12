@@ -123,12 +123,12 @@ function sessionTracker () {
     name: 'RPA_session_cookie',
     secret: secret,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: new RedisStore(storeOptions),
     cookie: {
       path: '/',
       secure: false,
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      maxAge: 5 * 60 * 1000, // 5 minutes
     }
   }
 
