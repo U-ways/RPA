@@ -97,11 +97,11 @@ import { flashMessages } from './middleware/flashMessages.js';
 /** prepare express session middleware */
 
 function sessionTracker () {
-  const client     = redis.createClient();
-  const RedisStore = connectRedis(session);
+  const redisClient = redis.createClient();
+  const RedisStore  = connectRedis(session);
 
   /** delete all existing keys within redis */
-  client.flushall('ASYNC', (err, success) => {
+  redisClient.flushall('ASYNC', (err, success) => {
     if (err) {
       let error = new Error('unable to flush existing session store.');
       if (ENV.NODE_ENV === '1') error.dev = err;
@@ -116,7 +116,7 @@ function sessionTracker () {
   let storeOptions = {
     host: ENV.HOST,
     port: parseInt(ENV.REDIS_PORT),
-    client: client,
+    client: redisClient,
     logErrors: ENV.NODE_ENV === '1' ? true : false
   }
   let options = {
