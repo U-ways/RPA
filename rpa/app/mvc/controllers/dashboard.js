@@ -31,7 +31,8 @@ function getLogic (req, res, next) {
       `stylesheets/${FILE_NAME}.css`
     ],
     scripts: [
-      `scripts/${FILE_NAME}.js`
+      'scripts/core.js',
+      `scripts/${FILE_NAME}.js`,
     ],
     flash: res.locals.flash,
     message: res.locals.message,

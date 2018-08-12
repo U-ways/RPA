@@ -33,6 +33,7 @@ function getLogic (req, res, next) {
       `stylesheets/${FILE_NAME}.css`
     ],
     scripts: [
+      'scripts/core.js',
       'scripts/login.js',
       `scripts/${FILE_NAME}.js`
     ],
