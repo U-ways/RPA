@@ -6,6 +6,7 @@ import { UserModel } from '../models/User.js';
 
 import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { blockAuthUsers }   from '../../middleware/blockAuthUsers.js';
+import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
 
 const ENV    = process.env;
 const router = Router();
@@ -13,6 +14,7 @@ const router = Router();
 router.post('/',
   blockAuthUsers,
   authenticateUser,
+  preventSessionDuplication,
   postLogic);
 
 /* logic
@@ -34,15 +36,6 @@ function postLogic (req, res, next) {
   /** current logged-in user */
   let user = res.locals.user;
 
-  /** check if user already logged-in */
-  if (user.loggedIn) {
-    let error = new Error(
-      'user already logged-in. '
-      + 'Please request a password reset if this is not you.');
-    error.status = 401;
-    return next(error);
-  }
-
   /** create new session for authenticated user */
   req.session.regenerate(err => {
     if (err) {
@@ -63,7 +56,7 @@ function postLogic (req, res, next) {
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
     /** update user meta data */
-    user.loggedIn = true;
+    user.sessionID = req.session.id;
     user.loginAttempts = 0;
     user.createLog('LOGIN');
     user.save();

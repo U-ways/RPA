@@ -38,7 +38,7 @@ function destorySession (req, res, next) {
     /** find the user with the active session */
     UserModel.findById(id).then(user => {
       /** update user meta data */
-      user.loggedIn = false;
+      user.sessionID = null;
       user.createLog('LOGOUT');
       user.save();
 

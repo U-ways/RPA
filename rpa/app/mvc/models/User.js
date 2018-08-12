@@ -20,6 +20,10 @@ const LOCK_TIME = 2 * 3600000;
  * @type {Schema}
  */
 const UserSchema = new mongoose.Schema({
+  sessionID: {
+    type: String,
+    default: null
+  },
   username: {
     type: String,
     index: true,
@@ -40,11 +44,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'required'],
     maxlength: [100, 'max length (100) exceeded']
-  },
-  loggedIn: {
-    type: Boolean,
-    required: [true, 'required'],
-    default: false,
   },
   loginAttempts: {
     type: Number,
@@ -138,7 +137,7 @@ function getLastLoginDate () {
 
 /**
  * Increment login attempts on password failure.
- * 
+ *
  * If maximum login attempts exceeded, lock account.
  *
  * @return {Promise<User>} The updated User instance
