@@ -1,6 +1,6 @@
 /**
  * This is a middleware to allow passing user session flash errors and feedback
- * form the response's `locals` object (res#locals) on redirection.
+ * to the response's `locals` object (res#locals) on redirection.
  *
  * This method is also known as "flash messaging"
  *
@@ -37,26 +37,31 @@
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {Function}        returns the request to the next middleware when done.
+ * @return {next}            returns the request to the next middleware when done.
  */
 export function flashMessages (req, res, next) {
-  /** pass each object in flash to `res.locals` */
-  if (req.session.flash) {
-    let temp  = {};
-    let flash = req.session.flash;
+  let session = req.session;
 
+  /** check if there is any flash objects for starters */
+  if (session.flash) {
+    let temp  = {};
+    let flash = session.flash;
+
+    /** pass each object in flash to `temp` */
     for (let key of Object.keys(flash)) {
       temp[key] = flash[key];
     }
 
+    /** then pass temp object to `res.locals.flash` */
     res.locals.flash = temp;
+
     /**
-     * Allow property `flash` to be eligible for garbage collection
-     * by setting its value to null.
+     * if an authenticated user session exists, garbage collect flash only.
+     * else destroy session to clear up some memory
      */
-    req.session.flash = null;
-    // IDEA: if no user destory the whole session?
-    return next();
+    if (session.auth) session.flash = null; // null to allow GC
+    else              session.destroy();
   }
+
   return next();
 }
