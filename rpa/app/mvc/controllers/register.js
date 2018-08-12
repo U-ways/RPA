@@ -4,14 +4,14 @@
 import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
-import { reCaptcha }    from '../../middleware/reCaptcha.js';
-import { checkSession } from '../../middleware/checkSession.js';
+import { reCaptcha } from '../../middleware/reCaptcha.js';
+import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
 
 const ENV    = process.env;
 const router = Router();
 
 router.post('/',
-  checkSession,
+  blockAuthUsers,
   reCaptcha.middleware.verify,
   registerUser,
   postLogic);

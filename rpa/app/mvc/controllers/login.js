@@ -5,12 +5,15 @@ import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
 import { authenticateUser } from '../../middleware/authenticateUser.js';
-import { checkSession }     from '../../middleware/checkSession.js';
+import { blockAuthUsers }   from '../../middleware/blockAuthUsers.js';
 
 const ENV    = process.env;
 const router = Router();
 
-router.post('/', checkSession, authenticateUser, postLogic);
+router.post('/',
+  blockAuthUsers,
+  authenticateUser,
+  postLogic);
 
 /* logic
 ============================================================================= */
