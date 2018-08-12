@@ -36,6 +36,7 @@ function getLogic (req, res, next) {
       'scripts/login.js',
       `scripts/${FILE_NAME}.js`
     ],
+    flash: res.locals.flash,
     message: res.locals.message,
     captcha: res.recaptcha,
     user: req.session.user,

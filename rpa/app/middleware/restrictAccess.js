@@ -27,10 +27,8 @@ export function restrictAccess(req, res, next) {
 
   /** else redirect with an error */
   else {
-    req.session.temp = {
-      status: 401,
-      message:'unauthorised: please login to access protected resources.'
-    }
+    req.session.flash = {
+      message:'unauthorised: please login to access protected resources.' };
     return res.redirect('/');
   }
 }

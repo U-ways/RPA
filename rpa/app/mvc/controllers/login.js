@@ -65,7 +65,7 @@ function postLogic (req, res, next) {
     user.createLog('LOGIN');
     user.save();
 
-    req.session.temp = {
+    req.session.flash = {
       message: `Welcome back ${user.username}, `
       + `You last logged-in on: ${user.getLastLoginDate().toUTCString()}.`};
     return res.redirect('/dashboard');

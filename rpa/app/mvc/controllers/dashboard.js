@@ -33,6 +33,7 @@ function getLogic (req, res, next) {
     scripts: [
       `scripts/${FILE_NAME}.js`
     ],
+    flash: res.locals.flash,
     message: res.locals.message,
     user: req.session.user,
     sessionID: req.session.id,

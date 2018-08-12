@@ -43,7 +43,7 @@ function destorySession (req, res, next) {
       user.save();
 
       /** redirect to dashboard */
-      req.session.temp = { message:'success: you\'ve securely logged out.' }
+      req.session.flash = { message:'success: you\'ve securely logged out.' }
       return res.redirect('/');
     });
   });

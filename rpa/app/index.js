@@ -92,7 +92,7 @@ if (ENV.NODE_ENV === '0') {
 import session from 'express-session';
 import redis   from 'redis';
 import connectRedis from 'connect-redis';
-import { sessionGarbageCollector } from './middleware/sessionGarbageCollector.js';
+import { flashMessages } from './middleware/flashMessages.js';
 
 /** prepare express session middleware */
 
@@ -138,10 +138,10 @@ function sessionTracker () {
 /** track sessions by assigning a unique hash for each connection */
 APP.use(new sessionTracker);
 /**
- * Anything passed to `req.session.temp` will be passed to `req.locals`
- * and garbage collected on every subsequent request.
+ * Anything passed to `req.session.flash` will be passed to
+ * `req.locals.flash` as a flash message.
  */
-APP.use(sessionGarbageCollector);
+APP.use(flashMessages);
 
 /* Static routing
 ============================================================================= */

@@ -2,7 +2,10 @@
 
 <h1> {{title}} </h1>
 
+<h4> {{flash.message}} </h4>
+
 <p> {{message}} </p>
+
 <p> You're    {{user.username}} </p>
 <p> Email     {{user.email}} </p>
 <p> id        {{user.id}} </p>
