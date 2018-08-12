@@ -39,8 +39,7 @@ function getLogic (req, res, next) {
     flash: res.locals.flash,
     message: res.locals.message,
     captcha: res.recaptcha,
-    user: req.session.user,
-    sessionID: req.session.id,
+    session: req.session,
   };
 
   return res.render(FILE_NAME, view);

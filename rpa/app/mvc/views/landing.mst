@@ -7,13 +7,15 @@
 <p> {{message}} </p>
 
 <p>Welcome to RPA</p>
-<b> sessionID {{sessionID}}</b>
 
-{{#user}}
-  <h4>You're Logged in as {{user.username}}</h4>
-{{/user}}
+{{#session}}
+  <h4> sessionID {{session.id}}</h4>
+  {{#session.user}}
+    <h4>You're Logged in as {{session.user.username}}</h4>
+  {{/session.user}}
+{{/session}}
 
-{{^user}}
+{{^session.user}}
   <h4> login </h4>
 
   <form id="login-form" method="POST" action="/login">
@@ -33,6 +35,6 @@
     <input type="submit"/>
     {{{captcha}}}
   </form>
-{{/user}}
+{{/session.user}}
 
 {{>footer}}

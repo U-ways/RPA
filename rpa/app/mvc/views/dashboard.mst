@@ -6,9 +6,11 @@
 
 <p> {{message}} </p>
 
-<p> You're    {{user.username}} </p>
-<p> Email     {{user.email}} </p>
-<p> id        {{user.id}} </p>
-<b> sessionID {{sessionID}}</b>
+{{#session}}
+  <p> You're    {{session.user.username}} </p>
+  <p> Email     {{session.user.email}} </p>
+  <p> id        {{session.user.id}} </p>
+  <b> sessionID {{session.id}}</b>
+{{/session}}
 
 {{>footer}}
