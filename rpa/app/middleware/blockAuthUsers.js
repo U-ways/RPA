@@ -1,5 +1,5 @@
 /**
- * Check if user already logged in.
+ * Block route access to already logged in users.
  * This middleware is used to prevent actions that require the user
  * to be logged out. (i.e. login, registration...etc.)
  *
@@ -9,7 +9,7 @@
  * @return {next|response}   pass request to the next middleware on success.
  *                           responsed with an error on failure.
  */
-export function checkSession (req, res, next) {
+export function blockAuthUsers (req, res, next) {
   /** Check if user is authenticated (logged in) */
   if (req.session.auth) {
     let error = new Error(
