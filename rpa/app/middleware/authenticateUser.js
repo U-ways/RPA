@@ -15,7 +15,7 @@ const ENV = process.env;
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {Function}        pass the request to the next middleware on success.
+ * @return {next}            pass the request to the next middleware on success.
  *                           pass to error middleware on failure otherwise.
  */
 export function authenticateUser (req, res, next) {

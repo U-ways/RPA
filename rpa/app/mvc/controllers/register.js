@@ -27,8 +27,8 @@ router.post('/',
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {Function | response} pass to the next middleware on success.
- *                               return an error resposne otherwise.
+ * @return {next|response}   pass to the next middleware on success.
+ *                           return an error resposne otherwise.
  */
 function registerUser (req, res, next) {
   /** check if user failed reCaptcha */

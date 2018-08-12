@@ -6,8 +6,8 @@
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {Function | response}  pass request to the next middleware on success.
- *                                responsed with an error on failure.
+ * @return {next|response}   pass request to the next middleware on success.
+ *                           responsed with an error on failure.
  */
 export function checkSession (req, res, next) {
   /** Check if user is authenticated (logged in) */
