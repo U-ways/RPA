@@ -86,53 +86,10 @@ if (ENV.NODE_ENV === '0') {
 /* Session set-up
 ============================================================================= */
 
-import session from 'express-session';
-import redis   from 'redis';
-import connectRedis from 'connect-redis';
-import { flashMessages } from './middleware/flashMessages.js';
+import { sessionTracker } from './middleware/sessionTracker.js';
+import { flashMessages }  from './middleware/flashMessages.js';
 
-/** prepare express session middleware */
-
-function sessionTracker () {
-  const redisClient = redis.createClient();
-  const RedisStore  = connectRedis(session);
-
-  /** delete all existing keys within redis */
-  redisClient.flushall('ASYNC', (err, success) => {
-    if (err) {
-      let error = new Error('unable to flush existing session store.');
-      if (ENV.NODE_ENV === '1') error.dev = err;
-      return next(error);
-    }
-  });
-
-  let secret  = [
-    ENV.SECRET_1,
-    ENV.SECRET_2,
-    ENV.SECRET_3 ];
-  let storeOptions = {
-    host: ENV.HOST,
-    port: parseInt(ENV.REDIS_PORT),
-    client: redisClient,
-    logErrors: ENV.NODE_ENV === '1' ? true : false
-  }
-  let options = {
-    name: 'RPA_session_cookie',
-    secret: secret,
-    resave: false,
-    saveUninitialized: true,
-    store: new RedisStore(storeOptions),
-    cookie: {
-      path: '/',
-      secure: false,
-      maxAge: 5 * 60 * 1000, // 5 minutes
-    }
-  }
-
-  return session(options);
-};
-
-/** track sessions by assigning a unique hash for each connection */
+/** track users by creating a new session for each connection */
 APP.use(new sessionTracker);
 /**
  * Anything passed to `req.session.flash` will be passed to
