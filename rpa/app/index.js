@@ -1,16 +1,12 @@
 /* Import core modules
 ============================================================================= */
 
-import fileSystem     from 'fs';
 import express        from 'express';
 import dotenv         from 'dotenv/config';
-import createError    from 'http-errors';
 import favicon        from 'serve-favicon';
 import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
-import logger         from 'morgan';
-import rfs            from 'rotating-file-stream';
 import cl             from '../lib/colorLogger.js';
 
 /* Initialize express app
@@ -44,44 +40,14 @@ APP.use(sassMiddleware({
 /* Server logger setup
 ============================================================================= */
 
-const LOG_DIR = path.join(__dirname, '../log')
-fileSystem.existsSync(LOG_DIR) || fileSystem.mkdirSync(LOG_DIR);
+import { httpLogger } from './middleware/httpLogger.js';
 
-/** creates a rotating write stream */
-
-let rotationLogging = rfs('http-server.log', {
-  size: '5M',
-  interval: '1d',
-  compress: 'gzip',
-  maxFiles: 90, // remove logs older than 3 months
-  maxSize: '250M',
-  path: LOG_DIR
-});
-
-let reqLogFormat =
-'REQ :remote-addr     :method :url :req[header] :user-agent';
-
-APP.use(logger(
-  (ENV.NODE_ENV === '1') ? 'dev' :
-    (reqLogFormat, {
-      immediate: true,
-      skip: (req, res) => res.statusCode < 400,
-      stream: rotationLogging
-    })
-  )
+/** use simplified logger in development, else use production's logger */
+APP.use(
+  (ENV.NODE_ENV === '1') ?
+    httpLogger.dev :
+   (httpLogger.request, httpLogger.response)
 );
-
-let resLogFormat =
-'RES :remote-addr :status :method :url :res[header] :res[content-length] :response-time ms';
-
-if (ENV.NODE_ENV === '0') {
-  APP.use(logger(resLogFormat, {
-        skip: (req, res) => res.statusCode < 400,
-        stream: rotationLogging
-      }
-    )
-  );
-}
 
 /* Session set-up
 ============================================================================= */
