@@ -4,8 +4,8 @@
 import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
-import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { blockAuthUsers }   from '../../middleware/blockAuthUsers.js';
+import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
 
 const ENV    = process.env;
