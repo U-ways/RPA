@@ -1,4 +1,4 @@
-/* Import core modules
+/* Imports
 ============================================================================= */
 
 import express        from 'express';
@@ -8,6 +8,28 @@ import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
 import cl             from '../lib/colorLogger.js';
+
+import API from './graphql';
+
+/** APP services **/
+
+import { database } from './services/database.js';
+
+/** APP middlewares **/
+
+import { httpLogger     } from './middleware/httpLogger.js';
+import { sessionTracker } from './middleware/sessionTracker.js';
+import { flashMessages  } from './middleware/flashMessages.js';
+import { restrictAccess } from './middleware/restrictAccess.js';
+import { httpError }      from './middleware/httpError.js';
+
+/** APP controllers **/
+
+import landingRouter from './mvc/controllers/landing';
+import loginRouter from './mvc/controllers/login';
+import logoutRouter from './mvc/controllers/logout';
+import registerRouter from './mvc/controllers/register';
+import dashboardRouter from './mvc/controllers/dashboard';
 
 /* Initialize express app
 ============================================================================= */
@@ -37,51 +59,37 @@ APP.use(sassMiddleware({
   sourceMap: true
 }));
 
-/* Server logger setup
-============================================================================= */
+/** Server logger setup */
 
-import { httpLogger } from './middleware/httpLogger.js';
-
-/** use simplified logger in development, else use production's logger */
 APP.use(
-  (ENV.NODE_ENV === '1') ?
-    httpLogger.dev :
-   (httpLogger.request, httpLogger.response)
+  (ENV.NODE_ENV === '0') ?
+    (httpLogger.request, httpLogger.response)
+    : httpLogger.dev
 );
 
-/* Session set-up
+/** Session & flash setup */
+
+APP.use(new sessionTracker, flashMessages);
+
+/** API setup */
+
+APP.use('/api', restrictAccess, API);
+
+/** database setup */
+
+if (ENV.NODE_ENV === '0') database.connectToProduction();
+else                      database.connectToDevelopment();
+
+/* routing
 ============================================================================= */
 
-import { sessionTracker } from './middleware/sessionTracker.js';
-import { flashMessages }  from './middleware/flashMessages.js';
-
-/** track users by creating a new session for each connection */
-APP.use(new sessionTracker);
-/**
- * Anything passed to `req.session.flash` will be passed to
- * `req.locals.flash` as a flash message.
- */
-APP.use(flashMessages);
-
-/* Static routing
-============================================================================= */
+/** static routes */
 
 APP.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-APP.use('/iconfont', express.static(__dirname
-        + '/node_modules/material-design-icons/iconfont'));
-
 APP.use(express.static(path.join(__dirname, 'public')));
+APP.use('/icons', express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
 
-/* Dynamic routing
-============================================================================= */
-
-/** Import controllers **/
-
-import landingRouter from './mvc/controllers/landing';
-import loginRouter from './mvc/controllers/login';
-import logoutRouter from './mvc/controllers/logout';
-import registerRouter from './mvc/controllers/register';
-import dashboardRouter from './mvc/controllers/dashboard';
+/** Dynamic routes */
 
 APP.use('/', landingRouter);
 APP.use('/login', loginRouter);
@@ -89,92 +97,13 @@ APP.use('/logout', logoutRouter);
 APP.use('/register', registerRouter);
 APP.use('/dashboard', dashboardRouter);
 
-/* Connecting database
-============================================================================ */
-
-import mongoose from 'mongoose';
-
-let options  = { useNewUrlParser: true };
-
-console.log(cl.act, '[app] connecting to database');
-
-/** use development database on development environment */
-if (ENV.NODE_ENV === '1') {
-  mongoose.connect(ENV.DEV_DB_URI_ADMIN, options).then(mongoose => {
-    console.log(cl.ok, '[app] connected to development database');
-
-    return mongoose.connection.db.dropDatabase(() => {
-      console.log(cl.warn, '[app] flushed development database');
-
-      import('./mvc/models/User.js').then(({UserModel}) => {
-        UserModel.create({
-          username: ENV.ADMIN_USERNAME,
-          password: ENV.ADMIN_PASSWORD,
-          email:    ENV.ADMIN_EMAIL,
-          logs: [{ activity: 0, description: 'root registration' }]
-        }).then(admin => {
-          console.log(cl.ok, `[app] created root account `
-            + `named: ${admin.username} - email: ${admin.email}`);
-        });
-      });
-
-    });
-  })
-  .catch(err => {
-    console.log(cl.err,`[app] database: ${err.message}`);
-    process.exit(1);
-  });
-}
-/** else use production database */
-else {
-  mongoose.connect(ENV.PRO_DB_URI_USER, options).then(
-    ()    => console.log(cl.ok, '[app] connected to production database'),
-    error => {
-      console.log(cl.err,`[app] database: ${error.message}`);
-      process.exit(1);
-    }
-  );
-}
-
-/* Setting up GraphQL API
-============================================================================= */
-
-import API from './graphql';
-/** middleware to restrict-access on protected pages */
-import { restrictAccess } from './middleware/restrictAccess.js';
-
-APP.use('/api', restrictAccess, API);
-
 /* Error handlers
 ============================================================================= */
 
 /** catch 404 errors and render 404 view  */
-APP.use((req, res, next) => {
-  let view = {
-    title: `404 - Page Not Found`,
-    stylesheets: [
-      'iconfont/material-icons.css',
-      'stylesheets/core.css',
-      `stylesheets/404.css`
-    ],
-    message: 'No resource found matching the request-URI.',
-    user: req.session.user,
-  };
-  return res.status(404).render('404', view);
-});
+APP.use(httpError[404]);
 
-/** main error handler */
-APP.use((err, req, res, next) => {
-  /** prepare response as a JSON object */
-  let error = (ENV.NODE_ENV === '1') ? {
-    dev: err.dev,
-    stack: err.stack,
-    filename: err.filename,
-    error: err.message,
-  } :
-  { error: err.message };
-
-  return res.status(err.status || 500).json(error);
-});
+/** error handler for everything else */
+APP.use(httpError.all);
 
 export default APP;
