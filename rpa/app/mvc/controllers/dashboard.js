@@ -22,7 +22,7 @@ const FILE_NAME = path.basename(__filename).slice(0, -3);
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {response}        render dashboard on success, error resposne otherwise.
+ * @return {response}        render dashboard on success, error resposne otherwise
  */
 function getLogic (req, res, next) {
   let view = {
