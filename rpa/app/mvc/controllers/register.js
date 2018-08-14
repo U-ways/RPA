@@ -4,8 +4,8 @@
 import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
-import { reCaptcha } from '../../middleware/reCaptcha.js';
 import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
+import { reCaptcha } from '../../middleware/reCaptcha.js';
 
 const ENV    = process.env;
 const router = Router();

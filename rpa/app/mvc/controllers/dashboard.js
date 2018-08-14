@@ -2,11 +2,13 @@
 ============================================================================= */
 
 import path from 'path';
-import express from 'express';
+import { Router } from 'express';
 
-const  router = express.Router();
+import { restrictAccess } from './middleware/restrictAccess.js';
 
-router.get('/', getLogic);
+const  router = Router();
+
+router.get('/', restrictAccess, getLogic);
 
 /* logic
 ============================================================================= */
