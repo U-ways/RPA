@@ -87,7 +87,7 @@ else                      database.connectToDevelopment();
 
 APP.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 APP.use(express.static(path.join(__dirname, 'public')));
-APP.use('/icons', express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
+APP.use(express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
 
 /** Dynamic routes */
 
