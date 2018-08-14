@@ -13,9 +13,6 @@ import logger         from 'morgan';
 import rfs            from 'rotating-file-stream';
 import cl             from '../lib/colorLogger.js';
 
-/** middleware to restrict-access on protected pages */
-import { restrictAccess } from './middleware/restrictAccess.js';
-
 /* Initialize express app
 ============================================================================= */
 
@@ -167,7 +164,7 @@ APP.use('/', landingRouter);
 APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
 APP.use('/register', registerRouter);
-APP.use('/dashboard', restrictAccess, dashboardRouter);
+APP.use('/dashboard', dashboardRouter);
 
 /* Connecting database
 ============================================================================ */
@@ -220,6 +217,8 @@ else {
 ============================================================================= */
 
 import API from './graphql';
+/** middleware to restrict-access on protected pages */
+import { restrictAccess } from './middleware/restrictAccess.js';
 
 APP.use('/api', restrictAccess, API);
 
