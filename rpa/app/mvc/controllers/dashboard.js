@@ -4,7 +4,11 @@
 import path from 'path';
 import { Router } from 'express';
 
+<<<<<<< HEAD
 import { restrictAccess } from './../../middleware/restrictAccess.js';
+=======
+import { restrictAccess } from './middleware/restrictAccess.js';
+>>>>>>> ce4f0abd96633db6fd75fdb0042a0e94a24b757b
 
 const  router = Router();
 
