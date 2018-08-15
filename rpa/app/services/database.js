@@ -1,52 +1,78 @@
 /* database service
-============================================================================ */
+============================================================================= */
 
-import mongoose from 'mongoose';
-import cl from '../../lib/colorLogger.js';
+import mongoose      from 'mongoose';
+import { UserModel } from '../mvc/models/User.js';
+import cl            from '../../lib/colorLogger.js';
 
 const ENV = process.env;
 
-/* admin account
-============================================================================ */
+/* static database accounts
+============================================================================= */
 
-/**
- * Create root administration so there will always be a way to access the DB.
- */
-function createAdmin () {
-  return import('../mvc/models/User.js')
-  .then( ({ UserModel }) => {
-    /** check if admin account already exsits in the DB */
-    UserModel.findOne({username: ENV.ADMIN_USERNAME})
-    .then( admin => {
-      if (admin !== null) {
+/** Root account is used for administration. */
+const createAdmin = () => {
+  const Admin = new UserModel({
+    username: ENV.ADMIN_USERNAME,
+    password: ENV.ADMIN_PASSWORD,
+    email:    ENV.ADMIN_EMAIL,
+    logs: [{ activity: 2, description: 'register root account' }]
+  }).save( (err, admin) => {
+    console.log(cl.ok, `[database] created root account: `
+      + `${admin.username} (email: ${admin.email})`);
+  });
+};
+
+/** Bot account is used for mailing and user verification. */
+const createBot = () => {
+  const Bot = new UserModel({
+    username: ENV.BOT_USERNAME,
+    password: ENV.BOT_PASSWORD,
+    email:    ENV.BOT_EMAIL,
+    logs: [{ activity: 2, description: 'register bot account' }]
+  }).save( (err, bot) => {
+    console.log(cl.ok, `[database] created bot account: `
+      + `${bot.username} (email: ${bot.email})`);
+  });
+};
+
+/**  Check if root and bot accounts exist, if not create missing accounts. */
+function createAccounts () {
+  /** check if admin account already exsits in the DB */
+  return UserModel.find({
+    $or: [{username: ENV.ADMIN_USERNAME}, {username: ENV.BOT_USERNAME}]
+  })
+  .then( accounts => {
+    if (accounts.length === 2) {
+      console.log(cl.warn,`[database] skipping root & bot account creation: `
+        + `${ENV.ADMIN_USERNAME} & ${ENV.BOT_USERNAME} already exists.`);
+        createBot();
+    }
+    else if (accounts.length === 1) {
+      if (accounts[0].username === ENV.ADMIN_USERNAME) {
         console.log(cl.warn,`[database] skipping root account creation: `
           + `${ENV.ADMIN_USERNAME} already exists.`);
+        return createBot();
       }
-      /** if not, create a new admin account */
       else {
-        UserModel.create({
-          username: ENV.ADMIN_USERNAME,
-          password: ENV.ADMIN_PASSWORD,
-          email:    ENV.ADMIN_EMAIL,
-          logs: [{ activity: 0, description: 'root registration' }]
-        })
-        .then( admin => {
-          console.log(cl.ok, `[database] created root username: `
-            + `${admin.username} - email: ${admin.email}`);
-        });
+        console.log(cl.warn,`[database] skipping bot account creation: `
+          + `${ENV.BOT_USERNAME} already exists.`);
+        return createAdmin();
       }
-    });
+    }
+    /** else both account don't exist, create new admin and bot accounts */
+    else createBot(), createAdmin();
   })
   .catch( err => {
-    console.log(cl.err,`[database] unable to create ADMIN - ${err.message}`);
+    console.log(cl.err,`[database] unable to create accounts - ${err.message}`);
     process.exit(1);
   });
 }
 
 /* database connection
-============================================================================ */
+============================================================================= */
 
-/** options */
+/** options for mongoose connection */
 const options  = {
   useNewUrlParser: true
 };
@@ -62,7 +88,7 @@ function connectToDevelopment () {
     console.log(cl.ok, '[database] connected to development database');
     return mongoose.connection.db.dropDatabase( () => {
       console.log(cl.warn, '[database] flushed development database');
-      return createAdmin();
+      return createAccounts();
     });
   })
   .catch( err => {
@@ -80,7 +106,7 @@ function connectToProduction () {
   .connect(ENV.PRO_DB_URI_USER, options)
   .then( () => {
     console.log(cl.ok, '[database] connected to production database');
-    return createAdmin();
+    return createAccounts();
   })
   .catch( err => {
     console.log(cl.err,`[database] ${err.message}`);
