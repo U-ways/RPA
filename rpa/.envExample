@@ -35,7 +35,14 @@ SITE_KEY=
 SECRET_KEY=
 
 ## admin account
-#    root account within RPA that always exist
+#   root account within RPA that always exist
 ADMIN_USERNAME="admin"
 ADMIN_EMAIL="admin@email.com"
 ADMIN_PASSWORD="root"
+
+## Bot account
+#   bot account to verify emails
+BOT_USERNAME="rpa-bot"
+BOT_EMAIL="bot@email.com"
+BOT_EMAIL_AUTH="auth"
+BOT_PASSWORD="bot"
