@@ -41,7 +41,7 @@ function postLogic (req, res, next) {
     if (err) {
       let error = new Error(
         'unable to create a new session for authenticated user.');
-      if (ENV.NODE_ENV === '1') error.dev = err;
+      if (ENV.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
 

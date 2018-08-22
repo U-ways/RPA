@@ -25,7 +25,7 @@ export function sessionTracker () {
   redisClient.flushall('ASYNC', (err, success) => {
     if (err) {
       let error = new Error('unable to flush existing session store.');
-      if (ENV.NODE_ENV === '1') error.dev = err;
+      if (ENV.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
   });
@@ -38,7 +38,7 @@ export function sessionTracker () {
     host: ENV.HOST,
     port: parseInt(ENV.REDIS_PORT),
     client: redisClient,
-    logErrors: ENV.NODE_ENV === '1' ? true : false
+    logErrors: ENV.NODE_ENV === 'development' ? true : false
   }
   let options = {
     name: 'RPA_session_cookie',

@@ -3,9 +3,8 @@
 #   https://nodejs.org/api/process.html#process_process_env
 
 ## Environment
-#   0 = production
-#   1 = development
-NODE_ENV="1"
+#   production || development
+NODE_ENV="development"
 
 ## HOST
 HOST="localhost"

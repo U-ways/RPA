@@ -14,6 +14,7 @@ import API from './graphql';
 /** APP services **/
 
 import { database } from './services/database.js';
+import { email    } from './services/email.js';
 
 /** APP middlewares **/
 
@@ -25,10 +26,10 @@ import { httpError      } from './middleware/httpError.js';
 
 /** APP controllers **/
 
-import landingRouter from './mvc/controllers/landing';
-import loginRouter from './mvc/controllers/login';
-import logoutRouter from './mvc/controllers/logout';
-import registerRouter from './mvc/controllers/register';
+import landingRouter   from './mvc/controllers/landing';
+import loginRouter     from './mvc/controllers/login';
+import logoutRouter    from './mvc/controllers/logout';
+import registerRouter  from './mvc/controllers/register';
 import dashboardRouter from './mvc/controllers/dashboard';
 
 /* Initialize express app
@@ -62,7 +63,7 @@ APP.use(sassMiddleware({
 /** Server logger setup */
 
 APP.use(
-  (ENV.NODE_ENV === '0') ?
+  (ENV.NODE_ENV === 'production') ?
     (httpLogger.request, httpLogger.response)
     : httpLogger.dev
 );
@@ -80,7 +81,7 @@ APP.use('/api', restrictAccess, API);
 
 /** database setup */
 
-if (ENV.NODE_ENV === '0') database.connectToProduction();
+if (ENV.NODE_ENV === 'production') database.connectToProduction();
 else                      database.connectToDevelopment();
 
 /** email setup */
