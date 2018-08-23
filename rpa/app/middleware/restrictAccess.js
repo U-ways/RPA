@@ -3,8 +3,6 @@
 
 /**
  * Checks if the user is logged in and authorised (auth set to true).
- * It will pass the pass the request to the next middleware on success,
- * redirect to homepage otherwise.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
