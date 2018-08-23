@@ -2,7 +2,7 @@
 ============================================================================= */
 import mongoose from 'mongoose';
 import dotenv   from 'dotenv/config';
-import cl       from '../../lib/colorLogger.js';
+import { cl }   from '../../lib/colorLogger.js';
 import { describe, before, after, it } from 'mocha';
 
 describe('/models', () => {
@@ -10,20 +10,19 @@ describe('/models', () => {
   /** Connect and clean database **/
 
   before('connect to database', () => {
-    console.log(cl.act, '    Connecting to DB');
+    cl.act('    Connecting to DB');
     let options  = { useNewUrlParser: true };
     return mongoose.connect(process.env.DEV_DB_URI_ADMIN, options).then(
       mongoose => {
-        console.log(cl.ok, '    Connected to database');
-        console.log(cl.warn, '    Cleaning database\n');
+        cl.ok('    Connected to database');
+        cl.warn('    Cleaning database\n');
         return mongoose.connection.db.dropDatabase();
       },
-      error => { console.log(cl.err,`    Database: ${error.message}`); }
+      error => { cl.err(`    Database: ${error.message}`); }
     )
   });
   after('disconnect from database', () => {
-    mongoose.connection.close(() =>
-    console.log(cl.warn, '    Connection closed'));
+    mongoose.connection.close(() => cl.warn('    Connection closed'));
   });
 
   describe('Store', () => {

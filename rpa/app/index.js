@@ -82,10 +82,11 @@ APP.use('/api', restrictAccess, API);
 /** database setup */
 
 if (ENV.NODE_ENV === 'production') database.connectToProduction();
-else                      database.connectToDevelopment();
+else                               database.connectToDevelopment();
 
 /** email setup */
 
+if (ENV.NODE_ENV === 'production') email.init();
 
 
 /* routing

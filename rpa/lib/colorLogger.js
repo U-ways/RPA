@@ -29,9 +29,20 @@ Reference:
 
 ============================================================================= */
 
-const err  = `\x1b[31m%s\x1b[0m`;
-const ok   = `\x1b[32m%s\x1b[0m`;
-const warn = `\x1b[33m%s\x1b[0m`;
-const act  = `\x1b[35m%s\x1b[0m`;
-
-export default { err, ok, warn, act };
+export const cl = {
+  ok(msg) {
+    console.log('\x1b[32m%s\x1b[0m', msg);
+  },
+  act(msg) {
+    console.log('\x1b[35m%s\x1b[0m', msg);
+  },
+  warn(msg) {
+    console.log('\x1b[33m%s\x1b[0m', msg);
+  },
+  err(msg) {
+    console.log('\x1b[31m%s\x1b[0m', msg);
+  },
+  db(msg) {
+    console.log('\x1b[36m%s\x1b[0m', msg);
+  },
+};

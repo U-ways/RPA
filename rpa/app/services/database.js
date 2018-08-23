@@ -3,7 +3,7 @@
 
 import mongoose      from 'mongoose';
 import { UserModel } from '../mvc/models/User.js';
-import cl            from '../../lib/colorLogger.js';
+import { cl }        from '../../lib/colorLogger.js';
 
 const ENV = process.env;
 
@@ -18,8 +18,8 @@ const createAdmin = () => {
     email:    ENV.ADMIN_EMAIL,
     logs: [{ activity: 2, description: 'register root account' }]
   }).save( (err, admin) => {
-    console.log(cl.ok, `[database] created root account: `
-      + `${admin.username} (email: ${admin.email})`);
+    cl.ok(`[database] created root account: `
+      +   `${admin.username} (email: ${admin.email})`);
   });
 };
 
@@ -31,8 +31,8 @@ const createBot = () => {
     email:    ENV.BOT_EMAIL,
     logs: [{ activity: 2, description: 'register bot account' }]
   }).save( (err, bot) => {
-    console.log(cl.ok, `[database] created bot account: `
-      + `${bot.username} (email: ${bot.email})`);
+    cl.ok(`[database] created bot account: `
+      +   `${bot.username} (email: ${bot.email})`);
   });
 };
 
@@ -44,19 +44,19 @@ function createAccounts () {
   })
   .then( accounts => {
     if (accounts.length === 2) {
-      console.log(cl.warn,`[database] skipping root & bot account creation: `
-        + `${ENV.ADMIN_USERNAME} & ${ENV.BOT_USERNAME} already exists.`);
-        createBot();
+      cl.warn(`[database] skipping root & bot account creation: `
+        +     `${ENV.ADMIN_USERNAME} & ${ENV.BOT_USERNAME} already exists.`);
+      return createBot();
     }
     else if (accounts.length === 1) {
       if (accounts[0].username === ENV.ADMIN_USERNAME) {
-        console.log(cl.warn,`[database] skipping root account creation: `
-          + `${ENV.ADMIN_USERNAME} already exists.`);
+        cl.warn(`[database] skipping root account creation: `
+          +     `${ENV.ADMIN_USERNAME} already exists.`);
         return createBot();
       }
       else {
-        console.log(cl.warn,`[database] skipping bot account creation: `
-          + `${ENV.BOT_USERNAME} already exists.`);
+        cl.warn(`[database] skipping bot account creation: `
+          +     `${ENV.BOT_USERNAME} already exists.`);
         return createAdmin();
       }
     }
@@ -64,7 +64,7 @@ function createAccounts () {
     else createBot(), createAdmin();
   })
   .catch( err => {
-    console.log(cl.err,`[database] unable to create accounts - ${err.message}`);
+    cl.err(`[database] unable to create accounts - ${err.message}`);
     process.exit(1);
   });
 }
@@ -80,19 +80,19 @@ const options  = {
 /** Development environment database */
 
 function connectToDevelopment () {
-  console.log(cl.act, '[database] connecting...');
+  cl.act('[database] connecting...');
 
   return mongoose
   .connect(ENV.DEV_DB_URI_ADMIN, options)
   .then( mongoose => {
-    console.log(cl.ok, '[database] connected to development database');
+    cl.ok('[database] connected to development database');
     return mongoose.connection.db.dropDatabase( () => {
-      console.log(cl.warn, '[database] flushed development database');
+      cl.warn('[database] flushed development database');
       return createAccounts();
     });
   })
   .catch( err => {
-    console.log(cl.err,`[database] ${err.message}`);
+    cl.err(`[database] ${err.message}`);
     process.exit(1);
   });
 }
@@ -100,16 +100,16 @@ function connectToDevelopment () {
 /** Production environment database */
 
 function connectToProduction () {
-  console.log(cl.act, '[database] connecting...');
+  cl.act('[database] connecting...');
 
   return mongoose
   .connect(ENV.PRO_DB_URI_USER, options)
   .then( () => {
-    console.log(cl.ok, '[database] connected to production database');
+    cl.ok('[database] connected to production database');
     return createAccounts();
   })
   .catch( err => {
-    console.log(cl.err,`[database] ${err.message}`);
+    cl.err(`[database] ${err.message}`);
     process.exit(1);
   });
 }
