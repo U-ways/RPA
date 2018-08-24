@@ -1,5 +1,4 @@
 /* email service
-  - SO: How to rotate sendGrid API key using the client only?
 ============================================================================= */
 
 import { readFile } from 'fs';
