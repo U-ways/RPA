@@ -14,7 +14,7 @@ import API from './graphql';
 /** APP services **/
 
 import { database } from './services/database.js';
-import { email    } from './services/email.js';
+import { email    } from './services/email/index.js';
 
 /** APP middlewares **/
 
@@ -29,6 +29,7 @@ import { httpError      } from './middleware/httpError.js';
 import landingRouter   from './mvc/controllers/landing';
 import loginRouter     from './mvc/controllers/login';
 import logoutRouter    from './mvc/controllers/logout';
+import verifyRouter    from './mvc/controllers/verify';
 import registerRouter  from './mvc/controllers/register';
 import dashboardRouter from './mvc/controllers/dashboard';
 
@@ -86,7 +87,8 @@ else                               database.connectToDevelopment();
 
 /** email setup */
 
-if (ENV.NODE_ENV === 'production') email.init();
+if (ENV.NODE_ENV === 'production') email.init().then(() => email.test());
+else                               email.init();
 
 
 /* routing
@@ -103,6 +105,7 @@ APP.use(express.static(__dirname + '/node_modules/material-design-icons/iconfont
 APP.use('/', landingRouter);
 APP.use('/login', loginRouter);
 APP.use('/logout', logoutRouter);
+APP.use('/verify', verifyRouter);
 APP.use('/register', registerRouter);
 APP.use('/dashboard', dashboardRouter);
 
