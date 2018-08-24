@@ -1,0 +1,7 @@
+Hello {{to.name}},
+
+Thank you for requesting to verify your email address.
+
+<a href="http://www.localhost:3000/verify/{{code}}">
+  Click here to verify your email address
+</a>
