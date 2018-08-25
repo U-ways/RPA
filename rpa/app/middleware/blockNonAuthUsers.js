@@ -1,4 +1,4 @@
-/* Restrict-access middleware
+/* block non-auth users middleware
 ============================================================================= */
 
 /**
@@ -11,7 +11,7 @@
  *                           redirect to homepage otherwise.
  */
 export function blockNonAuthUsers(req, res, next) {
-  /** check the session connection */
+  /** check if session exists */
   if (!req.session) {
     let error = new Error(
       'No user session found, if you suspect '
@@ -20,13 +20,15 @@ export function blockNonAuthUsers(req, res, next) {
     return next(error);
   }
 
-  /** if authenticated pass to the next middleware */
-  if (req.session.auth) return next();
+  /** else if user is authenticated, pass to the next middleware */
+  else if (req.session.auth) return next();
 
   /** else redirect with an error */
   else {
     req.session.flash = {
-      message:'unauthorised: please login to access protected resources.' };
-    return res.redirect('/');
+      message:'unauthorised: please login before accessing protected resources.'
+    };
+    req.session.redirect = req.originalUrl;
+    return res.redirect('/login');
   }
 }
