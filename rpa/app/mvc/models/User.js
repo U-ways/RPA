@@ -55,27 +55,32 @@ const UserSchema = new mongoose.Schema({
   lockedUntil: {
     type: Date,
   },
+  verified: {
+    type: Boolean,
+    required: [true, 'required'],
+    default: false,
+  },
   logs: [LogSchema]
 });
 
 /* User pre-save
 ============================================================================= */
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function (done) {
   let user = this;
 
-  /** only hash password if it has been modified (or new) */
-  if (!user.isModified('password')) return next();
+  /** hash password if it has been modified (or new) */
+  if (user.isModified('password')) {
+    /** salt and hash the user's password then set as user's password*/
+    user.password = await user.hashPassword(user.password);
+  }
 
-  /** salt and hash the user's password*/
-  let hash = user.hashPassword(user.password);
+  /** set verified as false if email been modified (or new) */
+  if (user.isModified('email')) {
+    user.verified = false;
+  }
 
-  /** set the hashed password as the user's password */
-  hash.then(hashedPassword => {
-    user.password = hashedPassword;
-    return next();
-  });
-
+  return done();
 });
 
 /* User static methods
@@ -160,7 +165,7 @@ function incLoginAttempts () {
  * before it's saved to the database.
  *
  * @param  {String}  password  clear password
- * @return {String}            hashed password
+ * @return {promise}           hashed password
  */
 function bcryptHash (password) {
   const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
@@ -171,7 +176,7 @@ function bcryptHash (password) {
  * Compares both input and actual password togther
  *
  * @param  {String}  password  user input
- * @return {boolean}           true if password match, false otherwise.
+ * @return {promise}           true if password match, false otherwise.
  *                             also returns false if errors found.
  */
 function comaprePassword (password, hash) {
