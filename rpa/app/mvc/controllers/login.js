@@ -1,6 +1,7 @@
 /* login controller
 ============================================================================= */
 
+import path from 'path';
 import { Router } from 'express';
 import { UserModel } from '../models/User.js';
 
@@ -8,17 +9,55 @@ import { blockAuthUsers }   from '../../middleware/blockAuthUsers.js';
 import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
 
-const ENV    = process.env;
 const router = Router();
+const ENV    = process.env;
+
+/** get current file name and remove extension */
+const FILE_NAME = path.basename(__filename).slice(0, -3);
+
+router.get('/',
+  blockAuthUsers,
+  getLogic,
+);
 
 router.post('/',
   blockAuthUsers,
   authenticateUser,
   preventSessionDuplication,
-  postLogic);
+  postLogic,
+);
 
 /* logic
 ============================================================================= */
+
+/**
+ * Display a login page that can redirect on login success using the
+ * `res.locals.flash.redirect` property if available.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        render on success, error resposne otherwise.
+ */
+function getLogic (req, res, next) {
+  let view = {
+    title: FILE_NAME,
+    stylesheets: [
+      'iconfont/material-icons.css',
+      'stylesheets/core.css',
+      `stylesheets/${FILE_NAME}.css`
+    ],
+    scripts: [
+      'scripts/core.js',
+      `scripts/${FILE_NAME}.js`
+    ],
+    flash: res.locals.flash,
+    message: res.locals.message,
+    captcha: res.recaptcha,
+    session: req.session,
+  };
+  return res.render(FILE_NAME, view);
+}
 
 /**
  * Creates a new session, set the user session to authenticated,
@@ -35,6 +74,9 @@ router.post('/',
 function postLogic (req, res, next) {
   /** current logged-in user */
   let user = res.locals.user;
+
+  /** get a defined redirect before destroying the non-auth session */
+  let redirect = req.session.redirect;
 
   /** create new session for authenticated user */
   req.session.regenerate(err => {
@@ -63,8 +105,9 @@ function postLogic (req, res, next) {
 
     req.session.flash = {
       message: `Welcome back ${user.username}, `
-      + `You last logged-in on: ${user.getLastLoginDate().toUTCString()}.`};
-    return res.redirect('/dashboard');
+      + `You last logged-in on: ${user.getLastLoginDate().toUTCString()}.`
+    };
+    return res.redirect(redirect ? redirect : '/dashboard');
   });
 }
 
