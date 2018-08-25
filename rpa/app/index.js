@@ -21,7 +21,7 @@ import { email    } from './services/email/index.js';
 import { httpLogger     } from './middleware/httpLogger.js';
 import { sessionTracker } from './middleware/sessionTracker.js';
 import { flashMessages  } from './middleware/flashMessages.js';
-import { restrictAccess } from './middleware/restrictAccess.js';
+import { blockNonAuthUsers } from './middleware/blockNonAuthUsers.js';
 import { httpError      } from './middleware/httpError.js';
 
 /** APP controllers **/
@@ -75,7 +75,7 @@ APP.use(new sessionTracker, flashMessages);
 
 /** API setup */
 
-APP.use('/api', restrictAccess, API);
+APP.use('/api', blockNonAuthUsers, API);
 
 /* services
 ============================================================================= */

@@ -4,11 +4,11 @@
 import path from 'path';
 import { Router } from 'express';
 
-import { restrictAccess } from './../../middleware/restrictAccess.js';
+import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 
 const  router = Router();
 
-router.get('/', restrictAccess, getLogic);
+router.get('/', blockNonAuthUsers, getLogic);
 
 /* logic
 ============================================================================= */
