@@ -8,7 +8,10 @@ import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 
 const  router = Router();
 
-router.get('/', blockNonAuthUsers, getLogic);
+router.get('/',
+  blockNonAuthUsers, 
+  getLogic
+);
 
 /* logic
 ============================================================================= */
