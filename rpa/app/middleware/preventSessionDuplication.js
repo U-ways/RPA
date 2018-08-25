@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
- 
+
 /**
  * Prevent session duplication by checking if the user already have an active
  * stored session within its own instance.
@@ -36,7 +36,7 @@ export function preventSessionDuplication (req, res, next) {
       if (session && session.user && (session.user.username === user.username)) {
         /** if so, remove that key and let them create a new session. */
         redisClient.del(`sess:${user.sessionID}`);
-        user.sessionID = null;
+        delete user.sessionID;
         return next();
       }
       /**
@@ -44,7 +44,7 @@ export function preventSessionDuplication (req, res, next) {
        * thus remove the stored session ID and let them start a new session.
        */
       else {
-        user.sessionID = null;
+        delete user.sessionID;
         return next();
       }
     });
