@@ -1,3 +1,6 @@
+/* block auth users middleware
+============================================================================= */
+
 /**
  * Block route access to already logged in users.
  * This middleware is used to prevent actions that require the user
