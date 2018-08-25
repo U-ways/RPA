@@ -38,7 +38,7 @@ function notFound404 (req, res, next) {
 function mainErrorHandler (err, req, res, next) {
   /** prepare response as a JSON object */
   let error = (ENV.NODE_ENV === 'development') ? {
-    dev: err.dev,
+    dev: err.dev ? { message: err.dev.message, stack: err.dev.stack } : null,
     stack: err.stack,
     filename: err.filename,
     error: err.message,
