@@ -2,5 +2,6 @@ Hello {{to.name}},
 
 Thank you for requesting to verify your email address.
 
-Please click this link to verify your email address:
-http://www.localhost:3000/verify/{{code}}
+Please click this link to verify your email address: (or paste it into your web browser)
+
+{{verifyURL}}

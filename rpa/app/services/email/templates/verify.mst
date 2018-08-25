@@ -1,7 +1,7 @@
-Hello {{to.name}},
+<p>Hello {{to.name}},</p>
 
-Thank you for requesting to verify your email address.
+<p>Thank you for requesting to verify your email address.</p>
 
-<a href="http://www.localhost:3000/verify/{{code}}">
-  Click here to verify your email address
-</a>
+<b><a href="{{verifyURL}}">
+  Click here to finish verifying your email address.
+</a></b>
