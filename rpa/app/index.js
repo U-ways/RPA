@@ -13,8 +13,8 @@ import API from './graphql';
 
 /** APP services **/
 
-import { database } from './services/database/database.js';
-import { memory   } from './services/database/memory.js';
+import { database } from './services/storage/database.js';
+import { memory   } from './services/storage/memory.js';
 import { email    } from './services/email/index.js';
 
 /** APP middlewares **/
