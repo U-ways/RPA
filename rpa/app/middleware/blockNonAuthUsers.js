@@ -10,7 +10,7 @@
  * @return {next|response}   pass the request to the next middleware on success.
  *                           redirect to homepage otherwise.
  */
-export function restrictAccess(req, res, next) {
+export function blockNonAuthUsers(req, res, next) {
   /** check the session connection */
   if (!req.session) {
     let error = new Error(
