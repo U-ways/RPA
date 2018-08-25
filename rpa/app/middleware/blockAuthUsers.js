@@ -11,13 +11,12 @@
  */
 export function blockAuthUsers (req, res, next) {
   /** Check if user is authenticated (logged in) */
-  if (req.session.auth) {
+  if (req.session && req.session.auth) {
     let error = new Error(
       `Already logged in as ${req.session.user.username}, `
       + 'please sign out first to processed.');
     error.status = 400;
     return next(error);
   }
-
   else return next();
 }
