@@ -48,19 +48,13 @@ export function flashMessages (req, res, next) {
     let flash = session.flash;
 
     /** pass each object in flash to `temp` */
-    for (let key of Object.keys(flash)) {
-      temp[key] = flash[key];
-    }
+    for (let key of Object.keys(flash)) temp[key] = flash[key];
 
     /** then pass temp object to `res.locals.flash` */
     res.locals.flash = temp;
 
-    /**
-     * if an authenticated user session exists, garbage collect flash only.
-     * else destroy session to clear up some memory
-     */
-    if (session.auth) session.flash = null; // null to allow GC
-    else              session.destroy();
+    /** remove flash to clear some space */
+    delete session.flash;
   }
 
   return next();
