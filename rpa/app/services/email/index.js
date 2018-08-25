@@ -2,8 +2,8 @@
 ============================================================================= */
 
 import { readFile } from 'fs';
-import { cl }       from '../../../lib/colorLogger.js';
-import { CronJob }  from 'cron';
+import { CronJob  } from 'cron';
+import { cl       } from '../../../lib/colorLogger.js';
 import Mustache     from 'mustache';
 
 import sgMail from '@sendgrid/mail';
