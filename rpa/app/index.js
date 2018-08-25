@@ -7,13 +7,14 @@ import favicon        from 'serve-favicon';
 import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
-import cl             from '../lib/colorLogger.js';
+import { cl }         from '../lib/colorLogger.js';
 
 import API from './graphql';
 
 /** APP services **/
 
-import { database } from './services/database.js';
+import { database } from './services/database/database.js';
+import { memory   } from './services/database/memory.js';
 import { email    } from './services/email/index.js';
 
 /** APP middlewares **/
@@ -33,10 +34,28 @@ import verifyRouter    from './mvc/controllers/verify';
 import registerRouter  from './mvc/controllers/register';
 import dashboardRouter from './mvc/controllers/dashboard';
 
-/* Initialize express app
+const ENV = process.env;
+
+/* services
 ============================================================================= */
 
-const ENV = process.env;
+/** database setup */
+
+if (ENV.NODE_ENV === 'production') database.connectToProduction();
+else                               database.connectToDevelopment();
+
+/** memory setup */
+
+if (ENV.NODE_ENV === 'development') memory.flush();
+
+/** email setup */
+
+if (ENV.NODE_ENV === 'production') email.init().then(() => email.test());
+else                               email.init();
+
+/* Initialize app
+============================================================================= */
+
 const APP = express();
 
 /** prepare express body-parser **/
@@ -76,20 +95,6 @@ APP.use(new sessionTracker, flashMessages);
 /** API setup */
 
 APP.use('/api', blockNonAuthUsers, API);
-
-/* services
-============================================================================= */
-
-/** database setup */
-
-if (ENV.NODE_ENV === 'production') database.connectToProduction();
-else                               database.connectToDevelopment();
-
-/** email setup */
-
-if (ENV.NODE_ENV === 'production') email.init().then(() => email.test());
-else                               email.init();
-
 
 /* routing
 ============================================================================= */

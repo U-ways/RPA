@@ -21,15 +21,6 @@ export function sessionTracker () {
   const redisClient = redis.createClient();
   const RedisStore  = connectRedis(session);
 
-  /** delete all existing keys within redis */
-  redisClient.flushall('ASYNC', (err, success) => {
-    if (err) {
-      let error = new Error('unable to flush existing session store.');
-      if (ENV.NODE_ENV === 'development') error.dev = err;
-      return next(error);
-    }
-  });
-
   let secret  = [
     ENV.SECRET_1,
     ENV.SECRET_2,
