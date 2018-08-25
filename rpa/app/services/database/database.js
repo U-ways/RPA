@@ -2,8 +2,8 @@
 ============================================================================= */
 
 import mongoose      from 'mongoose';
-import { UserModel } from '../mvc/models/User.js';
-import { cl }        from '../../lib/colorLogger.js';
+import { UserModel } from '../../mvc/models/User.js';
+import { cl }        from '../../../lib/colorLogger.js';
 
 const ENV = process.env;
 
