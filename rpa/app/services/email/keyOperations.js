@@ -93,7 +93,6 @@ function getKeys () {
  * @return {String}      full API key
  */
 function createKey (name) {
-  cl.act(`[email] creating new API key: rpa-${name}`);
   const req = {
     method: 'POST',
     url: '/v3/api_keys',
