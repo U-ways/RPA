@@ -3,10 +3,9 @@
 /**
  * Module dependencies.
  */
-import APP   from '../app';
-// https://www.npmjs.com/package/debug
-import debug from 'debug';
-import http  from 'http';
+import APP    from '../app';
+import http   from 'http';
+import { cl } from '../lib/colorLogger.js';
 
 /**
  * Get port from environment and store in Express.
@@ -31,27 +30,16 @@ server.on('listening', onListening);
  */
 function normalizePort(val) {
   var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
+  if (isNaN(port)) return val;  // named pipe
+  if (port >= 0)   return port; // port number
+  else             return false;
 }
 
 /**
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+  if (error.syscall !== 'listen') throw error;
 
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
@@ -80,5 +68,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.info('[app] listening on ' + bind);
 }
