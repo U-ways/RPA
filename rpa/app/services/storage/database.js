@@ -16,8 +16,10 @@ const createAdmin = () => {
     username: ENV.ADMIN_USERNAME,
     password: ENV.ADMIN_PASSWORD,
     email:    ENV.ADMIN_EMAIL,
-    logs: [{ activity: 2, description: 'register root account' }]
+    logs: [{ activity: 2, description: 'register root account' }],
   }).save( (err, admin) => {
+    /** verify email address after creating account */
+    admin.verified = true; admin.save();
     cl.ok(`[database] created root account: `
       +   `${admin.username} (email: ${admin.email})`);
   });
