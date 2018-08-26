@@ -12,7 +12,7 @@ const env = process.env;
 
 /** Root account is used for administration. */
 const createAdmin = () => {
-  const Admin = new UserModel({
+  const admin = new UserModel({
     username: env.ADMIN_USERNAME,
     password: env.ADMIN_PASSWORD,
     email:    env.ADMIN_EMAIL,
@@ -27,12 +27,13 @@ const createAdmin = () => {
 
 /** Bot account is used for mailing and user verification. */
 const createBot = () => {
-  const Bot = new UserModel({
+  const bot = new UserModel({
     username: env.BOT_USERNAME,
     password: env.BOT_PASSWORD,
     email:    env.BOT_EMAIL,
     logs: [{ activity: 2, description: 'register bot account' }]
   }).save( (err, bot) => {
+    bot.verified = true; bot.save();
     console.info(`[database] created bot account: `
       +   `${bot.username} (email: ${bot.email})`);
   });
