@@ -82,8 +82,6 @@ const options  = {
 /** Development environment database */
 
 function connectToDevelopment () {
-  cl.act('[database] connecting...');
-
   return mongoose
   .connect(ENV.DEV_DB_URI_ADMIN, options)
   .then( mongoose => {
@@ -102,8 +100,6 @@ function connectToDevelopment () {
 /** Production environment database */
 
 function connectToProduction () {
-  cl.act('[database] connecting...');
-
   return mongoose
   .connect(ENV.PRO_DB_URI_USER, options)
   .then( () => {
