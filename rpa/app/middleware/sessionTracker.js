@@ -5,7 +5,7 @@ import session      from 'express-session';
 import redis        from 'redis';
 import connectRedis from 'connect-redis';
 
-const ENV = process.env;
+const env = process.env;
 
 /**
  * Track users by creating a session tracker for each connection
@@ -22,14 +22,14 @@ export function sessionTracker () {
   const RedisStore  = connectRedis(session);
 
   let secret  = [
-    ENV.SECRET_1,
-    ENV.SECRET_2,
-    ENV.SECRET_3 ];
+    env.SECRET_1,
+    env.SECRET_2,
+    env.SECRET_3 ];
   let storeOptions = {
-    host: ENV.HOST,
-    port: parseInt(ENV.REDIS_PORT),
+    host: env.HOST,
+    port: parseInt(env.REDIS_PORT),
     client: redisClient,
-    logErrors: ENV.NODE_ENV === 'development' ? true : false
+    logErrors: env.NODE_ENV === 'development' ? true : false
   }
   let options = {
     name: 'RPA_session_cookie',

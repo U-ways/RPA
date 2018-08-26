@@ -1,7 +1,7 @@
 /* logout controller
 ============================================================================= */
 
-import { Router } from 'express';
+import { Router    } from 'express';
 import { UserModel } from '../models/User.js';
 
 const router = Router();

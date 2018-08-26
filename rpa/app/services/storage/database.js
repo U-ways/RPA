@@ -2,10 +2,10 @@
 ============================================================================= */
 
 import mongoose      from 'mongoose';
-import { UserModel } from '../../mvc/models/User.js';
-import { cl }        from '../../../lib/colorLogger.js';
 
-const ENV = process.env;
+import { UserModel } from '../../mvc/models/User.js';
+
+const env = process.env;
 
 /* static database accounts
 ============================================================================= */
@@ -13,14 +13,14 @@ const ENV = process.env;
 /** Root account is used for administration. */
 const createAdmin = () => {
   const Admin = new UserModel({
-    username: ENV.ADMIN_USERNAME,
-    password: ENV.ADMIN_PASSWORD,
-    email:    ENV.ADMIN_EMAIL,
+    username: env.ADMIN_USERNAME,
+    password: env.ADMIN_PASSWORD,
+    email:    env.ADMIN_EMAIL,
     logs: [{ activity: 2, description: 'register root account' }],
   }).save( (err, admin) => {
     /** verify email address after creating account */
     admin.verified = true; admin.save();
-    cl.ok(`[database] created root account: `
+    console.info(`[database] created root account: `
       +   `${admin.username} (email: ${admin.email})`);
   });
 };
@@ -28,12 +28,12 @@ const createAdmin = () => {
 /** Bot account is used for mailing and user verification. */
 const createBot = () => {
   const Bot = new UserModel({
-    username: ENV.BOT_USERNAME,
-    password: ENV.BOT_PASSWORD,
-    email:    ENV.BOT_EMAIL,
+    username: env.BOT_USERNAME,
+    password: env.BOT_PASSWORD,
+    email:    env.BOT_EMAIL,
     logs: [{ activity: 2, description: 'register bot account' }]
   }).save( (err, bot) => {
-    cl.ok(`[database] created bot account: `
+    console.info(`[database] created bot account: `
       +   `${bot.username} (email: ${bot.email})`);
   });
 };
@@ -42,23 +42,23 @@ const createBot = () => {
 function createAccounts () {
   /** check if admin account already exsits in the DB */
   return UserModel.find({
-    $or: [{username: ENV.ADMIN_USERNAME}, {username: ENV.BOT_USERNAME}]
+    $or: [{username: env.ADMIN_USERNAME}, {username: env.BOT_USERNAME}]
   })
   .then( accounts => {
     if (accounts.length === 2) {
-      cl.warn(`[database] skipping root & bot account creation: `
-        +     `${ENV.ADMIN_USERNAME} & ${ENV.BOT_USERNAME} already exists.`);
+      console.warn(`[database] skipping root & bot account creation: `
+        +     `${env.ADMIN_USERNAME} & ${env.BOT_USERNAME} already exists.`);
       return createBot();
     }
     else if (accounts.length === 1) {
-      if (accounts[0].username === ENV.ADMIN_USERNAME) {
-        cl.warn(`[database] skipping root account creation: `
-          +     `${ENV.ADMIN_USERNAME} already exists.`);
+      if (accounts[0].username === env.ADMIN_USERNAME) {
+        console.warn(`[database] skipping root account creation: `
+          +     `${env.ADMIN_USERNAME} already exists.`);
         return createBot();
       }
       else {
-        cl.warn(`[database] skipping bot account creation: `
-          +     `${ENV.BOT_USERNAME} already exists.`);
+        console.warn(`[database] skipping bot account creation: `
+          +     `${env.BOT_USERNAME} already exists.`);
         return createAdmin();
       }
     }
@@ -66,7 +66,7 @@ function createAccounts () {
     else createBot(), createAdmin();
   })
   .catch( err => {
-    cl.err(`[database] unable to create accounts - ${err.message}`);
+    console.error(`[database] unable to create accounts - ${err.message}`);
     process.exit(1);
   });
 }
@@ -83,16 +83,16 @@ const options  = {
 
 function connectToDevelopment () {
   return mongoose
-  .connect(ENV.DEV_DB_URI_ADMIN, options)
+  .connect(env.DEV_DB_URI_ADMIN, options)
   .then( mongoose => {
-    cl.ok('[database] connected to development database');
+    console.info('[database] connected to development database');
     return mongoose.connection.db.dropDatabase( () => {
-      cl.warn('[database] flushed development database');
+      console.warn('[database] flushed development database');
       return createAccounts();
     });
   })
   .catch( err => {
-    cl.err(`[database] ${err.message}`);
+    console.error(`[database] ${err.message}`);
     process.exit(1);
   });
 }
@@ -101,13 +101,13 @@ function connectToDevelopment () {
 
 function connectToProduction () {
   return mongoose
-  .connect(ENV.PRO_DB_URI_USER, options)
+  .connect(env.PRO_DB_URI_USER, options)
   .then( () => {
-    cl.ok('[database] connected to production database');
+    console.info('[database] connected to production database');
     return createAccounts();
   })
   .catch( err => {
-    cl.err(`[database] ${err.message}`);
+    console.error(`[database] ${err.message}`);
     process.exit(1);
   });
 }

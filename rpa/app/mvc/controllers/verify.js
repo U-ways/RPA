@@ -7,7 +7,7 @@ import { email     } from '../../services/email/index.js';
 import { blockNonAuthUsers } from '../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
-const ENV    = process.env;
+const env    = process.env;
 
 router.get('/',
   blockNonAuthUsers,
@@ -90,7 +90,7 @@ async function generateVerificationHash (req, res, next) {
   }
   catch (err) {
     let error = new Error('failed to generate hash for email verification');
-    if (ENV.NODE_ENV === 'development') error.dev = err;
+    if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
 }
@@ -109,11 +109,11 @@ function sendVerificationEmail (req, res, next) {
   const user = req.session.user;
   const data = {
     to:   { name: user.username, email: user.email,       },
-    from: { name: ENV.BOT_USERNAME, email: ENV.BOT_EMAIL, },
+    from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
     subject: 'RPA - Verify Email',
     text: 'verify.txt',
     html: 'verify.mst',
-    verifyURL: 'http://www.' + `${ENV.HOST}:${ENV.HTTP_PORT}`
+    verifyURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
       + `/verify/${user.id}/${encodeURIComponent(res.locals.hash)}`,
   };
   email.send(data)
@@ -124,7 +124,7 @@ function sendVerificationEmail (req, res, next) {
     })
     .catch( err => {
       let error = new Error(`failed to send email verification request`);
-      if (ENV.NODE_ENV === 'development') error.dev = err;
+      if (env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     });
 }
@@ -162,7 +162,7 @@ async function verifyEmailAddress (req, res, next) {
   }
   catch (err) {
     let error = new Error('failed to verify email address');
-    if (ENV.NODE_ENV === 'development') error.dev = err;
+    if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
 }

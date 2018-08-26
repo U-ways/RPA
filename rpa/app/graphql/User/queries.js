@@ -1,5 +1,6 @@
 /** Queries
 ============================================================================= */
+
 import {
   GraphQLInputObjectType,
   GraphQLObjectType,

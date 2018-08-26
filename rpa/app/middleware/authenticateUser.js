@@ -3,7 +3,7 @@
 
 import { UserModel } from '../mvc/models/User.js';
 
-const ENV = process.env;
+const env = process.env;
 
 /**
  * Authenticate a client based on username (or email) and password input.
@@ -31,7 +31,7 @@ export function authenticateUser (req, res, next) {
     if (err) {
       let error = new Error(
         'Internal error - unable to query database, contact administrator.');
-      if (ENV.NODE_ENV === 'development') error.dev = err;
+      if (env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
 
@@ -87,7 +87,7 @@ export function authenticateUser (req, res, next) {
     .catch(err => {
       let error = new Error(
         'Internal error - unable to validated password, contact administrator.');
-      if (ENV.NODE_ENV === 'development') error.dev = err;
+      if (env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     });
 

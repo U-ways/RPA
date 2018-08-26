@@ -1,5 +1,6 @@
 /** Resolvers
 ============================================================================= */
+
 import { StoreModel } from '../../mvc/models/Store.js';
 import flatten    from 'flat';
 

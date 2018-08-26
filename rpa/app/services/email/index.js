@@ -1,15 +1,15 @@
 /* email service
 ============================================================================= */
 
+import Mustache from 'mustache';
+import sgMail   from '@sendgrid/mail';
+
 import { readFile } from 'fs';
 import { CronJob  } from 'cron';
-import { cl       } from '../../../lib/colorLogger.js';
-import Mustache     from 'mustache';
-
-import sgMail from '@sendgrid/mail';
 import { key, cleanKeysDatabase } from './keyOperations.js';
 
-const ENV = process.env;
+
+const env = process.env;
 
 /* Email services
 ============================================================================= */
@@ -103,11 +103,11 @@ async function testSGMailService () {
 
   sgMail.send(msg)
     .then(() => {
-      cl.ok('[email] service test: passed');
+      console.info('[email] service test: passed');
       return true;
     })
     .catch(err => {
-      cl.err(`[email] service test: failed - reason: ${err.toString()}`);
+      console.error(`[email] service test: failed - reason: ${err.toString()}`);
       return false;
     });
 }

@@ -1,5 +1,8 @@
 /** Types
 ============================================================================= */
+
+import GraphQLTimestamp from '../scalars/GraphQLTimestamp.js';
+
 import {
   GraphQLInputObjectType,
   GraphQLObjectType,
@@ -11,8 +14,6 @@ import {
   GraphQLFloat,
   GraphQLBoolean
 } from 'graphql/type';
-
-import GraphQLTimestamp from '../scalars/GraphQLTimestamp.js';
 
 /** Log **/
 

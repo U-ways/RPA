@@ -1,8 +1,10 @@
 /* Store Mongoose schema
 ============================================================================= */
+
 // Mongoose instance is a Singleton (goo.gl/Nw3TqU)
 import mongoose          from 'mongoose';
 import uniqueValidator   from 'mongoose-unique-validator';
+
 import { ProductSchema } from './Product.js';
 
 // UK postcode format: https://www.mrs.org.uk/pdf/postcodeformat.pdf

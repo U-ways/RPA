@@ -2,15 +2,15 @@
 ============================================================================= */
 
 import path from 'path';
-import { Router } from 'express';
-import { UserModel } from '../models/User.js';
 
-import { blockAuthUsers }   from '../../middleware/blockAuthUsers.js';
+import { Router    } from 'express';
+import { UserModel } from '../models/User.js';
+import { blockAuthUsers   } from '../../middleware/blockAuthUsers.js';
 import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
 
 const router = Router();
-const ENV    = process.env;
+const env    = process.env;
 
 /** get current file name and remove extension */
 const FILE_NAME = path.basename(__filename).slice(0, -3);
@@ -83,7 +83,7 @@ function postLogic (req, res, next) {
     if (err) {
       let error = new Error(
         'unable to create a new session for authenticated user.');
-      if (ENV.NODE_ENV === 'development') error.dev = err;
+      if (env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
 

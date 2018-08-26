@@ -1,7 +1,6 @@
-/* memory
+/* session
 ============================================================================= */
 
-import { cl } from '../../../lib/colorLogger.js';
 import redis  from 'redis';
 
 const redisClient = redis.createClient();
@@ -10,17 +9,17 @@ const redisClient = redis.createClient();
 function flushSessionStore () {
   return redisClient.flushall('ASYNC', (err, success) => {
     if (err) {
-      cl.err(`[store] unable to flush existing session store`);
-      cl.err(`[store] reason: ${err}`);
+      console.error(`[store] unable to flush existing session store`);
+      console.error(`[store] reason: ${err}`);
       return process.exit(1);
     }
-    else return cl.warn('[store] flushed redis session store');
+    else return console.warn('[store] flushed redis session store');
   });
 }
 
 
 /** export memory methods as an object for convenience */
 
-export const memory = {
+export const session = {
   flush: flushSessionStore,
 }

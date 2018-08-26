@@ -7,17 +7,15 @@ import favicon        from 'serve-favicon';
 import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';
 import mustache       from 'mustache-express';
-import { cl }         from '../lib/colorLogger.js';
 
-import API from './graphql';
-
-/** APP services **/
+/** app services **/
 
 import { database } from './services/storage/database.js';
-import { memory   } from './services/storage/memory.js';
+import { session  } from './services/storage/session.js';
 import { email    } from './services/email/index.js';
+import { api      } from './graphql'; // TODO: move me to services dir later
 
-/** APP middlewares **/
+/** app middlewares **/
 
 import { httpLogger     } from './middleware/httpLogger.js';
 import { sessionTracker } from './middleware/sessionTracker.js';
@@ -25,7 +23,7 @@ import { flashMessages  } from './middleware/flashMessages.js';
 import { blockNonAuthUsers } from './middleware/blockNonAuthUsers.js';
 import { httpError      } from './middleware/httpError.js';
 
-/** APP controllers **/
+/** app controllers **/
 
 import landingRouter   from './mvc/controllers/landing';
 import loginRouter     from './mvc/controllers/login';
@@ -34,47 +32,44 @@ import verifyRouter    from './mvc/controllers/verify';
 import registerRouter  from './mvc/controllers/register';
 import dashboardRouter from './mvc/controllers/dashboard';
 
-const ENV = process.env;
+const env = process.env;
+
+/** turn all console logging off on production */
+if (env.NODE_ENV === 'production') console.off();
 
 /* services
 ============================================================================= */
 
-/** database setup */
-
-if (ENV.NODE_ENV === 'production') database.connectToProduction();
-else                               database.connectToDevelopment();
-
-/** memory setup */
-
-if (ENV.NODE_ENV === 'development') memory.flush();
-
-/** email setup */
-
-if (ENV.NODE_ENV === 'production') email.init().then(() => email.test());
-else                               email.init();
+if (env.NODE_ENV === 'production') {
+  database.connectToProduction();
+  email.init().then(() => email.test());
+}
+else {
+  database.connectToDevelopment();
+  session.flush();
+  email.init();
+}
 
 /* Initialize app
 ============================================================================= */
 
-const APP = express();
+const app = express();
 
 /** prepare express body-parser **/
 
-APP.use(express.json());
-APP.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /** view engine setup */
 
-let VIEWS_PATH = path.join(__dirname, 'mvc/views');
-
-APP.engine('mst', mustache(VIEWS_PATH + '/partials', '.mst'));
-APP.set('view engine', 'mst');
-APP.set('views', VIEWS_PATH);
+app.engine('mst', mustache(__dirname + '/mvc/views/partials', '.mst'));
+app.set('view engine', 'mst');
+app.set('views', __dirname + '/mvc/views');
 
 /** css preprocessor setup **/
 
-APP.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
+app.use(sassMiddleware({
+  src:  path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
   indentedSyntax: true, // true = .sass and false = .scss
   sourceMap: true
@@ -82,45 +77,44 @@ APP.use(sassMiddleware({
 
 /** Server logger setup */
 
-APP.use(
-  (ENV.NODE_ENV === 'production') ?
-    (httpLogger.request, httpLogger.response)
-    : httpLogger.dev
+app.use( (env.NODE_ENV === 'production')
+  ? (httpLogger.request, httpLogger.response)
+  : httpLogger.dev
 );
 
 /** Session & flash setup */
 
-APP.use(new sessionTracker, flashMessages);
+app.use(new sessionTracker, flashMessages);
 
 /** API setup */
 
-APP.use('/api', blockNonAuthUsers, API);
+app.use('/api', blockNonAuthUsers, api);
 
 /* routing
 ============================================================================= */
 
 /** static routes */
 
-APP.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-APP.use(express.static(__dirname + '/public'));
-APP.use(express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 /** Dynamic routes */
 
-APP.use('/', landingRouter);
-APP.use('/login', loginRouter);
-APP.use('/logout', logoutRouter);
-APP.use('/verify', verifyRouter);
-APP.use('/register', registerRouter);
-APP.use('/dashboard', dashboardRouter);
+app.use('/', landingRouter);
+app.use('/login', loginRouter);
+app.use('/logout', logoutRouter);
+app.use('/verify', verifyRouter);
+app.use('/register', registerRouter);
+app.use('/dashboard', dashboardRouter);
 
 /* Error handlers
 ============================================================================= */
 
 /** catch 404 errors and render 404 view  */
-APP.use(httpError[404]);
+app.use(httpError[404]);
 
 /** error handler for everything else */
-APP.use(httpError.all);
+app.use(httpError.all);
 
-export default APP;
+export default app;

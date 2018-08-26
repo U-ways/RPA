@@ -1,13 +1,11 @@
 /* key operations
 ============================================================================= */
 
-import { cl } from '../../../lib/colorLogger.js';
-
 import sgClient from '@sendgrid/client';
 
-const ENV = process.env;
+const env = process.env;
 
-sgClient.setApiKey(ENV.SG_ADMIN_KEY);
+sgClient.setApiKey(env.SG_ADMIN_KEY);
 
 /**
  * Everything in the API key _after the SG and before the second dot_ is the
@@ -48,7 +46,7 @@ async function rotateKey (key) {
 
   /** rotate key if it is older than 1 month */
   if ((currentTimestamp - KeyCreationDate) > TWO_MONTHS) {
-    cl.warn('[email] SendGrid API key expired, rotating key...');
+    console.warn('[email] SendGrid API key expired, rotating key...');
 
     /** create new key using current timestamp */
     let newAPIKey = await createKey(currentTimestamp.toString());
@@ -75,7 +73,7 @@ function getKeys () {
       return result;
     })
     .catch( err => {
-      cl.err(`[email] Unable to get keys: ${err.code} ${err.message}`);
+      console.error(`[email] Unable to get keys: ${err.code} ${err.message}`);
     });
 }
 
@@ -103,11 +101,11 @@ function createKey (name) {
   };
   return sgClient.request(req)
     .then( ([res, body]) => {
-      cl.ok(`[email] created new API key (ID: ${body.api_key_id})`);
+      console.info(`[email] created new API key (ID: ${body.api_key_id})`);
       return body.api_key;
     })
     .catch( err => {
-      cl.err(`[email] Unable to create new API key: ${err.code} ${err.message}`);
+      console.error(`[email] Unable to create new API key: ${err.code} ${err.message}`);
     });
 }
 
@@ -128,9 +126,9 @@ function deleteKey (key) {
     url: `/v3/api_keys/${id}`,
   };
   return sgClient.request(req)
-    .then( ()   => cl.warn(`[email] removed old API key (ID: ${id})`))
+    .then( ()   => console.warn(`[email] removed old API key (ID: ${id})`))
     .catch( err => {
-      cl.err(`[email] Unable to delete API key: ${err.code} ${err.message}`);
+      console.error(`[email] Unable to delete API key: ${err.code} ${err.message}`);
     });
 }
 
@@ -152,7 +150,7 @@ function getKeyDate (key) {
       return new Date(timestamp);
     })
     .catch( err => {
-      cl.err(`[email] Unable to get key creation date: ${err.code} ${err.message}`);
+      console.error(`[email] Unable to get key creation date: ${err.code} ${err.message}`);
     });
 }
 
@@ -172,7 +170,7 @@ export async function cleanKeysDatabase () {
   });
 
   rpaRotationKeys.forEach(({name, api_key_id}) => {
-    cl.warn(`[email] deleting old API key: ${name}`);
+    console.warn(`[email] deleting old API key: ${name}`);
     deleteKey(api_key_id);
   });
 }

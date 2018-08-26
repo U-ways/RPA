@@ -2,8 +2,8 @@
 ============================================================================= */
 
 import path from 'path';
-import { Router } from 'express';
 
+import { Router    } from 'express';
 import { reCaptcha } from '../../middleware/reCaptcha.js';
 
 const router = Router();

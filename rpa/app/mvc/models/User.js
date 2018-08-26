@@ -1,9 +1,11 @@
 /* User Mongoose schema
 ============================================================================= */
+
 import dotenv   from 'dotenv/config';
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import { LogSchema }   from './Log.js';
+
+import { LogSchema } from './Log.js';
 
 /** Must starts with a letter then can include underscores (_) & hyphens (-) */
 const USERNAME_REGEX = /^[a-zA-Z][\w-]+$/;
@@ -76,9 +78,7 @@ UserSchema.pre('save', async function (done) {
   }
 
   /** set verified as false if email been modified (or new) */
-  if (user.isModified('email')) {
-    user.verified = false;
-  }
+  if (user.isModified('email')) user.verified = false;
 
   return done();
 });

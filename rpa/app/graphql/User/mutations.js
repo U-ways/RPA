@@ -1,5 +1,6 @@
 /** Mutation
 ============================================================================= */
+
 import {
   GraphQLInputObjectType,
   GraphQLObjectType,

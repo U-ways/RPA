@@ -2,14 +2,14 @@
 ============================================================================= */
 
 import path from 'path';
-import { Router } from 'express';
 
+import { Router } from 'express';
 import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 
-const  router = Router();
+const router = Router();
 
 router.get('/',
-  blockNonAuthUsers, 
+  blockNonAuthUsers,
   getLogic
 );
 

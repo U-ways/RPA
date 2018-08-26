@@ -1,16 +1,18 @@
+/* Google reCaptcha middleware
+============================================================================= */
+
 import dotenv from 'dotenv/config';
 import { Recaptcha } from 'express-recaptcha';
 
-const ENV = process.env;
+const env = process.env;
 
 /**
- * Google reCaptcha v2 middleware.
- *
+ * Create a new reCaptcha object.
  * Docs: https://developers.google.com/recaptcha/intro
  *
  * @type {Recaptcha}
  */
-export const reCaptcha = new Recaptcha(ENV.SITE_KEY, ENV.SECRET_KEY, {
+export const reCaptcha = new Recaptcha(env.SITE_KEY, env.SECRET_KEY, {
   type: 'image',
   size: 'compact',
 });

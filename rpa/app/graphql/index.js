@@ -1,9 +1,11 @@
 /* GraphQL API
 ============================================================================= */
-import { GraphQLObjectType, GraphQLSchema } from 'graphql/type';
-import graphqlHTTP from 'express-graphql';
+
 import Store from './Store';
 import User  from './User';
+import graphqlHTTP from 'express-graphql';
+
+import { GraphQLObjectType, GraphQLSchema } from 'graphql/type';
 
 /** Query **/
 
@@ -40,9 +42,7 @@ const Schema = new GraphQLSchema({
 
 /** HTTP API **/
 
-const API = graphqlHTTP({
+export const api = graphqlHTTP({
   schema: Schema,
   graphiql: true
 });
-
-export default API;

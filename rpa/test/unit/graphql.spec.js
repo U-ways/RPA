@@ -1,28 +1,30 @@
 /* GraphQL Sepc
 ============================================================================= */
+
 import mongoose from 'mongoose';
 import dotenv   from 'dotenv/config';
-import { cl }   from '../../lib/colorLogger.js';
+
 import { describe, before, after, it } from 'mocha';
+
+const env = process.env;
 
 describe('/graphql', () => {
 
   /** Connect and clean database **/
 
   before('connect to database', () => {
-    cl.act('    Connecting to DB');
     let options  = { useNewUrlParser: true };
-    return mongoose.connect(process.env.DEV_DB_URI_ADMIN, options).then(
+    return mongoose.connect(env.DEV_DB_URI_ADMIN, options).then(
       mongoose => {
-        cl.ok('    Connected to database');
-        cl.warn('    Cleaning database\n');
+        console.info('    Connected to database');
+        console.warn('    Cleaning database\n');
         return mongoose.connection.db.dropDatabase();
       },
-      error => { cl.err(`    Database: ${error.message}`); }
+      error => { console.error(`    Database: ${error.message}`); }
     )
   });
   after('disconnect from database', () => {
-    mongoose.connection.close(() => cl.warn('    Connection closed'));
+    mongoose.connection.close(() => console.warn('    Connection closed'));
   });
 
   /** Store API tests **/

@@ -1,5 +1,6 @@
 /** Resolvers
 ============================================================================= */
+
 import { UserModel } from '../../mvc/models/User.js';
 
 export function find(obj, {username, email}) {
