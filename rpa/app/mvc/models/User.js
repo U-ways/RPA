@@ -68,17 +68,21 @@ const UserSchema = new mongoose.Schema({
 /* User pre-save
 ============================================================================= */
 
-UserSchema.pre('save', async function (done) {
+UserSchema.pre('save', function (done) {
   let user = this;
+
+  /** set verified as false if email been modified (or new) */
+  if (user.isModified('email')) user.verified = false;
 
   /** hash password if it has been modified (or new) */
   if (user.isModified('password')) {
     /** salt and hash the user's password then set as user's password*/
-    user.password = await user.hashPassword(user.password);
+    let hash = user.hashPassword(user.password);
+    return hash.then(hashedPassword => {
+      user.password = hashedPassword;
+      return done();
+    });
   }
-
-  /** set verified as false if email been modified (or new) */
-  if (user.isModified('email')) user.verified = false;
 
   return done();
 });
