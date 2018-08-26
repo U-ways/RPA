@@ -83,7 +83,7 @@ function getKeys () {
  * Create a new SG API key specifically for RPA.
  * The new key will have `rpa-[CREATION_DATE]` as it's name.
  *
- * NOTE:
+ * Note:
  * The full API key returned can only be read once.
  * See [SG API keys doc][1] for details.
  *
@@ -115,7 +115,7 @@ function createKey (name) {
 /**
  * Delete an API key.
  *
- * NOTE:
+ * Note:
  * You can pass the API key or ID to identify the key to delete.
  *
  * @param  {String} key The API key or ID to delete
