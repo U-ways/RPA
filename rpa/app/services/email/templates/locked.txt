@@ -1,0 +1,7 @@
+Hello {{to.name}},
+
+Your account has been locked for 2 hours due to multiple failed login attempts.
+
+Please click this link to terminate your locked session or password reset your account: (or paste it into your web browser)
+
+{{unlockURL}}

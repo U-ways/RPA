@@ -1,13 +1,9 @@
-{{to.name}},
+<p>Hello {{to.name}},</p>
 
-Your account has been locked for 2 hours due to multiple failed login attempts.
+<p>
+  Your account has been locked for 2 hours due to multiple failed login attempts.
+</p>
 
-<a href="http://www.localhost:3000{{code}}">
-  Click here to terminate your locked session.
-</a>
-
-or
-
-<a href="http://www.localhost:3000{{code}}">
-  Click here to password reset your account.
-</a>
+<b><a href="{{unlockURL}}">
+  Click here to terminate your locked session or password reset your account
+</a></b>
