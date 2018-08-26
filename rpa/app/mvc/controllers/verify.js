@@ -144,8 +144,8 @@ async function verifyEmailAddress (req, res, next) {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('user id doesn\'t exist');
 
-    let result = await user.validPassword(user.password, req.params.hash);
-    if (!result) throw new Error('invalid hash value');
+    let validate = await user.validPassword(user.password, req.params.hash);
+    if (!validate) throw new Error('invalid hash value');
 
     /** verify user email address */
     user.verified = true;
@@ -161,7 +161,8 @@ async function verifyEmailAddress (req, res, next) {
     res.redirect('/');
   }
   catch (err) {
-    let error = new Error('failed to verify email address');
+    let error = new Error('failed to verify email address, '
+      + 'please request a new verification token.');
     if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
