@@ -13,8 +13,8 @@ const USERNAME_REGEX = /^[a-zA-Z][\w-]+$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 /** The maximum login attempts the user can try before getting locked out */
 const MAX_LOGIN_ATTEMPTS = 5;
-/** 2 hours lock time */
-const LOCK_TIME = 2 * 3600000;
+/** 3 hours lock time */
+const LOCK_TIME = 3 * 3600000;
 
 /**
  * TODO: learn how to doc database models
