@@ -79,7 +79,7 @@ function postLogic (req, res, next) {
   let redirect = req.session.redirect;
 
   /** create new session for authenticated user */
-  req.session.regenerate(err => {
+  return req.session.regenerate(err => {
     if (err) {
       let error = new Error(
         'unable to create a new session for authenticated user.');
@@ -92,7 +92,7 @@ function postLogic (req, res, next) {
     req.session.user = {
       id: user._id,
       username: user.username,
-      email: user.email
+      email: user.email,
     }
     /** increase session timeout to 30 minutes for authenticated users */
     req.session.cookie.maxAge = 30 * 60 * 1000;
