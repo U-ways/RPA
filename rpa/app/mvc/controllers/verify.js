@@ -85,7 +85,7 @@ async function limitVerificationAttempts (req, res, next) {
 async function generateVerificationToken (req, res, next) {
   try {
     let user         = await UserModel.findById(req.session.user.id).exec();
-    res.locals.token = await user.createLockedSessionToken();
+    res.locals.token = await user.generateToken();
     return next();
   }
   catch (err) {

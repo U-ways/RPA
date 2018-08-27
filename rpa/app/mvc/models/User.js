@@ -209,7 +209,7 @@ function validatePassword (password, hash) {
  *
  * @return {Promise<String>}  The generated token
  */
-function createLockedSessionToken () {
+function generateToken () {
   let user = this;
 
   /**
@@ -261,7 +261,7 @@ UserSchema.methods.incLoginAttempts = incLoginAttempts;
 UserSchema.methods.hashPassword     = hashPassword;
 UserSchema.methods.validatePassword = validatePassword;
 UserSchema.methods.validateToken    = validateToken;
-UserSchema.methods.createLockedSessionToken = createLockedSessionToken;
+UserSchema.methods.generateToken    = generateToken;
 
 UserSchema.plugin(uniqueValidator);
 export const UserModel = mongoose.model('User', UserSchema);

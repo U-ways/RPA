@@ -13,7 +13,7 @@ const env = process.env;
  * @param  {Object} user  the user to receive the email
  */
 async function sendLockOutEmail (user) {
-  let token = await user.createLockedSessionToken();
+  let token = await user.generateToken();
   const data = {
     to:   { name: user.username, email: user.email,       },
     from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
