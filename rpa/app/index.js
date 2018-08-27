@@ -12,8 +12,8 @@ import mustache       from 'mustache-express';
 
 import { database } from './services/storage/database.js';
 import { session  } from './services/storage/session.js';
-import { email    } from './services/email/index.js';
-import { api      } from './graphql'; // TODO: move me to services dir later
+import { Email    } from './services/email/index.js';
+import { api      } from './graphql';
 
 /** app middlewares **/
 
@@ -44,12 +44,12 @@ if (env.NODE_ENV === 'production') console.off();
 
 if (env.NODE_ENV === 'production') {
   database.connectToProduction();
-  email.init().then(() => email.test());
+  Email.init().then(() => Email.test());
 }
 else {
   database.connectToDevelopment();
   session.flush();
-  email.init();
+  Email.init();
 }
 
 /* Initialize app

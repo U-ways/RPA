@@ -6,8 +6,8 @@ import sgMail   from '@sendgrid/mail';
 
 import { readFile } from 'fs';
 import { CronJob  } from 'cron';
-import { key, cleanKeysDatabase } from './keyOperations.js';
-
+import { key, cleanKeysDatabase   } from './keyOperations.js';
+import { lockoutUser, verifyEmail } from './transactionals.js';
 
 const env = process.env;
 
@@ -112,11 +112,20 @@ async function testSGMailService () {
     });
 }
 
-/**
- * email services.
- */
-export const email = {
+/** Email services. */
+export const Email = {
   init: initialiseSG,
   test: testSGMailService,
-  send: sendEmail,
+  send: {
+    transactional: {
+      async lockoutUser(user) {
+        let data = await lockoutUser(user);
+        return sendEmail(data);
+      },
+      async verifyEmail(user) {
+        let data = await verifyEmail(user);
+        return sendEmail(data);
+      },
+    },
+  },
 }

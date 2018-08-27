@@ -3,7 +3,7 @@
 
 import { Router    } from 'express';
 import { UserModel } from '../models/User.js';
-import { email     } from '../../services/email/index.js';
+import { Email     } from '../../services/email/index.js';
 import { blockNonAuthUsers } from '../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
@@ -13,7 +13,6 @@ router.get('/',
   blockNonAuthUsers,
   blockVerifiedUsers,
   limitVerificationAttempts,
-  generateVerificationToken,
   sendVerificationEmail,
 );
 
@@ -46,7 +45,8 @@ async function blockVerifiedUsers (req, res, next) {
 }
 
 /**
- * Allow 1 verification request per 5 minutes.
+ * Allow 1 verification request per 5 minutes by using a `verReqTimestamp` to
+ * check if enough time has passed since last request.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
@@ -73,60 +73,29 @@ async function limitVerificationAttempts (req, res, next) {
 }
 
 /**
- * Generate email verification Hash by using the user's password hash
- * to be sent as a verification token.
- *
- * @param  {request}   req   request object
- * @param  {response}  res   response object
- * @param  {Function}  next  callback to the next middleware
- * @return {next|response}   pass request to the next middleware on success.
- *                           responsed with an error on failure.
- */
-async function generateVerificationToken (req, res, next) {
-  try {
-    let user         = await UserModel.findById(req.session.user.id).exec();
-    res.locals.token = await user.generateToken();
-    return next();
-  }
-  catch (err) {
-    let error = new Error('Failed to generate token for email verification');
-    if (env.NODE_ENV === 'development') error.dev = err;
-    return next(error);
-  }
-}
-
-/**
  * Send a verification email to verify user's email.
  * The email contains a token to prove email ownership on request.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {response}  responsed with a message on success.
- *                     responsed with an error on failure.
+ * @return {response}        respond with a message on success
  */
-function sendVerificationEmail (req, res, next) {
-  const user = req.session.user;
-  const data = {
-    to:   { name: user.username, email: user.email,       },
-    from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
-    subject: 'RPA - Verify Email',
-    text: 'verify.txt',
-    html: 'verify.mst',
-    verifyURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/verify/${user.id}/${res.locals.token}`,
-  };
-  email.send(data)
-    .then( () => {
-      user.verReqTimestamp = new Date().getTime();
-      res.json(`message: Email verification request sent to ${user.email}. `
-         +     'Please check your inbox...');
-    })
-    .catch( err => {
-      let error = new Error(`Failed to send email verification request`);
-      if (env.NODE_ENV === 'development') error.dev = err;
-      return next(error);
-    });
+async function sendVerificationEmail (req, res, next) {
+  try {
+    let user  = await UserModel.findById(req.session.user.id).exec();
+    /** send an email with a verification token */
+    Email.send.transactional.verifyEmail(user);
+    /** Add a timestamp to limit the number of emails sent */
+    req.session.user.verReqTimestamp = new Date().getTime();
+    return res.json(`message: Email verification request sent to ${user.email}. `
+      + 'Please check your inbox...');
+  }
+  catch (err) {
+    let error = new Error('Failed to send email verification request');
+    if (env.NODE_ENV === 'development') error.dev = err;
+    return next(error);
+  }
 }
 
 /**

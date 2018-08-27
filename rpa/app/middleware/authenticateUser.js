@@ -1,37 +1,10 @@
 /* Authenticate user middleware
 ============================================================================= */
 
-import { email     } from '../services/email/index.js';
+import { Email     } from '../services/email/index.js';
 import { UserModel } from '../mvc/models/User.js';
 
 const env = process.env;
-
-/**
- * Send an email to allow user to password reset or terminate locked session.
- * The email contains a token to prove account ownership on request.
- *
- * @param  {Object} user  the user to receive the email
- */
-async function sendLockOutEmail (user) {
-  let token = await user.generateToken();
-  const data = {
-    to:   { name: user.username, email: user.email,       },
-    from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
-    subject: 'RPA - account locked',
-    text: 'locked.txt',
-    html: 'locked.mst',
-    unlockURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/unlock/${user.id}/${token}`,
-    resetURL:  'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/reset/${user.id}/${token}`,
-  };
-  email.send(data)
-    .catch( err => {
-      let error = new Error(`failed to send lockout email`);
-      if (env.NODE_ENV === 'development') error.dev = err;
-      throw error;
-    });
-}
 
 /**
  * Authenticate a client based on username (or email) and password input.
@@ -47,9 +20,7 @@ async function sendLockOutEmail (user) {
  *                           pass to error middleware on failure otherwise.
  */
 export function authenticateUser (req, res, next) {
-  let username = req.body.username,
-      password = req.body.password,
-      email    = req.body.email;
+  let { username, email, password } = req.body;
 
   /** search conditions can be username or email based on client request */
   let conditions = !!username ? {username: username} : {email: email};
@@ -96,7 +67,8 @@ export function authenticateUser (req, res, next) {
           /** check if account ran out of login attempts (got locked) */
           if (user.security.lockedUntil > Date.now()) {
             /** send an email for a password reset or lockout termination */
-            sendLockOutEmail(user);
+            Email.send.transactional.lockoutUser(user);
+            /** respond with an error as the account got locked */
             let error = new Error(
               `Exceeded maximum login attempts, your account is locked until ${user.security.lockedUntil}. `
               + `An email has been sent to password reset your account or terminate your locked session.`);
