@@ -56,7 +56,7 @@ export function authenticateUser (req, res, next) {
     }
 
     /** else attempt to authenticate with the requested password */
-    return user.validPassword(password, user.password)
+    return user.validatePassword(password, user.password)
     .then(match => {
       if (match) {
         res.locals = { user: user };

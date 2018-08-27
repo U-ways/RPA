@@ -71,7 +71,7 @@ async function allowPasswordReset (req, res, next) {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('user id doesn\'t exist');
 
-    let validate = await user.validPassword(user.password, req.params.hash);
+    let validate = await user.validatePassword(user.password, req.params.hash);
     if (!validate) throw new Error('invalid hash value');
 
     /** terminate locked session */

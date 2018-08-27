@@ -191,7 +191,7 @@ UserSchema.methods.createLog = createLog;
 UserSchema.methods.getLastLoginDate = getLastLoginDate;
 UserSchema.methods.incLoginAttempts = incLoginAttempts;
 UserSchema.methods.hashPassword  = bcryptHash;
-UserSchema.methods.validPassword = comaprePassword;
+UserSchema.methods.validatePassword = comaprePassword;
 
 UserSchema.plugin(uniqueValidator);
 export const UserModel = mongoose.model('User', UserSchema);

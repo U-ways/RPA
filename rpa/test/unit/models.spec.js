@@ -51,7 +51,7 @@ describe('/models', () => {
     it('should pass valid documents', test.valid);
     it('should reject invalid documents', test.invalid);
     it('should invalidate username incorrect format', test.invalidUsername);
-    it('should invalidate password incorrect format', test.invalidPassword);
+    it('should invalidate password incorrect format', test.invalidatePassword);
     it('should invalidate email incorrect format', test.invalidEmail);
   });
 

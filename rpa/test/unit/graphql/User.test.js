@@ -107,7 +107,7 @@ export function create() {
       expect(result.username).to.equal(doc.username);
       expect(result.password).to.not.equal(doc.password);
       expect(result.email).to.equal(doc.email);
-      return result.validPassword(doc.password, result.password)
+      return result.validatePassword(doc.password, result.password)
       .then(match => expect(match, 'password should match hash').to.be.true);
     }
   )

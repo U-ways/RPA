@@ -45,7 +45,7 @@ export function invalidUsername() {
 
 /** Pass an invalid password to a document and validate **/
 
-export function invalidPassword() {
+export function invalidatePassword() {
   let invalid_doc = new UserModel({
     password: ''
   });
