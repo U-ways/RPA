@@ -24,7 +24,7 @@ router.get('/:id/:token',
 async function unlockUser (req, res, next) {
   try {
     let user = await UserModel.findById(req.params.id).exec();
-    if (!user) throw new Error('user id doesn\'t exist');
+    if (!user) throw new Error('User id doesn\'t exist');
 
     /** check if user is not locked */
     if (!user.security.lockedUntil) {
@@ -35,7 +35,7 @@ async function unlockUser (req, res, next) {
 
     /** check if token requested is valid */
     let validate = await user.validateToken(req.params.token);
-    if (!validate) throw new Error('invalid token value');
+    if (!validate) throw new Error('Invalid token value');
 
     /** terminate locked session */
     user.security.lockedUntil = null;
@@ -43,11 +43,11 @@ async function unlockUser (req, res, next) {
     user.security.token = null;
 
     /** log user activity and then redirect to landing page */
-    user.createLog('UPDATE', 'reset user login attempts');
+    user.createLog('UPDATE', 'Reset user login attempts');
     user.save();
 
     req.session.flash = {
-      message: 'you\'ve successfully terminated your account\'s locked session.'
+      message: 'You\'ve successfully terminated your account\'s locked session.'
     };
     res.redirect('/');
   }

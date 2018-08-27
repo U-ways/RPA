@@ -69,10 +69,10 @@ function getLogic (req, res, next) {
 async function allowPasswordReset (req, res, next) {
   try {
     let user = await UserModel.findById(req.params.id).exec();
-    if (!user) throw new Error('user id doesn\'t exist');
+    if (!user) throw new Error('User id doesn\'t exist');
 
     let validate = await user.validateToken(req.params.token);
-    if (!validate) throw new Error('invalid token value');
+    if (!validate) throw new Error('Invalid token value');
 
     /** terminate locked session */
     user.security.lockedUntil = null;
@@ -83,7 +83,7 @@ async function allowPasswordReset (req, res, next) {
     return req.session.regenerate(err => {
       if (err) {
         let error = new Error(
-          'unable to create a new session for authenticated user.');
+          'Unable to create a new session for authenticated user.');
         if (env.NODE_ENV === 'development') error.dev = err;
         return next(error);
       }
@@ -100,7 +100,7 @@ async function allowPasswordReset (req, res, next) {
 
       /** update user meta data */
       user.security.sessionID = req.session.id;
-      user.createLog('LOGIN', 'login through password reset ');
+      user.createLog('LOGIN', 'Login through password reset ');
       user.save();
 
       res.locals.message = 'Please input your new password.';
@@ -129,16 +129,16 @@ async function passwordReset (req, res, next) {
 
     /** reset user password with the one requested */
     user.security.password = req.body.password;
-    user.createLog('UPDATE', 'password reset account');
+    user.createLog('UPDATE', 'Password reset account');
     user.save();
 
     req.session.flash = {
-      message: 'you\'ve successfully password reset your account\'s password.'
+      message: 'You\'ve successfully password reset your account\'s password.'
     };
     return res.redirect('/dashboard');
   }
   catch (err) {
-    let error = new Error('failed to password reset account.');
+    let error = new Error('Failed to password reset account.');
     if (env.NODE_ENV === 'development') error.dev = err;
     error.status = 400;
     return next(error);

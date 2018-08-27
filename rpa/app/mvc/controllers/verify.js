@@ -65,7 +65,7 @@ async function limitVerificationAttempts (req, res, next) {
     if ((user.verReqTimestamp + FIVE_MINUTES) < currentTimestamp) return next();
     else {
       let error = new Error('Too many requests: '
-        + 'please wait 5 minutes before sending another verification request');
+        + 'Please wait 5 minutes before sending another verification request');
       error.status = 429;
       return next(error);
     }
@@ -89,7 +89,7 @@ async function generateVerificationToken (req, res, next) {
     return next();
   }
   catch (err) {
-    let error = new Error('failed to generate token for email verification');
+    let error = new Error('Failed to generate token for email verification');
     if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
@@ -119,11 +119,11 @@ function sendVerificationEmail (req, res, next) {
   email.send(data)
     .then( () => {
       user.verReqTimestamp = new Date().getTime();
-      res.json(`message: email verification request sent to ${user.email}. `
+      res.json(`message: Email verification request sent to ${user.email}. `
          +     'Please check your inbox...');
     })
     .catch( err => {
-      let error = new Error(`failed to send email verification request`);
+      let error = new Error(`Failed to send email verification request`);
       if (env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     });
@@ -142,10 +142,10 @@ function sendVerificationEmail (req, res, next) {
 async function verifyEmailAddress (req, res, next) {
   try {
     let user = await UserModel.findById(req.params.id).exec();
-    if (!user) throw new Error('user id doesn\'t exist');
+    if (!user) throw new Error('User id doesn\'t exist');
 
     let validate = await user.validateToken(req.params.token);
-    if (!validate) throw new Error('invalid token value');
+    if (!validate) throw new Error('Invalid token value');
 
     /** verify user email address */
     user.security.verified = true;
@@ -153,18 +153,18 @@ async function verifyEmailAddress (req, res, next) {
     user.security.token = null;
 
     /** log user activity and then redirect to landing page */
-    user.createLog('UPDATE', 'verified email address');
+    user.createLog('UPDATE', 'Verified email address');
     user.save();
 
     /** delete the verReqTimestamp to clear some space */
     delete req.session.user.verReqTimestamp;
 
-    req.session.flash = { message: 'you\'ve successfully verified your email address.' }
+    req.session.flash = { message: 'You\'ve successfully verified your email address.' }
     res.redirect('/');
   }
   catch (err) {
-    let error = new Error('failed to verify email address, '
-      + 'please request a new verification token.');
+    let error = new Error('Failed to verify email address, '
+      + 'Please request a new verification token.');
     if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }

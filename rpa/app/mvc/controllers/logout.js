@@ -25,7 +25,7 @@ function destorySession (req, res, next) {
   /** check if a user doesn't session exists */
   if (!req.session.user) {
     let error = new Error(
-      'user already logged out: no active session found to destroy.');
+      'User already logged out: no active session found to destroy.');
     error.status = 400;
     return next(error);
   }
@@ -43,7 +43,7 @@ function destorySession (req, res, next) {
       user.save();
 
       /** redirect to dashboard */
-      req.session.flash = { message:'success: you\'ve securely logged out.' }
+      req.session.flash = { message:'Success: You\'ve securely logged out.' }
       return res.redirect('/');
     });
   });

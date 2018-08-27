@@ -26,7 +26,7 @@ export function blockNonAuthUsers(req, res, next) {
   /** else redirect with an error */
   else {
     req.session.flash = {
-      message:'unauthorised: please login before accessing protected resources.'
+      message:'Unauthorised: Please login before accessing protected resources.'
     };
     req.session.redirect = req.originalUrl;
     return res.redirect('/login');
