@@ -25,12 +25,14 @@ import { httpError      } from './middleware/httpError.js';
 
 /** app controllers **/
 
-import landingRouter   from './mvc/controllers/landing';
-import loginRouter     from './mvc/controllers/login';
-import logoutRouter    from './mvc/controllers/logout';
-import verifyRouter    from './mvc/controllers/verify';
-import registerRouter  from './mvc/controllers/register';
-import dashboardRouter from './mvc/controllers/dashboard';
+import landingRouter   from './mvc/controllers/landing.js';
+import loginRouter     from './mvc/controllers/login.js';
+import logoutRouter    from './mvc/controllers/logout.js';
+import verifyRouter    from './mvc/controllers/verify.js';
+import registerRouter  from './mvc/controllers/register.js';
+import dashboardRouter from './mvc/controllers/dashboard.js';
+import unlockRouter    from './mvc/controllers/unlock.js';
+import resetRouter     from './mvc/controllers/reset.js';
 
 const env = process.env;
 
@@ -102,9 +104,14 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 /** Dynamic routes */
 
 app.use('/', landingRouter);
+
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
+
+app.use('/reset', resetRouter);
+app.use('/unlock', unlockRouter);
 app.use('/verify', verifyRouter);
+
 app.use('/register', registerRouter);
 app.use('/dashboard', dashboardRouter);
 
