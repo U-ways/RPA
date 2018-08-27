@@ -1,7 +1,6 @@
 /* Google reCaptcha middleware
 ============================================================================= */
 
-import dotenv from 'dotenv/config';
 import { Recaptcha } from 'express-recaptcha';
 
 const env = process.env;

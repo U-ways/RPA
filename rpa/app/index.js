@@ -2,7 +2,7 @@
 ============================================================================= */
 
 import express        from 'express';
-import dotenv         from 'dotenv/config';
+import dotenv         from '../lib/dotenv.js';
 import favicon        from 'serve-favicon';
 import path           from 'path';
 import sassMiddleware from 'node-sass-middleware';

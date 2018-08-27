@@ -1,7 +1,6 @@
 /* User Mongoose schema
 ============================================================================= */
 
-import dotenv   from 'dotenv/config';
 import crypto   from 'crypto';
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
