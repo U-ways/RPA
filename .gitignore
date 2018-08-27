@@ -1,4 +1,5 @@
 # environment variables file
+.env.sh
 .env
 
 # config data
