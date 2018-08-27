@@ -1,7 +1,17 @@
 Hello {{to.name}},
 
-Your account has been locked for 2 hours due to multiple failed login attempts.
+Your account has been locked for 3 hours due to multiple failed login attempts.
 
-Please click this link to terminate your locked session or password reset your account: (or paste it into your web browser)
+Don't worry, your account is safe.
+
+This happens when someone failed to login into your account and exceeded the
+maximum login attempts allowed without a successful session. If this was
+you and you forget your password, click this link to password reset your
+account:
+
+{{resetURL}}
+
+
+Otherwise, click this link to terminate your locked session:
 
 {{unlockURL}}

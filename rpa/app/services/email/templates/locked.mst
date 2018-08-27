@@ -1,9 +1,24 @@
 <p>Hello {{to.name}},</p>
 
 <p>
-  Your account has been locked for 2 hours due to multiple failed login attempts.
+  Your account has been locked for 3 hours due to multiple failed login attempts.
 </p>
 
-<b><a href="{{unlockURL}}">
-  Click here to terminate your locked session or password reset your account
-</a></b>
+<p>
+  <b>Don't worry, your account is safe.</b>
+
+  This happens when someone failed to login into your account and exceeded the
+  maximum login attempts allowed without a successful session. If this was
+  you and you forget your password,
+
+  <a href="{{resetURL}}">
+    click here to <b>password reset your account</b>
+  </a>
+</p>
+
+<p>
+  Otherwise,
+  <a href="{{unlockURL}}">
+    click here to <b>terminate your locked session</b>
+  </a>
+</p>
