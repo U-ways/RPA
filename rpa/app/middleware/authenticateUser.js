@@ -113,6 +113,8 @@ async function sendLockOutEmail (user) {
     html: 'locked.mst',
     unlockURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
       + `/unlock/${user.id}/${encodeURIComponent(hash)}`,
+    resetURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
+      + `/reset/${user.id}/${encodeURIComponent(hash)}`,
   };
   email.send(data)
     .catch( err => {
