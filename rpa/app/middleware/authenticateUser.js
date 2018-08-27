@@ -7,6 +7,33 @@ import { UserModel } from '../mvc/models/User.js';
 const env = process.env;
 
 /**
+ * Send an email to allow user to password reset or terminate locked session.
+ * The email contains a token to prove account ownership on request.
+ *
+ * @param  {Object} user  the user to receive the email
+ */
+async function sendLockOutEmail (user) {
+  let token = await user.createLockedSessionToken();
+  const data = {
+    to:   { name: user.username, email: user.email,       },
+    from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
+    subject: 'RPA - account locked',
+    text: 'locked.txt',
+    html: 'locked.mst',
+    unlockURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
+      + `/unlock/${user.id}/${token}`,
+    resetURL:  'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
+      + `/reset/${user.id}/${token}`,
+  };
+  email.send(data)
+    .catch( err => {
+      let error = new Error(`failed to send lockout email`);
+      if (env.NODE_ENV === 'development') error.dev = err;
+      throw error;
+    });
+}
+
+/**
  * Authenticate a client based on username (or email) and password input.
  * The function will lookup for the user requested and will test the supplemented
  * password against the user's hashed password. It will pass the control to the
@@ -95,31 +122,4 @@ export function authenticateUser (req, res, next) {
     });
 
   });
-}
-
-/**
- * Send an email to allow user to password reset or terminate locked session.
- * The email contains a token to prove account ownership on request.
- *
- * @param  {Object} user  the user to receive the email
- */
-async function sendLockOutEmail (user) {
-  let token = await user.createLockedSessionToken();
-  const data = {
-    to:   { name: user.username, email: user.email,       },
-    from: { name: env.BOT_USERNAME, email: env.BOT_EMAIL, },
-    subject: 'RPA - account locked',
-    text: 'locked.txt',
-    html: 'locked.mst',
-    unlockURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/unlock/${user.id}/${token}`,
-    resetURL:  'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/reset/${user.id}/${token}`,
-  };
-  email.send(data)
-    .catch( err => {
-      let error = new Error(`failed to send lockout email`);
-      if (env.NODE_ENV === 'development') error.dev = err;
-      throw error;
-    });
 }
