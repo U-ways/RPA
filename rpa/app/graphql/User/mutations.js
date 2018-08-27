@@ -28,8 +28,8 @@ const fields = {
     description: 'Create a new user (returns newly created user)',
     args: {
       username: { type: new GraphQLNonNull(GraphQLString) },
+      email:    { type: new GraphQLNonNull(GraphQLString) },
       password: { type: new GraphQLNonNull(GraphQLString) },
-      email:    { type: new GraphQLNonNull(GraphQLString) }
     },
     resolve: (obj, args) => create(obj, args)
   },

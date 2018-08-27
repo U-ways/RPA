@@ -19,7 +19,7 @@ router.get('/',
   getLogic,
 );
 
-router.get('/:id/:hash',
+router.get('/:id/:token',
   blockAuthUsers,
   allowPasswordReset,
   getLogic,
@@ -71,11 +71,13 @@ async function allowPasswordReset (req, res, next) {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('user id doesn\'t exist');
 
-    let validate = await user.validatePassword(user.password, req.params.hash);
-    if (!validate) throw new Error('invalid hash value');
+    let validate = await user.validateToken(req.params.token);
+    if (!validate) throw new Error('invalid token value');
 
     /** terminate locked session */
-    user.lockedUntil = null;
+    user.security.lockedUntil = null;
+    /** remove security token */
+    user.security.token = null;
 
     /** create new session for authenticated user */
     return req.session.regenerate(err => {
@@ -97,7 +99,7 @@ async function allowPasswordReset (req, res, next) {
       req.session.cookie.maxAge = 30 * 60 * 1000;
 
       /** update user meta data */
-      user.sessionID = req.session.id;
+      user.security.sessionID = req.session.id;
       user.createLog('LOGIN', 'login through password reset ');
       user.save();
 
@@ -126,12 +128,12 @@ async function passwordReset (req, res, next) {
     let user = await UserModel.findById(req.session.user.id).exec();
 
     /** reset user password with the one requested */
-    user.password = req.body.password;
+    user.security.password = req.body.password;
     user.createLog('UPDATE', 'password reset account');
     user.save();
 
     req.session.flash = {
-      message: 'you\'ve successfully reset your account\'s password.'
+      message: 'you\'ve successfully password reset your account\'s password.'
     };
     return res.redirect('/dashboard');
   }

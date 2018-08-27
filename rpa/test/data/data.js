@@ -430,14 +430,14 @@ morrisons.products = [
 
 const uways = {
   username: 'u-ways',
-  password: '1234abcd',
-  email: 'u-ways@email.com'
+  email: 'u-ways@email.com',
+  'security.password': '1234abcd',
 };
 
 const joe = {
   username: 'Joe',
-  password: '1234abcd',
-  email: 'Joe@email.com'
+  email: 'Joe@email.com',
+  'security.password': '1234abcd',
 };
 
 uways.logs = [

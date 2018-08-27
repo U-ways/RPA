@@ -13,11 +13,11 @@ router.get('/',
   blockNonAuthUsers,
   blockVerifiedUsers,
   limitVerificationAttempts,
-  generateVerificationHash,
+  generateVerificationToken,
   sendVerificationEmail,
 );
 
-router.get('/:id/:hash',
+router.get('/:id/:token',
   blockNonAuthUsers,
   blockVerifiedUsers,
   verifyEmailAddress,
@@ -37,7 +37,7 @@ router.get('/:id/:hash',
  */
 async function blockVerifiedUsers (req, res, next) {
   let user = await UserModel.findById(req.session.user.id).exec();
-  if (user.verified) {
+  if (user.security.verified) {
     let error = new Error(`You've already verified your email address`);
     error.status = 400;
     return next(error);
@@ -82,14 +82,14 @@ async function limitVerificationAttempts (req, res, next) {
  * @return {next|response}   pass request to the next middleware on success.
  *                           responsed with an error on failure.
  */
-async function generateVerificationHash (req, res, next) {
+async function generateVerificationToken (req, res, next) {
   try {
-    let user        = await UserModel.findById(req.session.user.id).exec();
-    res.locals.hash = await user.hashPassword(user.password);
+    let user         = await UserModel.findById(req.session.user.id).exec();
+    res.locals.token = await user.createLockedSessionToken();
     return next();
   }
   catch (err) {
-    let error = new Error('failed to generate hash for email verification');
+    let error = new Error('failed to generate token for email verification');
     if (env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
@@ -97,7 +97,7 @@ async function generateVerificationHash (req, res, next) {
 
 /**
  * Send a verification email to verify user's email.
- * The email contains a hash to prove email ownership on request.
+ * The email contains a token to prove email ownership on request.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
@@ -114,7 +114,7 @@ function sendVerificationEmail (req, res, next) {
     text: 'verify.txt',
     html: 'verify.mst',
     verifyURL: 'http://www.' + `${env.HOST}:${env.HTTP_PORT}`
-      + `/verify/${user.id}/${encodeURIComponent(res.locals.hash)}`,
+      + `/verify/${user.id}/${res.locals.token}`,
   };
   email.send(data)
     .then( () => {
@@ -130,8 +130,8 @@ function sendVerificationEmail (req, res, next) {
 }
 
 /**
- * Verify email address by validating the hash requested with the user's
- * hashed password.
+ * Verify email address by validating the token requested with the user's
+ * stored security token.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object
@@ -144,11 +144,13 @@ async function verifyEmailAddress (req, res, next) {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('user id doesn\'t exist');
 
-    let validate = await user.validatePassword(user.password, req.params.hash);
-    if (!validate) throw new Error('invalid hash value');
+    let validate = await user.validateToken(req.params.token);
+    if (!validate) throw new Error('invalid token value');
 
     /** verify user email address */
-    user.verified = true;
+    user.security.verified = true;
+    /** remove security token */
+    user.security.token = null;
 
     /** log user activity and then redirect to landing page */
     user.createLog('UPDATE', 'verified email address');

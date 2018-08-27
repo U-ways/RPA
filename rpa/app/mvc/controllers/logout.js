@@ -30,7 +30,7 @@ function destorySession (req, res, next) {
     return next(error);
   }
 
-  /** get user ID before destroying session for logging activity */
+  /** get user ID before destroying session to log the activity */
   let id = req.session.user.id;
 
   /** destroy user session and create a new anonymous session */
@@ -38,7 +38,7 @@ function destorySession (req, res, next) {
     /** find the user with the active session */
     UserModel.findById(id).then(user => {
       /** update user meta data */
-      delete user.sessionID;
+      delete user.security.sessionID;
       user.createLog('LOGOUT');
       user.save();
 

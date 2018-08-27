@@ -88,7 +88,6 @@ mutation {
     email:    "valid@email.com"
   ) {
     username,
-    password,
     email
   }
 }
@@ -104,7 +103,6 @@ mutation {
     }
   ) {
     username,
-    password,
     email
   }
 }
@@ -113,7 +111,6 @@ mutation {
 {
   findUser(username: "UPDATE_Tester") {
     username,
-    password,
     email
   }
 }
@@ -122,7 +119,6 @@ mutation {
 {
   findUser(email: "UPDATE_valid@email.com") {
     username,
-    password,
     email
   }
 }

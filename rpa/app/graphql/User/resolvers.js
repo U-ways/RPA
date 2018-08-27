@@ -20,12 +20,12 @@ export function findAll(obj, {limit}) {
   return result;
 }
 
-export function create(obj, {username, password, email}) {
+export function create(obj, {username, email, password}) {
   let mutation = UserModel.create({
     username: username,
-    password: password,
-    email:    email
-  })
+    email:    email,
+    'security.password': password,
+  });
   let result   = mutation.then(doc => {
     return doc;
   });

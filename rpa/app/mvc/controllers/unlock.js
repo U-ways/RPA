@@ -8,21 +8,39 @@ import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
 const router = Router();
 const env    = process.env;
 
-router.get('/:id/:hash',
+router.get('/:id/:token',
   blockAuthUsers,
   unlockUser,
 );
 
+/**
+ * Terminate user's locked session by checking token requested validity.
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        redirect on success, respond with an error otherwise
+ */
 async function unlockUser (req, res, next) {
   try {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('user id doesn\'t exist');
 
-    let validate = await user.validatePassword(user.password, req.params.hash);
-    if (!validate) throw new Error('invalid hash value');
+    /** check if user is not locked */
+    if (!user.security.lockedUntil) {
+      let error = new Error('User session is not locked');
+      error.status = 400;
+      return next(error);
+    }
+
+    /** check if token requested is valid */
+    let validate = await user.validateToken(req.params.token);
+    if (!validate) throw new Error('invalid token value');
 
     /** terminate locked session */
-    user.lockedUntil = null;
+    user.security.lockedUntil = null;
+    /** remove security token */
+    user.security.token = null;
 
     /** log user activity and then redirect to landing page */
     user.createLog('UPDATE', 'reset user login attempts');
@@ -34,7 +52,10 @@ async function unlockUser (req, res, next) {
     res.redirect('/');
   }
   catch (err) {
-    let error = new Error('failed to terminate locked user session.');
+    let error = new Error(
+      'Failed to terminate locked user session.'
+      + 'If your account is still locked, please request a password reset.'
+    );
     if (env.NODE_ENV === 'development') error.dev = err;
     error.status = 400;
     return next(error);

@@ -14,12 +14,12 @@ const env = process.env;
 const createAdmin = () => {
   const admin = new UserModel({
     username: env.ADMIN_USERNAME,
-    password: env.ADMIN_PASSWORD,
     email:    env.ADMIN_EMAIL,
+    'security.password': env.ADMIN_PASSWORD,
     logs: [{ activity: 2, description: 'register root account' }],
   }).save( (err, admin) => {
     /** verify email address after creating account */
-    admin.verified = true; admin.save();
+    admin.security.verified = true; admin.save();
     console.info(`[database] created root account: `
       +   `${admin.username} (email: ${admin.email})`);
   });
@@ -29,11 +29,11 @@ const createAdmin = () => {
 const createBot = () => {
   const bot = new UserModel({
     username: env.BOT_USERNAME,
-    password: env.BOT_PASSWORD,
     email:    env.BOT_EMAIL,
+    'security.password': env.BOT_PASSWORD,
     logs: [{ activity: 2, description: 'register bot account' }]
   }).save( (err, bot) => {
-    bot.verified = true; bot.save();
+    bot.security.verified = true; bot.save();
     console.info(`[database] created bot account: `
       +   `${bot.username} (email: ${bot.email})`);
   });
@@ -48,18 +48,18 @@ function createAccounts () {
   .then( accounts => {
     if (accounts.length === 2) {
       console.warn(`[database] skipping root & bot account creation: `
-        +     `${env.ADMIN_USERNAME} & ${env.BOT_USERNAME} already exists.`);
+        + `${env.ADMIN_USERNAME} & ${env.BOT_USERNAME} already exists.`);
       return createBot();
     }
     else if (accounts.length === 1) {
       if (accounts[0].username === env.ADMIN_USERNAME) {
         console.warn(`[database] skipping root account creation: `
-          +     `${env.ADMIN_USERNAME} already exists.`);
+          + `${env.ADMIN_USERNAME} already exists.`);
         return createBot();
       }
       else {
         console.warn(`[database] skipping bot account creation: `
-          +     `${env.BOT_USERNAME} already exists.`);
+          + `${env.BOT_USERNAME} already exists.`);
         return createAdmin();
       }
     }

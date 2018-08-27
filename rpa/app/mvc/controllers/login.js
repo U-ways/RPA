@@ -98,8 +98,8 @@ function postLogic (req, res, next) {
     req.session.cookie.maxAge = 30 * 60 * 1000;
 
     /** update user meta data */
-    user.sessionID = req.session.id;
-    user.loginAttempts = 0;
+    user.security.sessionID = req.session.id;
+    user.security.loginAttempts = 0;
     user.createLog('LOGIN');
     user.save();
 

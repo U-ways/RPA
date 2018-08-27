@@ -59,7 +59,7 @@ export const UserTypeInput = new GraphQLInputObjectType({
   name: 'UserTypeInput',
   fields: () => ({
     username: { type: GraphQLString },
+    email:    { type: GraphQLString },
     password: { type: GraphQLString },
-    email:    { type: GraphQLString }
   })
 });

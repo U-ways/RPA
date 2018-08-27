@@ -95,19 +95,19 @@ const mutation = MutationRootType.getFields();
 /** Should return the created document **/
 
 export function create() {
-  let doc = {
+  let query = {
     username: 'New_User',
+    email: 'newUser@email.com',
     password: '1234abcd',
-    email: 'newUser@email.com'
   }
-  let create = mutation.createUser.resolve({}, doc);
+  let create = mutation.createUser.resolve({}, query);
 
   return create.then(
     result => {
-      expect(result.username).to.equal(doc.username);
-      expect(result.password).to.not.equal(doc.password);
-      expect(result.email).to.equal(doc.email);
-      return result.validatePassword(doc.password, result.password)
+      expect(result.username).to.equal(query.username);
+      expect(result.email).to.equal(query.email);
+      expect(result.security.password).to.not.equal(query.password);
+      return result.validatePassword(query.password, result.security.password)
       .then(match => expect(match, 'password should match hash').to.be.true);
     }
   )

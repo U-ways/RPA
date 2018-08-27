@@ -13,7 +13,8 @@ router.post('/',
   blockAuthUsers,
   reCaptcha.middleware.verify,
   registerUser,
-  postLogic);
+  postLogic,
+);
 
 /* logic
 ============================================================================= */
@@ -62,11 +63,11 @@ function registerUser (req, res, next) {
     else {
       let createUser = UserModel.create({
         username: username,
-        password: password,
-        email:    email
+        email:    email,
+       'security.password': password,
       });
       createUser.then(user => {
-        res.locals = { user: user };
+        res.locals.user = user;
         return next();
       });
     }

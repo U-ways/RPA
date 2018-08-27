@@ -17,17 +17,17 @@ import { createClient } from 'redis';
  *                           pass to error middleware otherwise.
  */
 export function preventSessionDuplication (req, res, next) {
-  /** current logged-in user */
+  /** current logged-in user instance */
   let user = res.locals.user;
 
   /**
    * before starting an authenticated session for user,
    * check if the user had already stored an authenticated session ID.
    */
-  if (user.sessionID) {
+  if (user.security.sessionID) {
     const redisClient = createClient();
     /** if so, get the stored values of that session ID */
-    return redisClient.get(`sess:${user.sessionID}`, (err, session) => {
+    return redisClient.get(`sess:${user.security.sessionID}`, (err, session) => {
       session = JSON.parse(session);
       /**
        * then check if the stored session-key is active and
@@ -35,8 +35,8 @@ export function preventSessionDuplication (req, res, next) {
        */
       if (session && session.user && (session.user.username === user.username)) {
         /** if so, remove that key and let them create a new session. */
-        redisClient.del(`sess:${user.sessionID}`);
-        delete user.sessionID;
+        redisClient.del(`sess:${user.security.sessionID}`);
+        delete user.security.sessionID;
         return next();
       }
       /**
@@ -44,7 +44,7 @@ export function preventSessionDuplication (req, res, next) {
        * thus remove the stored session ID and let them start a new session.
        */
       else {
-        delete user.sessionID;
+        delete user.security.sessionID;
         return next();
       }
     });

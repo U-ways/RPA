@@ -21,8 +21,8 @@ export function valid() {
 export function invalid() {
   let invalid_doc = new UserModel({
     username: '_u-ways',
-    password: '',
-    email: '@u_ways@email'
+    email: '@u_ways@email',
+    'security.password': '',
   });
   return invalid_doc.validate()
   .catch( e => expect(e.errors).to.exist );
@@ -47,12 +47,12 @@ export function invalidUsername() {
 
 export function invalidatePassword() {
   let invalid_doc = new UserModel({
-    password: ''
+    'security.password': ''
   });
   return invalid_doc.validate()
   .catch(
     e => {
-      let message = e.errors['password'].message;
+      let message = e.errors['security.password'].message;
       expect(message).to.equal('required');
     }
   );

@@ -2,6 +2,7 @@
 ============================================================================= */
 
 import dotenv   from 'dotenv/config';
+import crypto   from 'crypto';
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
@@ -15,6 +16,40 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 const MAX_LOGIN_ATTEMPTS = 5;
 /** 3 hours lock time */
 const LOCK_TIME = 3 * 3600000;
+/** 1 hour token expiry time */
+const TOKEN_EXPIRY_TIME = 1 * 3600000;
+
+const SecuritySchema = new mongoose.Schema({
+  password: {
+    type: String,
+    required: [true, 'required'],
+    maxlength: [100, 'max length (100) exceeded']
+  },
+  sessionID: {
+    type: String,
+    default: null
+  },
+  verified: {
+    type: Boolean,
+    required: [true, 'required'],
+    default: false,
+  },
+  loginAttempts: {
+    type: Number,
+    required: [true, 'required'],
+    min: [0, 'login attempts cannot be negative'],
+    max: [MAX_LOGIN_ATTEMPTS, 'user allowed 5 invalid login attempts max'],
+    default: 0,
+  },
+  lockedUntil: {
+    type: Date,
+    default: null
+  },
+  token: {
+    type: String,
+    default: null
+  },
+});
 
 /**
  * TODO: learn how to doc database models
@@ -22,10 +57,6 @@ const LOCK_TIME = 3 * 3600000;
  * @type {Schema}
  */
 const UserSchema = new mongoose.Schema({
-  sessionID: {
-    type: String,
-    default: null
-  },
   username: {
     type: String,
     index: true,
@@ -42,25 +73,8 @@ const UserSchema = new mongoose.Schema({
     /** The maximum length specified in RFC 5321 **/
     maxlength: [254, 'max length (254) exceeded']
   },
-  password: {
-    type: String,
-    required: [true, 'required'],
-    maxlength: [100, 'max length (100) exceeded']
-  },
-  loginAttempts: {
-    type: Number,
-    required: [true, 'required'],
-    min: [0, 'login attempts cannot be negative'],
-    max: [MAX_LOGIN_ATTEMPTS, 'user allowed 5 invalid login attempts max'],
-    default: 0,
-  },
-  lockedUntil: {
-    type: Date,
-  },
-  verified: {
-    type: Boolean,
-    required: [true, 'required'],
-    default: false,
+  security: {
+    type: SecuritySchema,
   },
   logs: [LogSchema]
 });
@@ -72,14 +86,14 @@ UserSchema.pre('save', function (done) {
   let user = this;
 
   /** set verified as false if email been modified (or new) */
-  if (user.isModified('email')) user.verified = false;
+  if (user.isModified('email')) user.security.verified = false;
 
   /** hash password if it has been modified (or new) */
-  if (user.isModified('password')) {
+  if (user.isModified('security.password')) {
     /** salt and hash the user's password then set as user's password*/
-    let hash = user.hashPassword(user.password);
+    let hash = user.hashPassword(user.security.password);
     return hash.then(hashedPassword => {
-      user.password = hashedPassword;
+      user.security.password = hashedPassword;
       return done();
     });
   }
@@ -155,9 +169,9 @@ function incLoginAttempts () {
   let user = this;
 
   /** increment login attempts and check if account got locked */
-  if (++user.loginAttempts === MAX_LOGIN_ATTEMPTS) {
-    user.lockedUntil   = Date.now() + LOCK_TIME;
-    user.loginAttempts = 0;
+  if (++user.security.loginAttempts === MAX_LOGIN_ATTEMPTS) {
+    user.security.lockedUntil   = Date.now() + LOCK_TIME;
+    user.security.loginAttempts = 0;
   }
 
   /** save and return user */
@@ -171,7 +185,7 @@ function incLoginAttempts () {
  * @param  {String}  password  clear password
  * @return {promise}           hashed password
  */
-function bcryptHash (password) {
+function hashPassword (password) {
   const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
   return bcrypt.hash(password, SALT_ROUNDS);
 }
@@ -183,15 +197,71 @@ function bcryptHash (password) {
  * @return {promise}           true if password match, false otherwise.
  *                             also returns false if errors found.
  */
-function comaprePassword (password, hash) {
+function validatePassword (password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-UserSchema.methods.createLog = createLog;
+/**
+ * Generates and appends cryptographically pseudo-random token with an
+ * expiry timestamp to user security. To get timestamp from the token use:
+ *
+ * `let expiryTimestamp = new Date(parseInt(token.substring(0, 13), 10));`
+ *
+ * @return {Promise<String>}  The generated token
+ */
+function createLockedSessionToken () {
+  let user = this;
+
+  /**
+   * Generates cryptographically strong pseudo-random data with an
+   * expiry timestamp. To get timestamp from the token use:
+   *
+   * `new Date(parseInt(token.substring(0, 13), 10))`
+   */
+  let GenRandBytes = new Promise( (resolve, reject) => {
+    crypto.randomBytes(30, (err, buf) => {
+      if (err) return reject(err);
+      /** the timestamp token valid until */
+      let expiryTimestamp = Date.now() + TOKEN_EXPIRY_TIME;
+      /** append the expiry timestamp to token */
+      let token = expiryTimestamp + buf.toString('hex');
+      return resolve(token);
+    });
+  });
+
+  /** add token to user security then return token */
+  return GenRandBytes.then( token => {
+    user.security.token = token;
+    user.save();
+    return token;
+  });
+}
+
+/**
+ * Checks if stored token is still valid (not expired) and then comapre it
+ * with requested token.
+ *
+ * @param  {String} token  the token requested to validate
+ * @return {Boolean}       true if valid, false otherwise.
+ */
+function validateToken (token) {
+  let user = this;
+  /** check if there is a token stored before proceeding with validation */
+  if (!user.security.token) return false;
+  /** get token expiry date @see User#createLockedSessionToken */
+  let expiryTimestamp = new Date(parseInt(user.security.token.substring(0,13), 10));
+
+  if (expiryTimestamp < Date.now()) return new Error('token expired');
+  else                              return user.security.token === token;
+}
+
+UserSchema.methods.createLog        = createLog;
 UserSchema.methods.getLastLoginDate = getLastLoginDate;
 UserSchema.methods.incLoginAttempts = incLoginAttempts;
-UserSchema.methods.hashPassword  = bcryptHash;
-UserSchema.methods.validatePassword = comaprePassword;
+UserSchema.methods.hashPassword     = hashPassword;
+UserSchema.methods.validatePassword = validatePassword;
+UserSchema.methods.validateToken    = validateToken;
+UserSchema.methods.createLockedSessionToken = createLockedSessionToken;
 
 UserSchema.plugin(uniqueValidator);
 export const UserModel = mongoose.model('User', UserSchema);
