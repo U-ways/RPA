@@ -2,7 +2,7 @@
 ============================================================================= */
 
 import mongoose from 'mongoose';
-import dotenv   from '../../lib/dotenv.js';
+import exEnv    from '../../modules/exEnv.js';
 
 import { describe, before, after, it } from 'mocha';
 

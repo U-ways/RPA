@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-import app  from '../app';
-import http from 'http';
+import http  from 'http';
+import exEnv from '../modules/exEnv.js';
+import app   from '../app';
 
 const env = process.env;
 
