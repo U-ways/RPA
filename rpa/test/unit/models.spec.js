@@ -1,8 +1,8 @@
 /* Models Sepc
 ============================================================================= */
 
-import mongoose from 'mongoose';
-import exEnv    from '../../modules/exEnv.js';
+import mongoose  from 'mongoose';
+import exportEnv from '../../modules/exportEnv.js';
 
 import { describe, before, after, it } from 'mocha';
 
