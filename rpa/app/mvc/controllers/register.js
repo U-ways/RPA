@@ -40,9 +40,7 @@ function registerUser (req, res, next) {
   }
 
   /** get user registration input */
-  let username = req.body.username,
-      password = req.body.password,
-      email    = req.body.email;
+  let { username, password, email } = req.body;
 
   /** check if username or email are a duplicate entry */
   UserModel.find({ $or: [{username: username}, {email: email}] })
