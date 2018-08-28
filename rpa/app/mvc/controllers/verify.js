@@ -7,7 +7,6 @@ import { Email     } from '../../services/email/index.js';
 import { blockNonAuthUsers } from '../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
-const env    = process.env;
 
 router.get('/',
   blockNonAuthUsers,
@@ -93,7 +92,7 @@ async function sendVerificationEmail (req, res, next) {
   }
   catch (err) {
     let error = new Error('Failed to send email verification request');
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
 }
@@ -134,7 +133,7 @@ async function verifyEmailAddress (req, res, next) {
   catch (err) {
     let error = new Error('Failed to verify email address, '
       + 'Please request a new verification token.');
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   }
 }

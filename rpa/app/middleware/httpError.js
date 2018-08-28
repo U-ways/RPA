@@ -1,8 +1,6 @@
 /* httpError middleware
 ============================================================================ */
 
-const env = process.env;
-
 /**
  * catch 404 (not found) errors and render the 404 view
  *
@@ -37,7 +35,7 @@ function notFound404 (req, res, next) {
  */
 function mainErrorHandler (err, req, res, next) {
   /** prepare response as a JSON object */
-  let error = (env.NODE_ENV === 'development') ? {
+  let error = (process.env.NODE_ENV === 'development') ? {
     error: err.message,
     stack: err.stack,
     filename: err.filename,

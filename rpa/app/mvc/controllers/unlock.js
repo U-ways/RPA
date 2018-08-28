@@ -6,7 +6,6 @@ import { UserModel } from '../models/User.js';
 import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
 
 const router = Router();
-const env    = process.env;
 
 router.get('/:id/:token',
   blockAuthUsers,
@@ -56,7 +55,7 @@ async function unlockUser (req, res, next) {
       'Failed to terminate locked user session.'
       + 'If your account is still locked, please request a password reset.'
     );
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     error.status = 400;
     return next(error);
   }

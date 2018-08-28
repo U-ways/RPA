@@ -3,9 +3,7 @@
 
 import sgClient from '@sendgrid/client';
 
-const env = process.env;
-
-sgClient.setApiKey(env.SG_ADMIN_KEY);
+sgClient.setApiKey(process.env.SG_ADMIN_KEY);
 
 /**
  * Everything in the API key _after the SG and before the second dot_ is the

@@ -9,7 +9,6 @@ import { blockAuthUsers    } from '../../middleware/blockAuthUsers.js';
 import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
-const env    = process.env;
 
 /** get current file name and remove extension */
 const FILE_NAME = path.basename(__filename).slice(0, -3);
@@ -84,7 +83,7 @@ async function allowPasswordReset (req, res, next) {
       if (err) {
         let error = new Error(
           'Unable to create a new session for authenticated user.');
-        if (env.NODE_ENV === 'development') error.dev = err;
+        if (process.env.NODE_ENV === 'development') error.dev = err;
         return next(error);
       }
 
@@ -109,7 +108,7 @@ async function allowPasswordReset (req, res, next) {
   }
   catch (err) {
     let error = new Error('Password reset request failed.');
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     error.status = 400;
     return next(error);
   }
@@ -139,7 +138,7 @@ async function passwordReset (req, res, next) {
   }
   catch (err) {
     let error = new Error('Failed to password reset account.');
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     error.status = 400;
     return next(error);
   }

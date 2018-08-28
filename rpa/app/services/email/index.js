@@ -9,8 +9,6 @@ import { CronJob  } from 'cron';
 import { key, cleanKeysDatabase   } from './keyOperations.js';
 import { lockoutUser, verifyEmail } from './transactionals.js';
 
-const env = process.env;
-
 /* Email services
 ============================================================================= */
 

@@ -6,7 +6,7 @@ import path       from 'path';
 import logger     from 'morgan';
 import rfs        from 'rotating-file-stream';
 
-const env = process.env;
+
 
 /** location of log directory */
 const LOG_DIR = path.join(__dirname, '../../log');

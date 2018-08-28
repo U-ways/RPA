@@ -5,17 +5,15 @@ import mongoose      from 'mongoose';
 
 import { UserModel } from '../../mvc/models/User.js';
 
-const env = process.env;
-
 /* static database accounts
 ============================================================================= */
 
 /** Root account is used for administration. */
 const createAdmin = () => {
   const admin = new UserModel({
-    username: env.ADMIN_USERNAME,
-    email:    env.ADMIN_EMAIL,
-    'security.password': env.ADMIN_PASSWORD,
+    username: process.env.ADMIN_USERNAME,
+    email:    process.env.ADMIN_EMAIL,
+    'security.password': process.env.ADMIN_PASSWORD,
     logs: [{ activity: 2, description: 'register root account' }],
   }).save( (err, admin) => {
     /** verify email address after creating account */
@@ -28,9 +26,9 @@ const createAdmin = () => {
 /** Bot account is used for mailing and user verification. */
 const createBot = () => {
   const bot = new UserModel({
-    username: env.BOT_USERNAME,
-    email:    env.BOT_EMAIL,
-    'security.password': env.BOT_PASSWORD,
+    username: process.env.BOT_USERNAME,
+    email:    process.env.BOT_EMAIL,
+    'security.password': process.env.BOT_PASSWORD,
     logs: [{ activity: 2, description: 'register bot account' }]
   }).save( (err, bot) => {
     bot.security.verified = true; bot.save();
@@ -43,23 +41,26 @@ const createBot = () => {
 function createAccounts () {
   /** check if admin account already exsits in the DB */
   return UserModel.find({
-    $or: [{username: env.ADMIN_USERNAME}, {username: env.BOT_USERNAME}]
+    $or: [
+      {username: process.env.ADMIN_USERNAME},
+      {username: process.env.BOT_USERNAME}
+    ]
   })
   .then( accounts => {
     if (accounts.length === 2) {
       console.warn(`[database] skipping root & bot account creation: `
-        + `${env.ADMIN_USERNAME} & ${env.BOT_USERNAME} already exists.`);
+        + `${process.env.ADMIN_USERNAME} & ${process.env.BOT_USERNAME} already exists.`);
       return createBot();
     }
     else if (accounts.length === 1) {
-      if (accounts[0].username === env.ADMIN_USERNAME) {
+      if (accounts[0].username === process.env.ADMIN_USERNAME) {
         console.warn(`[database] skipping root account creation: `
-          + `${env.ADMIN_USERNAME} already exists.`);
+          + `${process.env.ADMIN_USERNAME} already exists.`);
         return createBot();
       }
       else {
         console.warn(`[database] skipping bot account creation: `
-          + `${env.BOT_USERNAME} already exists.`);
+          + `${process.env.BOT_USERNAME} already exists.`);
         return createAdmin();
       }
     }
@@ -84,7 +85,7 @@ const options  = {
 
 function connectToDevelopment () {
   return mongoose
-  .connect(env.DEV_DB_URI_ADMIN, options)
+  .connect(process.env.DEV_DB_URI_ADMIN, options)
   .then( mongoose => {
     console.info('[database] connected to development database');
     return mongoose.connection.db.dropDatabase( () => {
@@ -102,7 +103,7 @@ function connectToDevelopment () {
 
 function connectToProduction () {
   return mongoose
-  .connect(env.PRO_DB_URI_USER, options)
+  .connect(process.env.PRO_DB_URI_USER, options)
   .then( () => {
     console.info('[database] connected to production database');
     return createAccounts();

@@ -33,15 +33,13 @@ import dashboardRouter from './mvc/controllers/dashboard.js';
 import unlockRouter    from './mvc/controllers/unlock.js';
 import resetRouter     from './mvc/controllers/reset.js';
 
-const env = process.env;
-
 /** turn all console logging off on production */
-if (env.NODE_ENV === 'production') console.off();
+if (process.env.NODE_ENV === 'production') console.off();
 
 /* services
 ============================================================================= */
 
-if (env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   database.connectToProduction();
   Email.init().then(() => Email.test());
 }
@@ -78,7 +76,7 @@ app.use(sassMiddleware({
 
 /** Server logger setup */
 
-app.use( (env.NODE_ENV === 'production')
+app.use( (process.env.NODE_ENV === 'production')
   ? (httpLogger.request, httpLogger.response)
   : httpLogger.dev
 );

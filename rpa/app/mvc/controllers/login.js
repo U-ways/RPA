@@ -10,7 +10,6 @@ import { authenticateUser } from '../../middleware/authenticateUser.js';
 import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
 
 const router = Router();
-const env    = process.env;
 
 /** get current file name and remove extension */
 const FILE_NAME = path.basename(__filename).slice(0, -3);
@@ -83,7 +82,7 @@ function postLogic (req, res, next) {
     if (err) {
       let error = new Error(
         'Unable to create a new session for authenticated user.');
-      if (env.NODE_ENV === 'development') error.dev = err;
+      if (process.env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
 

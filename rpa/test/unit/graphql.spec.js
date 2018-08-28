@@ -6,15 +6,13 @@ import exportEnv from '../../modules/exportEnv.js';
 
 import { describe, before, after, it } from 'mocha';
 
-const env = process.env;
-
 describe('/graphql', () => {
 
   /** Connect and clean database **/
 
   before('connect to database', () => {
     let options  = { useNewUrlParser: true };
-    return mongoose.connect(env.DEV_DB_URI_ADMIN, options).then(
+    return mongoose.connect(process.env.DEV_DB_URI_ADMIN, options).then(
       mongoose => {
         console.info('    Connected to database');
         console.warn('    Cleaning database\n');

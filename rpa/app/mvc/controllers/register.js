@@ -6,7 +6,6 @@ import { UserModel } from '../models/User.js';
 import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
 import { reCaptcha      } from '../../middleware/reCaptcha.js';
 
-const env    = process.env;
 const router = Router();
 
 router.post('/',
@@ -35,7 +34,7 @@ function registerUser (req, res, next) {
   if (req.recaptcha.error) {
     let error = new Error(
       'Failed to verify user through reCaptcha, please try again.');
-    if (env.NODE_ENV === 'development') error.dev = req.recaptcha.error;
+    if (process.env.NODE_ENV === 'development') error.dev = req.recaptcha.error;
     error.status = 401;
     return next(error);
   }
@@ -75,7 +74,7 @@ function registerUser (req, res, next) {
   .catch(err => {
     let error = new Error(
       'Unable to verify if username and email already taken.');
-    if (env.NODE_ENV === 'development') error.dev = err;
+    if (process.env.NODE_ENV === 'development') error.dev = err;
     return next(error);
   });
 }
@@ -102,7 +101,7 @@ function postLogic (req, res, next) {
     if (err) {
       let error = new Error(
         'Unable to create a new session for authenticated user.');
-      if (env.NODE_ENV === 'development') error.dev = err;
+      if (process.env.NODE_ENV === 'development') error.dev = err;
       return next(error);
     }
 
