@@ -55,7 +55,7 @@ async function unlockUser (req, res, next) {
       'Failed to terminate locked user session.'
       + 'If your account is still locked, please request a password reset.'
     );
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     error.status = 400;
     return next(error);
   }

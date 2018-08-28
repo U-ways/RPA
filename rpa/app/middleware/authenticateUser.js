@@ -28,7 +28,7 @@ export function authenticateUser (req, res, next) {
     if (err) {
       let error = new Error(
         'Internal error - unable to query database, contact administrator.');
-      if (process.env.NODE_ENV === 'development') error.dev = err;
+      error.dev = err;
       return next(error);
     }
 
@@ -87,7 +87,7 @@ export function authenticateUser (req, res, next) {
     .catch(err => {
       let error = new Error(
         'Internal error - unable to validated password, contact administrator.');
-      if (process.env.NODE_ENV === 'development') error.dev = err;
+      error.dev = err;
       return next(error);
     });
 

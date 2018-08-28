@@ -83,7 +83,7 @@ async function allowPasswordReset (req, res, next) {
       if (err) {
         let error = new Error(
           'Unable to create a new session for authenticated user.');
-        if (process.env.NODE_ENV === 'development') error.dev = err;
+        error.dev = err;
         return next(error);
       }
 
@@ -108,7 +108,7 @@ async function allowPasswordReset (req, res, next) {
   }
   catch (err) {
     let error = new Error('Password reset request failed.');
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     error.status = 400;
     return next(error);
   }
@@ -138,7 +138,7 @@ async function passwordReset (req, res, next) {
   }
   catch (err) {
     let error = new Error('Failed to password reset account.');
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     error.status = 400;
     return next(error);
   }

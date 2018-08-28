@@ -92,7 +92,7 @@ async function sendVerificationEmail (req, res, next) {
   }
   catch (err) {
     let error = new Error('Failed to send email verification request');
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     return next(error);
   }
 }
@@ -133,7 +133,7 @@ async function verifyEmailAddress (req, res, next) {
   catch (err) {
     let error = new Error('Failed to verify email address, '
       + 'Please request a new verification token.');
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     return next(error);
   }
 }

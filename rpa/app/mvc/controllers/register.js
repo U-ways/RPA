@@ -34,7 +34,7 @@ function registerUser (req, res, next) {
   if (req.recaptcha.error) {
     let error = new Error(
       'Failed to verify user through reCaptcha, please try again.');
-    if (process.env.NODE_ENV === 'development') error.dev = req.recaptcha.error;
+    error.dev = req.recaptcha.error;
     error.status = 401;
     return next(error);
   }
@@ -74,7 +74,7 @@ function registerUser (req, res, next) {
   .catch(err => {
     let error = new Error(
       'Unable to verify if username and email already taken.');
-    if (process.env.NODE_ENV === 'development') error.dev = err;
+    error.dev = err;
     return next(error);
   });
 }
@@ -101,7 +101,7 @@ function postLogic (req, res, next) {
     if (err) {
       let error = new Error(
         'Unable to create a new session for authenticated user.');
-      if (process.env.NODE_ENV === 'development') error.dev = err;
+      error.dev = err;
       return next(error);
     }
 
