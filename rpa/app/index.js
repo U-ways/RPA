@@ -34,7 +34,7 @@ import unlockRouter    from './mvc/controllers/unlock.js';
 import resetRouter     from './mvc/controllers/reset.js';
 
 /** turn all console logging off on production */
-if (process.env.NODE_ENV === 'production') console.off();
+// if (process.env.NODE_ENV === 'production') console.off();
 
 /* services
 ============================================================================= */
