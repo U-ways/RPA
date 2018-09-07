@@ -28,8 +28,13 @@ function parse (src) {
   return obj
 }
 
-/** set environment variables by an IIFE using .env.sh as the source */
-(function setEnvironmentVariables () {
+/**
+ * set environment variables by an IIFE using .env.sh as the source.
+ * If override is true, this fucntion will overwrite env variables.
+ *
+ * @param {boolean} overwrite override env variables flag
+ */
+(function sourceEnv (overwrite = true) {
   let dotenvPath = path.resolve(process.cwd(), '.env.sh')
   let encoding = 'utf8'
   try {
@@ -37,7 +42,8 @@ function parse (src) {
     const parsed = parse(fs.readFileSync(dotenvPath, { encoding }))
     // add each key/value pair found to `process.env` if not found.
     Object.keys(parsed).forEach(function (key) {
-      if (!process.env.hasOwnProperty(key)) process.env[key] = parsed[key]
+      if (overwrite)                             process.env[key] = parsed[key]
+      else if (!process.env.hasOwnProperty(key)) process.env[key] = parsed[key]
     });
   }
   catch (e) {
