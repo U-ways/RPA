@@ -2,7 +2,7 @@
 ============================================================================= */
 
 import mongoose  from 'mongoose';
-import exportEnv from '../../modules/exportEnv.js';
+import sourceEnv from '../../modules/sourceEnv.js';
 
 import { describe, before, after, it } from 'mocha';
 
