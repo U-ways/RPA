@@ -4,22 +4,22 @@
 import mongoose from 'mongoose';
 
 const TimelineSchema = new mongoose.Schema({
-    date: {
-      type: Date,
-      required: [true, 'required'],
-      default: Date.now
-    },
-    price: {
-      type: Number,
-      required: [true, 'required'],
-      min: [0, 'cannot be negative'],
-      set: n => Math.round(n * 100) / 100
-    },
-    sold: {
-      type: Number,
-      min: [0, 'cannot be negative'],
-      default: 0
-    }
+  date: {
+    type: Date,
+    required: [true, 'required'],
+    default: Date.now
+  },
+  price: {
+    type: Number,
+    required: [true, 'required'],
+    min: [0, 'cannot be negative'],
+    set: n => Math.round(n * 100) / 100
+  },
+  sold: {
+    type: Number,
+    min: [0, 'cannot be negative'],
+    default: 0
+  }
 });
 
 export const ProductSchema = new mongoose.Schema({
