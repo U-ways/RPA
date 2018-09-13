@@ -12,7 +12,7 @@ import mustache       from 'mustache-express';
 import { database } from './services/storage/database.js';
 import { session  } from './services/storage/session.js';
 import { Email    } from './services/email/index.js';
-import { api      } from './graphql';
+import { api, graphiql } from './graphql';
 
 /** app middlewares **/
 
@@ -20,6 +20,7 @@ import { httpLogger     } from './middleware/httpLogger.js';
 import { sessionTracker } from './middleware/sessionTracker.js';
 import { flashMessages  } from './middleware/flashMessages.js';
 import { blockNonAuthUsers } from './middleware/blockNonAuthUsers.js';
+import { blockNonVerfUsers } from './middleware/blockNonVerfUsers.js';
 import { httpError      } from './middleware/httpError.js';
 
 /** app controllers **/
@@ -88,6 +89,7 @@ app.use(new sessionTracker, flashMessages);
 /** API setup */
 
 app.use('/api', blockNonAuthUsers, api);
+app.use('/graphiql', blockNonAuthUsers, blockNonVerfUsers, graphiql);
 
 /* routing
 ============================================================================= */
