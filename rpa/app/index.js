@@ -97,7 +97,6 @@ app.use('/graphiql', blockNonAuthUsers, blockNonVerfUsers, graphiql);
 /** static routes */
 
 app.use(express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/node_modules/material-design-icons/iconfont'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 /** Dynamic routes */
