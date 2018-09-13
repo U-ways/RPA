@@ -3,7 +3,7 @@
 
   {{#session.user}}
     <a href="./">home</a> -
-    <a href="./api">api</a> -
+    <a href="./graphiql">graphiql</a> -
     <a href="./dashboard">dashboard</a> -
     <a href="./verify">verify</a> -
     <a href="./logout">logout</a>
