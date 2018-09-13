@@ -36,9 +36,8 @@ router.get('/:id/:token',
 async function blockVerifiedUsers (req, res, next) {
   let user = await UserModel.findById(req.session.user.id).exec();
   if (user.security.verified) {
-    let error = new Error(`You've already verified your email address`);
-    error.status = 400;
-    return next(error);
+    req.session.flash = { message: 'You\'ve already verified your email address.' };
+    return res.status(400).redirect('/dashboard');
   }
   return next();
 }

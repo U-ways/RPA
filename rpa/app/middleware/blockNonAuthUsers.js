@@ -8,7 +8,7 @@
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
  * @return {next|response}   pass the request to the next middleware on success.
- *                           redirect to homepage otherwise.
+ *                           redirect to login otherwise.
  */
 export function blockNonAuthUsers(req, res, next) {
   /** check if session exists */
@@ -26,10 +26,10 @@ export function blockNonAuthUsers(req, res, next) {
   /** else redirect with an error */
   else {
     req.session.flash = {
-      message:'Unauthorised: Please login before accessing protected resources.'
+      message:'Unauthorised: Please login before accessing protected resources.',
     };
-    /** redirect to current URL on login afterwards */
+    /** to redirect back to originalUrl on login */
     req.session.redirect = req.originalUrl;
-    return res.redirect('/login');
+    return res.status(401).redirect('/login');
   }
 }
