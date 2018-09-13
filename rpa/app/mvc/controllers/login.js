@@ -12,7 +12,7 @@ import { preventSessionDuplication } from '../../middleware/preventSessionDuplic
 const router = Router();
 
 /** get current file name and remove extension */
-const FILE_NAME = path.basename(__filename).slice(0, -3);
+const fileName = path.basename(__filename).slice(0, -3);
 
 router.get('/',
   blockAuthUsers,
@@ -40,22 +40,19 @@ router.post('/',
  */
 function getLogic (req, res, next) {
   let view = {
-    title: FILE_NAME,
+    title: fileName,
     stylesheets: [
-      'iconfont/material-icons.css',
-      'stylesheets/core.css',
-      `stylesheets/${FILE_NAME}.css`
+      `stylesheets/${fileName}.css`
     ],
     scripts: [
-      'scripts/core.js',
-      `scripts/${FILE_NAME}.js`
+      `scripts/${fileName}.js`,
     ],
-    flash: res.locals.flash,
+    flash:   res.locals.flash,
     message: res.locals.message,
     captcha: res.recaptcha,
     session: req.session,
   };
-  return res.render(FILE_NAME, view);
+  return res.render(fileName, view);
 }
 
 /**

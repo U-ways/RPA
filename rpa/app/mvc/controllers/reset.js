@@ -11,7 +11,7 @@ import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 const router = Router();
 
 /** get current file name and remove extension */
-const FILE_NAME = path.basename(__filename).slice(0, -3);
+const fileName = path.basename(__filename).slice(0, -3);
 
 router.get('/',
   blockNonAuthUsers,
@@ -37,24 +37,22 @@ router.post('/',
  * @param  {Function}  next  callback to the next middleware
  * @return {response}        render on success, error resposne otherwise.
  */
-function getLogic (req, res, next) {
-  let view = {
-    title: FILE_NAME,
-    stylesheets: [
-      'iconfont/material-icons.css',
-      'stylesheets/core.css',
-      `stylesheets/${FILE_NAME}.css`
-    ],
-    scripts: [
-      'scripts/core.js',
-      `scripts/${FILE_NAME}.js`
-    ],
-    flash: res.locals.flash,
-    message: res.locals.message,
-    session: req.session,
-  };
-  return res.render(FILE_NAME, view);
-}
+ function getLogic (req, res, next) {
+   let view = {
+     title: fileName,
+     stylesheets: [
+       `stylesheets/${fileName}.css`
+     ],
+     scripts: [
+       `scripts/${fileName}.js`,
+     ],
+     flash:   res.locals.flash,
+     message: res.locals.message,
+     session: req.session,
+   };
+
+   return res.render(fileName, view);
+ }
 
 /**
  * Verify id and hash requested and then allow to password-reset user account
