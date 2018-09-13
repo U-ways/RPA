@@ -28,6 +28,7 @@ export function blockNonAuthUsers(req, res, next) {
     req.session.flash = {
       message:'Unauthorised: Please login before accessing protected resources.'
     };
+    /** redirect to current URL on login afterwards */
     req.session.redirect = req.originalUrl;
     return res.redirect('/login');
   }
