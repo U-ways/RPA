@@ -44,5 +44,9 @@ const Schema = new GraphQLSchema({
 
 export const api = graphqlHTTP({
   schema: Schema,
+});
+
+export const graphiql = graphqlHTTP({
+  schema: Schema,
   graphiql: true
 });
