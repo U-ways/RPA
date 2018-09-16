@@ -1,0 +1,26 @@
+<aside id="sidebar" class="flex-c">
+
+  <nav id="nav">
+    <ul class="flex-c">
+      <li title="Dashboard">
+        <i class="fas fa-home"></i>
+      </li>
+      <li title="Database">
+        <i class="fas fa-database"></i>
+      </li>
+      <li title="Compare">
+        <i class="fas fa-chart-bar"></i>
+      </li>
+      <li title="GraphiQL">
+        <i class="fas fa-bug"></i>
+      </li>
+      <li title="Settings">
+        <i class="fas fa-cog"></i>
+      </li>
+      <li title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </li>
+    </ul>
+  </nav>
+
+</aside>
