@@ -18,16 +18,14 @@ router.get('/', destorySession);
  * @param  {request}   req   request object
  * @param  {response}  res   response object
  * @param  {Function}  next  callback to the next middleware
- * @return {next}            pass the request to the next middleware on success.
- *                           pass to error middleware on failure otherwise.
+ * @return {response}        redirect to landing page on success.
+ *                           redirect with error on failure otherwise.
  */
 function destorySession (req, res, next) {
-  /** check if a user doesn't session exists */
-  if (!req.session.user) {
-    let error = new Error(
-      'User already logged out: no active session found to destroy.');
-    error.status = 400;
-    return next(error);
+  /** check if a user session doesn't exists */
+  if (!req.session || !req.session.user) {
+    req.session.flash = { message:'User already logged out: no active session found to destroy.' }
+    return res.status(400).redirect('/');
   }
 
   /** get user ID before destroying session to log the activity */
@@ -42,7 +40,7 @@ function destorySession (req, res, next) {
       user.createLog('LOGOUT');
       user.save();
 
-      /** redirect to dashboard */
+      /** redirect to landing page */
       req.session.flash = { message:'Success: You\'ve securely logged out.' }
       return res.redirect('/');
     });
