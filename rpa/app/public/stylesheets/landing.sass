@@ -1,44 +1,36 @@
+// landing.sass
 // Imports *******************************************************************
+
 @import "./variables.sass"
-
-// landing variables & classes *************************************************
-$landing-sidebar-width: 40vw
-
-// main (sub-container) ********************************************************
-
-#sub-container
-  // width: calc(100% - #{$landing-sidebar-width})
 
 // sidebar (aside) *************************************************************
 
 #sidebar
-  #nav
-    visibility: hidden
-  hr
-    margin: 4% 5%
+  // when the side bar is expanded
+  &.open
+    grid-column: 1 / 8
+    #login, #register, #aside-footer, hr
+      visibility: visible
+    #closed-sidebar-icon
+      visibility: hidden
+      display: none
+  // change sub-container column width when open
+  &.open + #sub-container
+    grid-column: 8 / -1
+  // when the side bar is closed
+  &.close
+    grid-column: 1 / 1
+    #login, #register, #aside-footer, hr
+      visibility: hidden
+      display: none
+    #closed-sidebar-icon
+      visibility: visible
 
-#sidebar.open
-  grid-column: 1 / 8
-  #login, #register, #footer, hr
-    visibility: visible
-  #nav
-    visibility: hidden
-    display: none
+#closed-sidebar-icon
+  visibility: hidden
+  margin: auto
 
-#sidebar.open + #sub-container
-  grid-column: 8 / -1
-
-#sidebar.close
-  grid-column: 1 / 1
-  #login, #register, #footer, hr
-    visibility: hidden
-    display: none
-  #nav
-    visibility: visible
-
-/** login and register sections */
-
-#login, #register, #foooter
+#login, #register, #aside-footer
   padding: 8px
 
 #login, #register
@@ -52,28 +44,32 @@ $landing-sidebar-width: 40vw
       font-size: 1em
       text-align: center
 
+/** login *************/
+
 #login
   margin-top: 25px
-  form
-    button
-      padding: 10px 2px
-      font-size: 1.5em
+  form button
+    padding: 10px 2px
+    font-size: 1.5em
   h2
     margin-bottom: 5%
   p
     margin: 20px 4px 6px 4px
 
+/** register *************/
+
 #register
   h4
     margin-bottom: 2.5%
 
-/** footer */
+/** aside-footer *************/
 
-#footer
+#aside-footer
+  width: 100%
   margin-top: auto
   margin-bottom: 5%
 
-#digital-footprint
+#developer-digital-footprint
   align-items: stretch
   width: inherit
   h4
@@ -93,3 +89,8 @@ $landing-sidebar-width: 40vw
       &:hover
         color: $pri-dark
         transition: 0.3s
+
+// main (sub-container) ********************************************************
+
+#sub-container
+  text-align: left
