@@ -39,7 +39,12 @@ function mainErrorHandler (err, req, res, next) {
     error: err.message,
     stack: err.stack,
     filename: err.filename,
-    dev: err.dev ? { error: err.dev.message, stack: err.dev.stack } : null,
+    dev: err.dev ? (
+      typeof err.dev === "string" ? err.dev : {
+        error: err.dev.message,
+        stack: err.dev.stack
+      }) :
+      null,
   } :
   { error: err.message };
 
