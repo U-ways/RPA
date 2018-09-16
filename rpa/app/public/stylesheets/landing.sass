@@ -1,0 +1,95 @@
+// Imports *******************************************************************
+@import "./variables.sass"
+
+// landing variables & classes *************************************************
+$landing-sidebar-width: 40vw
+
+// main (sub-container) ********************************************************
+
+#sub-container
+  // width: calc(100% - #{$landing-sidebar-width})
+
+// sidebar (aside) *************************************************************
+
+#sidebar
+  #nav
+    visibility: hidden
+  hr
+    margin: 4% 5%
+
+#sidebar.open
+  grid-column: 1 / 8
+  #login, #register, #footer, hr
+    visibility: visible
+  #nav
+    visibility: hidden
+    display: none
+
+#sidebar.open + #sub-container
+  grid-column: 8 / -1
+
+#sidebar.close
+  grid-column: 1 / 1
+  #login, #register, #footer, hr
+    visibility: hidden
+    display: none
+  #nav
+    visibility: visible
+
+/** login and register sections */
+
+#login, #register, #foooter
+  padding: 8px
+
+#login, #register
+  min-height: 250px
+  align-items: stretch
+  form
+    align-items: stretch
+    input, button
+      padding: 6px 2px
+      margin: 4px
+      font-size: 1em
+      text-align: center
+
+#login
+  margin-top: 25px
+  form
+    button
+      padding: 10px 2px
+      font-size: 1.5em
+  h2
+    margin-bottom: 5%
+  p
+    margin: 20px 4px 6px 4px
+
+#register
+  h4
+    margin-bottom: 2.5%
+
+/** footer */
+
+#footer
+  margin-top: auto
+  margin-bottom: 5%
+
+#digital-footprint
+  align-items: stretch
+  width: inherit
+  h4
+    margin-bottom: 5%
+
+#profile-urls-list
+  justify-content: space-around
+  li
+    padding: 0 8px
+    list-style-type: none
+    a
+      color: $pri-light
+      user-select: none
+      cursor: pointer
+    i
+      font-size: 45px
+      &:hover
+        color: $pri-dark
+        transition: 0.3s
