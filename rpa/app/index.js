@@ -1,6 +1,8 @@
 /* Imports
 ============================================================================= */
 
+import 'isomorphic-fetch';
+
 import express        from 'express';
 import favicon        from 'serve-favicon';
 import path           from 'path';

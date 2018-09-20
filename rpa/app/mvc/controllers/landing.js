@@ -4,12 +4,12 @@
 import path from 'path';
 
 import { Router    } from 'express';
-import { reCaptcha } from '../../middleware/reCaptcha.js';
+import { recaptcha } from '../../middleware/recaptcha.js';
 
 const router = Router();
 
 router.get('/',
-  reCaptcha.middleware.render,
+  recaptcha.invisible.render,
   getLogic,
 );
 
@@ -39,8 +39,8 @@ function getLogic (req, res, next) {
     ],
     flash:   res.locals.flash,
     message: res.locals.message,
-    captcha: res.recaptcha,
     session: req.session,
+    recaptcha: res.locals.recaptcha,
   };
 
   return res.render(fileName, view);

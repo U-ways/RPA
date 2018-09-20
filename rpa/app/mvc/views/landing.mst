@@ -1,40 +1,43 @@
+<!-- Landing should not render for logged in users (redirect to dashboard) -->
 {{>header}}
 
-<h1> {{title}} </h1>
+<aside id="sidebar" class="flex-c open">
+  <i id="closed-sidebar-icon" class="fas fa-rotate-90 fa-bars"></i>
+  <section id="login" class="flex-c">
+    <h2>Welcome back</h2>
+    <form id="login-form" class="flex-c" method="POST" action="/login">
+      <input id="username-or-email" type="text" placeholder="Username or Email" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <button class="btn-theme-1" type="submit" title="Login">Login</button>
+    </form>
+    <p>Forgotten your password?</p>
+  </section>
+  <hr>
+  <section id="register" class="flex-c">
+    <h4>New user? <br> Register here for a free account:</h4>
+    <form id="register-form" class="flex-c" autocomplete="off" method="POST" action="/register">
+      <input type="text"     name="username" placeholder="Username" autocomplete="new-username" required/>
+      <input type="email"    name="email"    placeholder="Email"    autocomplete="new-email" required/>
+      <input type="password" name="password" placeholder="Password" autocomplete="new-password" required/>
+      <button class="btn-theme-1" title="Register" type="submit">Register</button>
+      {{{recaptcha}}}
+    </form>
+  </section>
+  <footer id="aside-footer">
+    <section id="developer-digital-footprint" class="flex-c">
+      <h4>Developer's profile</h4>
+      <ul id="profile-urls-list" class="flex-r">
+        <li><a href="https://github.com/U-ways" target="_blank" title="Github"><i class="fab fa-github"></i></a></li>
+        <li><a href="https://stackoverflow.com/users/5037430" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow"></i></a></li>
+        <li><a href="https://www.linkedin.com/in/uways-eid" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+        <li><a href="https://youtu.be/ELYVpikRNEE" target="_blank" title="PiedPiper"><i class="fab fa-pied-piper-pp"></i></a></li>
+      </ul>
+    </section>
+  </footer>
+</aside>
 
-<h4> {{flash.message}} </h4>
+<main id="sub-container">
 
-<p> {{message}} </p>
+<p>{{message}}</p>
 
-<p>Welcome to RPA</p>
-
-{{#session}}
-  <h4> sessionID {{session.id}}</h4>
-  {{#session.user}}
-    <h4>You're Logged in as {{session.user.username}}</h4>
-  {{/session.user}}
-{{/session}}
-
-{{^session.user}}
-  <h4> login </h4>
-
-  <form id="login-form" method="POST" action="/login">
-    <input id="username-or-email" type="text" placeholder="Username or Email" required/>
-    <input type="password" name="password" placeholder="Password"  required/>
-    <input type="submit"/>
-  </form>
-
-  <br>
-
-  <h4> register </h4>
-
-  <form id="register-form" autocomplete="off" method="POST" action="/register">
-    <input type="text"     name="username" placeholder="Username" autocomplete="new-username" required/>
-    <input type="email"    name="email"    placeholder="Email"    autocomplete="new-email" required/>
-    <input type="password" name="password" placeholder="Password" autocomplete="new-password" required/>
-    <input type="submit"/>
-    {{{captcha}}}
-  </form>
-{{/session.user}}
-
-{{>footer}}
+</main>

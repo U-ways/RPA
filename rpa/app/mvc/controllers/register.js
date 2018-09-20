@@ -4,13 +4,13 @@
 import { Router    } from 'express';
 import { UserModel } from '../models/User.js';
 import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
-import { reCaptcha      } from '../../middleware/reCaptcha.js';
+import { recaptcha      } from '../../middleware/recaptcha.js';
 
 const router = Router();
 
 router.post('/',
   blockAuthUsers,
-  reCaptcha.middleware.verify,
+  recaptcha.invisible.verify,
   registerUser,
   postLogic,
 );
@@ -31,13 +31,14 @@ router.post('/',
  */
 function registerUser (req, res, next) {
   /** check if user failed reCaptcha */
-  if (req.recaptcha.error) {
-    let error = new Error(
-      'Failed to verify user through reCaptcha, please try again.');
-    error.dev = req.recaptcha.error;
-    error.status = 401;
-    return next(error);
-  }
+  console.log(res.locals.recaptcha);
+  // if (req.recaptcha.error) {
+  //   let error = new Error(
+  //     'Failed to verify user through reCaptcha, please try again.');
+  //   error.dev = req.recaptcha.error;
+  //   error.status = 401;
+  //   return next(error);
+  // }
 
   /** get user registration input */
   let { username, password, email } = req.body;
