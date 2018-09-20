@@ -1,4 +1,4 @@
-<!-- Landing should not render for logged in users (redirect to dashboard) -->
+{{! Landing should not render for logged in users (redirect to dashboard) }}
 {{>header}}
 
 <aside id="sidebar" class="flex-c open">
@@ -10,7 +10,7 @@
       <input type="password" name="password" placeholder="Password" required/>
       <button class="btn-theme-1" type="submit" title="Login">Login</button>
     </form>
-    <p>Forgotten your password?</p>
+    <p id="forgot">Forgotten your password?</p>
   </section>
   <hr>
   <section id="register" class="flex-c">
@@ -22,6 +22,7 @@
       <button class="btn-theme-1" title="Register" type="submit">Register</button>
       {{{recaptcha}}}
     </form>
+    <p title="subject to Google's privacy policy & terms of use">Protected by <b><a href="https://www.google.com/recaptcha/intro/v3beta.html" target="_blank">reCAPTCHA</a></b></p>
   </section>
   <footer id="aside-footer">
     <section id="developer-digital-footprint" class="flex-c">
@@ -38,6 +39,26 @@
 
 <main id="sub-container">
 
-<p>{{message}}</p>
+  <section id="introduction">
+    <h1>Welcome to Retail Pricing Analyst CMS</h1>
+    <h2>What is RPA CMS:</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h2>What is the objective of this project?</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </section>
+
+  <hr>
+
+  <section id="instructions">
+    <h1>Frequently Asked Questions (FAQs)</h1>
+    <h2>How to use RPA CMS?</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h2>How to access the GraphiQL endpoint?</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h2>Does the database keep everything stored?</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h2>Where can I learn more?</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </section>
 
 </main>
