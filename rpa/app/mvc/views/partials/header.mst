@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> RPA | {{title}} </title>
+  <title>RPA | {{title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- app icons -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!-- app stylesheets -->
+  <link rel="stylesheet" href="stylesheets/core.css" />
   {{#stylesheets}}
-    <link rel='stylesheet' href='{{.}}' />
+    <link rel="stylesheet" href="{{.}}" />
   {{/stylesheets}}
+  <!-- app scripts -->
+  <script type="text/javascript" src="scripts/core.js" defer></script>
   {{#scripts}}
-     <script type="text/javascript" src="{{.}}" defer></script>
+    <script type="text/javascript" src="{{.}}" defer></script>
   {{/scripts}}
 </head>
 <body>
+<div id="container">
+
+  <header id="topbar" class="flex-r">
+    <div id="chevron" title="toggle sidebar"><i class="fas fa-chevron-right"></i></div>
+    <div id="user-info">
+      {{#session.user}}<h4>{{username}} | {{email}}</h4>{{/session.user}}
+      {{^session.user}}<h4>Retail Pricing Analyst CMS | Demo</h4>{{/session.user}}
+    </div>
+    <h1>{{title}}</h1>
+  </header>
+
+  {{#flash}}
+  <section id="flash-message" class="flex-r left-radius {{type}}">
+    <i class="fas fa-exclamation-circle"></i>
+    <p>{{message}}</p>
+  </section>
+  {{/flash}}
