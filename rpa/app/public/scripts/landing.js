@@ -6,8 +6,16 @@ const registrationForm  = sidebar.querySelector('#register-form');
 
 const loginSection = sidebar.querySelector('#login');
 
+/** Toggle a password reset form on click */
 loginSection.querySelector('#forgot').addEventListener("click", toggleResetForm);;
 
+/**
+ * Display a password-reset form if a data-toggle not set, otherwise display
+ * a login form.
+ *
+ * The password-reset form is created from the landing login form by changing
+ * its methods and actions on click.
+ */
 function toggleResetForm(event) {
   let p    = this;
   let form = loginSection.querySelector('#login-form');
@@ -33,7 +41,7 @@ function toggleResetForm(event) {
     p.setAttribute('data-toggle', true);
     p.innerHTML   = "Back to Login...";
     btn.innerHTML = "Request";
-    psw.placeholder = "request password reset";
+    psw.placeholder = "request a password reset";
     psw.required = false;
     psw.readOnly = true;
     psw.value = null;
