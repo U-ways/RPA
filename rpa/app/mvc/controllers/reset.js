@@ -5,6 +5,7 @@ import path from 'path';
 
 import { Router    } from 'express';
 import { UserModel } from '../models/User.js';
+import { emailService      } from '../../services/email/index.js';
 import { blockAuthUsers    } from '../../middleware/blockAuthUsers.js';
 import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
 
@@ -18,6 +19,11 @@ router.get('/',
   getLogic,
 );
 
+router.get('/request',
+  blockAuthUsers,
+  requestPasswordReset,
+);
+
 router.get('/:id/:token',
   blockAuthUsers,
   verifyPasswordReset,
@@ -28,6 +34,46 @@ router.post('/',
   blockNonAuthUsers,
   passwordReset,
 );
+
+/**
+ * Send a transactional email with a password reset token on valid user request
+ *
+ * @param  {request}   req   request object
+ * @param  {response}  res   response object
+ * @param  {Function}  next  callback to the next middleware
+ * @return {response}        email on success, error resposne otherwise.
+ */
+function requestPasswordReset (req, res, next) {
+  let { username, email } = req.query;
+
+  /** search conditions can be username or email based on client request */
+  let conditions = !!username ? {username: username} : {email: email};
+
+  /** find user based on query conditions */
+  UserModel.findOne(conditions, (err, user) => {
+    if (err) {
+      let error = new Error(
+        'Internal error - unable to query database, contact administrator.');
+      error.dev = err;
+      return next(error);
+    };
+
+    /** check if user exists */
+    if (!user) {
+      let input = Object.keys(conditions);
+      let error = new Error(
+        `${input} ${conditions[input]} isn't registered with any account. `
+        + `Please double check your input or register ${conditions[input]} with a new account.`);
+      error.status = 400;
+      return next(error);
+    }
+    else {
+      /** send an email for a password reset or lockout termination */
+      emailService.send.transactional.passwordReset(user);
+      return res.json({ message: 'password request email sent, please check your email. ' });
+    }
+  });
+}
 
 /**
  * Display password-reset page.
