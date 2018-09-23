@@ -37,8 +37,8 @@ export function authenticateUser (req, res, next) {
       let input = Object.keys(conditions);
       let error = new Error(
         `${input} ${conditions[input]} isn't registered with any account. `
-        + `Please try again or register ${conditions[input]} with a new account.`);
-      error.status = 401;
+        + `Please double check your input or register ${conditions[input]} with a new account.`);
+      error.status = 400;
       return next(error);
     };
 
