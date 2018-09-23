@@ -1,6 +1,4 @@
-<footer>
-  <p> ________________________ </p>
-
+<footer id="footer">
   {{#session.user}}
     <a href="./">home</a> -
     <a href="./graphiql">graphiql</a> -
@@ -9,5 +7,6 @@
     <a href="./logout">logout</a>
   {{/session.user}}
 </footer>
+</div>
 </body>
 </html>
