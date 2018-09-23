@@ -28,9 +28,7 @@
     <h1>{{title}}</h1>
   </header>
 
-  {{#flash}}
-  <section id="flash-message" class="flex-r left-radius {{type}}">
+  <dialog id="flash-message" class="flex-r left-radius hide">
     <i class="fas fa-exclamation-circle"></i>
-    <p>{{message}}</p>
-  </section>
-  {{/flash}}
+    <p></p>
+  </dialog>
