@@ -20,7 +20,7 @@ router.get('/',
 
 router.get('/:id/:token',
   blockAuthUsers,
-  allowPasswordReset,
+  verifyPasswordReset,
   getLogic,
 );
 
@@ -63,7 +63,7 @@ router.post('/',
  * @param  {Function}  next  callback to the next middleware
  * @return {response}        render on success, error resposne otherwise.
  */
-async function allowPasswordReset (req, res, next) {
+async function verifyPasswordReset (req, res, next) {
   try {
     let user = await UserModel.findById(req.params.id).exec();
     if (!user) throw new Error('User id doesn\'t exist');
