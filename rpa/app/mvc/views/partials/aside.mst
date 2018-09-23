@@ -1,26 +1,73 @@
+{{#session.user}}
 <aside id="sidebar" class="flex-c">
-
   <nav id="nav">
     <ul class="flex-c">
-      <li title="Dashboard">
-        <i class="fas fa-home"></i>
+      <li title="Landing"     onclick="navigate('landing')">
+        <i aria-hidden="true" class="fas fa-home"></i>
+        <span class="invisible">Landing</span>
       </li>
-      <li title="Database">
-        <i class="fas fa-database"></i>
+      <li title="Dashboard"   onclick="navigate('dashboard')">
+        <i aria-hidden="true" class="fas fa-columns"></i>
+        <span class="invisible">Dashboard</span>
       </li>
-      <li title="Compare">
-        <i class="fas fa-chart-bar"></i>
+      <li title="Database"    onclick="navigate('database')">
+        <i aria-hidden="true" class="fas fa-database"></i>
+        <span class="invisible">Database</span>
       </li>
-      <li title="GraphiQL">
-        <i class="fas fa-bug"></i>
+      <li title="Compare"     onclick="navigate('compare')">
+        <i aria-hidden="true" class="fas fa-chart-bar"></i>
+        <span class="invisible">Compare</span>
       </li>
-      <li title="Settings">
-        <i class="fas fa-cog"></i>
+      <li title="GraphiQL"    onclick="location.href='./graphiql'">
+        <i aria-hidden="true" class="fas fa-bug"></i>
+        <span class="invisible">GraphiQL</span>
       </li>
-      <li title="Logout">
-        <i class="fas fa-sign-out-alt"></i>
+      <li title="Settings"    onclick="navigate('settings')">
+        <i aria-hidden="true" class="fas fa-cog"></i>
+        <span class="invisible">Settings</span>
+      </li>
+      <li title="Logout"      onclick="location.href='./logout'">
+        <i aria-hidden="true" class="fas fa-sign-out-alt"></i>
+        <span class="invisible">Logout</span>
       </li>
     </ul>
   </nav>
-
 </aside>
+{{/session.user}}
+{{^session.user}}
+<aside id="sidebar" class="flex-c open">
+  <i id="closed-sidebar-icon" title="expand sidebar"></i>
+  <section id="login" class="flex-c">
+    <h2>Welcome back</h2>
+    <form id="login-form" class="flex-c" method="POST" action="/login">
+      <input id="username-or-email" type="text" placeholder="Username or Email" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <button class="btn-theme-1" type="submit" title="Login">Login</button>
+    </form>
+    <p id="forgot">Forgotten your password?</p>
+  </section>
+  <hr>
+  <section id="register" class="flex-c">
+    <h4>New user? <br> Register here for a free account:</h4>
+    <form id="register-form" class="flex-c" autocomplete="off" method="POST" action="/register">
+      <input type="text"     name="username" placeholder="Username" autocomplete="new-username" required/>
+      <input type="email"    name="email"    placeholder="Email"    autocomplete="new-email" required/>
+      <input type="password" name="password" placeholder="Password" autocomplete="new-password" required/>
+      <button class="btn-theme-1" title="Register" type="submit">Register</button>
+      {{{recaptcha}}}
+    </form>
+    <p title="subject to Google's privacy policy & terms of use">Protected by <b><a href="https://www.google.com/recaptcha/intro/v3beta.html" target="_blank">reCAPTCHA</a></b></p>
+  </section>
+  <footer id="aside-footer">
+    <section id="developer-digital-footprint" class="flex-c">
+      <h4>Developer's profile</h4>
+      <ul id="profile-urls-list" class="flex-r">
+        <li><a href="https://github.com/U-ways" target="_blank" title="Github"><i class="fab fa-github"></i></a></li>
+        <li><a href="https://stackoverflow.com/users/5037430" target="_blank" title="StackOverflow"><i class="fab fa-stack-overflow"></i></a></li>
+        <li><a href="https://www.linkedin.com/in/uways-eid" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a></li>
+        <li><a href="https://youtu.be/ELYVpikRNEE" target="_blank" title="PiedPiper"><i class="fab fa-pied-piper-pp"></i></a></li>
+      </ul>
+    </section>
+  </footer>
+</aside>
+{{/session.user}}
