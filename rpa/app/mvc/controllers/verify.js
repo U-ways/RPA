@@ -3,7 +3,7 @@
 
 import { Router    } from 'express';
 import { UserModel } from '../models/User.js';
-import { Email     } from '../../services/email/index.js';
+import { emailService      } from '../../services/email/index.js';
 import { blockNonAuthUsers } from '../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
@@ -83,7 +83,7 @@ async function sendVerificationEmail (req, res, next) {
   try {
     let user  = await UserModel.findById(req.session.user.id).exec();
     /** send an email with a verification token */
-    Email.send.transactional.verifyEmail(user);
+    emailService.send.transactional.verifyEmail(user);
     /** Add a timestamp to limit the number of emails sent */
     req.session.user.verReqTimestamp = new Date().getTime();
     return res.json(`message: Email verification request sent to ${user.email}. `

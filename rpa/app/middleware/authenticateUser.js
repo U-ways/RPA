@@ -1,8 +1,8 @@
 /* Authenticate user middleware
 ============================================================================= */
 
-import { Email     } from '../services/email/index.js';
-import { UserModel } from '../mvc/models/User.js';
+import { emailService } from '../services/email/index.js';
+import { UserModel    } from '../mvc/models/User.js';
 
 /**
  * Authenticate a client based on username (or email) and password input.
@@ -65,7 +65,7 @@ export function authenticateUser (req, res, next) {
           /** check if account ran out of login attempts (got locked) */
           if (user.security.lockedUntil > Date.now()) {
             /** send an email for a password reset or lockout termination */
-            Email.send.transactional.lockoutUser(user);
+            emailService.send.transactional.lockoutUser(user);
             /** respond with an error as the account got locked */
             let error = new Error(
               `Exceeded maximum login attempts, your account is locked until ${user.security.lockedUntil}. `

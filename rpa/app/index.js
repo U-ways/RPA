@@ -13,7 +13,7 @@ import mustache       from 'mustache-express';
 
 import { database } from './services/storage/database.js';
 import { session  } from './services/storage/session.js';
-import { Email    } from './services/email/index.js';
+import { emailService  } from './services/email/index.js';
 import { api, graphiql } from './graphql';
 
 /** app middlewares **/
@@ -44,12 +44,12 @@ import resetRouter     from './mvc/controllers/reset.js';
 
 if (process.env.NODE_ENV === 'production') {
   database.connectToProduction();
-  Email.init().then(() => Email.test());
+  emailService.init().then(() => emailService.test());
 }
 else {
   database.connectToDevelopment();
   session.flush();
-  Email.init();
+  emailService.init();
 }
 
 /* Initialize app

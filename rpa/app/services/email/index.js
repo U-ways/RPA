@@ -110,8 +110,8 @@ async function testSGMailService () {
     });
 }
 
-/** Email services. */
-export const Email = {
+/** email services. */
+export const emailService = {
   init: initialiseSG,
   test: testSGMailService,
   send: {
