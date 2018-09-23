@@ -10,17 +10,17 @@ const loginSection = sidebar.querySelector('#login');
 loginSection.querySelector('#forgot').addEventListener("click", toggleResetForm);;
 
 /**
- * Display a password-reset form if a data-toggle not set, otherwise display
+ * Display a password-reset form if data-toggle not set, otherwise display
  * a login form.
  *
- * The password-reset form is created from the landing login form by changing
- * its methods and actions on click.
+ * The password-reset form is created from the login-form by changing
+ * its attributes and actions on click.
  */
 function toggleResetForm(event) {
   let p    = this;
   let form = loginSection.querySelector('#login-form');
   let btn  = form.querySelector('button');
-  let psw  = form.querySelector('input[name=password]');
+  let psw  = form.querySelector('input[type=password]');
 
   psw.classList.toggle("locked");
   btn.classList.toggle("danger");
@@ -28,9 +28,10 @@ function toggleResetForm(event) {
   if (p.getAttribute('data-toggle')) {
     form.action = "/login"
     form.method = "POST"
+    btn.innerHTML = "Login";
     p.removeAttribute('data-toggle');
     p.innerHTML   = "Forgotten your password?";
-    btn.innerHTML = "Login";
+    psw.setAttribute('name', "password");
     psw.required  = true;
     psw.readOnly  = false;
     psw.placeholder = "Password"
@@ -38,9 +39,10 @@ function toggleResetForm(event) {
   else {
     form.action = "/reset/request"
     form.method = "GET"
+    btn.innerHTML = "Request";
     p.setAttribute('data-toggle', true);
     p.innerHTML   = "Back to Login...";
-    btn.innerHTML = "Request";
+    psw.removeAttribute('name');
     psw.placeholder = "request a password reset";
     psw.required = false;
     psw.readOnly = true;
