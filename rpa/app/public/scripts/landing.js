@@ -7,7 +7,7 @@ const registrationForm  = sidebar.querySelector('#register-form');
 const loginSection = sidebar.querySelector('#login');
 
 /** Toggle a password reset form on click */
-loginSection.querySelector('#forgot').addEventListener("click", toggleResetForm);;
+loginSection.querySelector('#forgot').addEventListener('click', toggleResetForm);;
 
 /**
  * Display a password-reset form if data-toggle not set, otherwise display
@@ -16,34 +16,34 @@ loginSection.querySelector('#forgot').addEventListener("click", toggleResetForm)
  * The password-reset form is created from the login-form by changing
  * its attributes and actions on click.
  */
-function toggleResetForm(event) {
+function toggleResetForm (event) {
   let p    = this;
   let form = loginSection.querySelector('#login-form');
   let btn  = form.querySelector('button');
   let psw  = form.querySelector('input[type=password]');
 
-  psw.classList.toggle("locked");
-  btn.classList.toggle("danger");
+  psw.classList.toggle('locked');
+  btn.classList.toggle('danger');
 
   if (p.getAttribute('data-toggle')) {
-    form.action = "/login"
-    form.method = "POST"
-    btn.innerHTML = "Login";
+    form.action = '/login'
+    form.method = 'POST'
+    btn.innerHTML = 'Login';
     p.removeAttribute('data-toggle');
-    p.innerHTML   = "Forgotten your password?";
-    psw.setAttribute('name', "password");
+    p.innerHTML   = 'Forgotten your password?';
+    psw.setAttribute('name', 'password');
     psw.required  = true;
     psw.readOnly  = false;
-    psw.placeholder = "Password"
+    psw.placeholder = 'Password'
   }
   else {
-    form.action = "/reset/request"
-    form.method = "GET"
-    btn.innerHTML = "Request";
+    form.action = '/reset/request'
+    form.method = 'GET'
+    btn.innerHTML = 'Request';
     p.setAttribute('data-toggle', true);
-    p.innerHTML   = "Back to Login...";
+    p.innerHTML   = 'Back to Login...';
     psw.removeAttribute('name');
-    psw.placeholder = "request a password reset";
+    psw.placeholder = 'request a password reset';
     psw.required = false;
     psw.readOnly = true;
     psw.value = null;
@@ -53,6 +53,6 @@ function toggleResetForm(event) {
 /** topbar chevron icon */
 let chevronIcon = chevron.querySelector('i');
 /** allow expanding sidebar from the closed-sidebar-icon */
-closedSidebarIcon.addEventListener("click", toggleSidebar);
+closedSidebarIcon.addEventListener('click', toggleSidebar);
 /** sidebar is expanded by default on landing page */
-chevronIcon.classList.replace( "fa-chevron-right", "fa-chevron-left" );
+chevronIcon.classList.replace( 'fa-chevron-right', 'fa-chevron-left' );
