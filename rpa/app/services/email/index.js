@@ -7,7 +7,7 @@ import sgMail   from '@sendgrid/mail';
 import { readFile } from 'fs';
 import { CronJob  } from 'cron';
 import { key, cleanKeysDatabase   } from './keyOperations.js';
-import { lockoutUser, verifyEmail } from './transactionals.js';
+import { lockoutUser, verifyEmail, passwordReset } from './transactionals.js';
 
 /* Email services
 ============================================================================= */
@@ -122,6 +122,10 @@ export const Email = {
       },
       async verifyEmail(user) {
         let data = await verifyEmail(user);
+        return sendEmail(data);
+      },
+      async passwordReset(user) {
+        let data = await passwordReset(user);
         return sendEmail(data);
       },
     },

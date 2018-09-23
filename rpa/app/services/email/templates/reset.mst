@@ -1,0 +1,17 @@
+<p>Hello {{to.name}},</p>
+
+<p>
+  Someone has requested a password reset for your RPA account.
+</p>
+
+<p>
+  If this was you and you forgot your password,
+
+  <a href="{{resetURL}}">
+    click here to <b>password reset your account</b>
+  </a>
+</p>
+
+<p>
+  Otherwise, you can safely ignore this email.
+</p>

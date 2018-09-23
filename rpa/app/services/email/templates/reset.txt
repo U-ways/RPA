@@ -1,0 +1,10 @@
+Hello {{to.name}},
+
+Someone has requested a password reset for your RPA account.
+
+If this was you then click this link below to password reset your
+account:
+
+{{resetURL}}
+
+Otherwise, you can safely ignore this email.

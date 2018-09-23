@@ -42,3 +42,23 @@ export async function verifyEmail (user) {
   };
   return data;
 }
+
+/**
+ * Send an email to allow user to password reset their account.
+ * The email contains a token to prove account ownership on request.
+ *
+ * @param  {Object} user  the user instance to receive the email
+ */
+export async function passwordReset (user) {
+  let token  = await user.generateToken();
+  const data = {
+    to:   { name: user.username, email: user.email,       },
+    from: { name: process.env.BOT_USERNAME, email: process.env.BOT_EMAIL, },
+    subject: 'RPA - password reset request',
+    text: 'reset.txt',
+    html: 'reset.mst',
+    resetURL:  'http://www.' + `${process.env.HOST}:${process.env.HTTP_PORT}`
+      + `/reset/${user.id}/${token}`,
+  };
+  return data;
+}
