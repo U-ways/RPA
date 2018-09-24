@@ -16,9 +16,9 @@ export async function lockoutUser (user) {
     text: 'locked.txt',
     html: 'locked.mst',
     unlockURL: 'http://www.' + `${process.env.HOST}:${process.env.HTTP_PORT}`
-      + `/unlock/${user.id}/${token}`,
+      + `/app/unlock/${user.id}/${token}`,
     resetURL:  'http://www.' + `${process.env.HOST}:${process.env.HTTP_PORT}`
-      + `/reset/${user.id}/${token}`,
+      + `/app/reset/${user.id}/${token}`,
   };
   return data;
 }
@@ -38,7 +38,7 @@ export async function verifyEmail (user) {
     text: 'verify.txt',
     html: 'verify.mst',
     verifyURL: 'http://www.' + `${process.env.HOST}:${process.env.HTTP_PORT}`
-      + `/verify/${user.id}/${token}`,
+      + `/app/verify/${user.id}/${token}`,
   };
   return data;
 }
@@ -58,7 +58,7 @@ export async function passwordReset (user) {
     text: 'reset.txt',
     html: 'reset.mst',
     resetURL:  'http://www.' + `${process.env.HOST}:${process.env.HTTP_PORT}`
-      + `/reset/${user.id}/${token}`,
+      + `/app/reset/${user.id}/${token}`,
   };
   return data;
 }
