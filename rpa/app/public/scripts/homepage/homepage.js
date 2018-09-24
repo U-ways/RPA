@@ -1,4 +1,4 @@
-/* landing script
+/* homepage script
 ============================================================================= */
 
 const closedSidebarIcon = sidebar.querySelector('#closed-sidebar-icon');

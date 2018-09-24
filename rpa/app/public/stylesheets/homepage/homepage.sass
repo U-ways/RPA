@@ -1,7 +1,7 @@
-// landing.sass
+// homepage.sass
 // Imports *******************************************************************
 
-@import "./variables.sass"
+@import "../variables.sass"
 
 // sidebar (aside) *************************************************************
 
@@ -117,47 +117,3 @@
       &:hover
         color: $pri-dark
         transition: 0.3s
-
-// main (sub-container) ********************************************************
-
-#sub-container
-  margin: 0 1.5% 0 2.5%
-  justify-content: center
-  align-content: center
-  align-items: center
-  text-align: center
-  overflow-y: scroll
-  &::-webkit-scrollbar
-    width: 4px
-  &::-webkit-scrollbar-track
-    margin: 2.5% 0
-  hr
-    max-width: 800px
-    margin: 5% auto
-  section
-    justify-content: center
-    align-content: center
-    align-items: center
-    h1
-      color: $pri-main
-      font-size: 2.2em
-      margin-top: 1.5%
-    h2
-      color: $pri-light
-      margin: 5% 0 2.5% 0
-    p
-      color: $dark-800
-      line-height: 180%
-      max-width: 800px
-    @media screen and (min-width: 1440px)
-      h1
-        font-size: 2.6em
-      h2
-        font-size: 1.8em
-      p
-        font-size: 1.2em
-        line-height: 150%
-        max-width: 1000px
-      hr
-        max-width: 1000px
-        margin: 5% auto
