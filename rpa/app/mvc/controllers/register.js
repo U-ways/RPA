@@ -120,7 +120,7 @@ function postLogic (req, res, next) {
     user.createLog('CREATE', 'Register user account');
     user.save();
 
-    res.redirect('/dashboard');
+    res.redirect('/app/dashboard');
   });
 }
 

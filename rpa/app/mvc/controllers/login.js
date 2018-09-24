@@ -103,7 +103,7 @@ function postLogic (req, res, next) {
       message: `Welcome back ${user.username}, `
       + `You last logged-in on: ${user.getLastLoginDate().toUTCString()}.`
     };
-    return res.redirect(redirect ? redirect : '/dashboard');
+    return res.redirect(redirect ? redirect : '/app');
   });
 }
 

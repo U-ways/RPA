@@ -26,7 +26,7 @@ function toggleResetForm (event) {
   btn.classList.toggle('danger');
 
   if (p.getAttribute('data-toggle')) {
-    form.action = '/login'
+    form.action = '/app/login'
     form.method = 'POST'
     btn.innerHTML = 'Login';
     p.removeAttribute('data-toggle');
@@ -37,7 +37,7 @@ function toggleResetForm (event) {
     psw.placeholder = 'Password'
   }
   else {
-    form.action = '/reset/request'
+    form.action = '/app/reset/request'
     form.method = 'GET'
     btn.innerHTML = 'Request';
     p.setAttribute('data-toggle', true);

@@ -24,6 +24,6 @@ export async function blockNonVerfUsers (req, res, next) {
     req.session.flash = {
       message: 'Unauthorized: You need to verify your email address to access this resource',
     };
-    return res.status(401).redirect('/dashboard');
+    return res.status(401).redirect('/app/dashboard');
   }
 }

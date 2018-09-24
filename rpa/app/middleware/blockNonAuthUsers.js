@@ -30,6 +30,6 @@ export function blockNonAuthUsers(req, res, next) {
     };
     /** to redirect back to originalUrl on login */
     req.session.redirect = req.originalUrl;
-    return res.status(401).redirect('/login');
+    return res.status(401).redirect('/');
   }
 }

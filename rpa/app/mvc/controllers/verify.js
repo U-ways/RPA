@@ -37,7 +37,7 @@ async function blockVerifiedUsers (req, res, next) {
   let user = await UserModel.findById(req.session.user.id).exec();
   if (user.security.verified) {
     req.session.flash = { message: 'You\'ve already verified your email address.' };
-    return res.status(400).redirect('/dashboard');
+    return res.status(400).redirect('/app/dashboard');
   }
   return next();
 }
@@ -127,7 +127,7 @@ async function verifyEmailAddress (req, res, next) {
     delete req.session.user.verReqTimestamp;
 
     req.session.flash = { message: 'You\'ve successfully verified your email address.' }
-    res.redirect('/');
+    res.redirect('/app');
   }
   catch (err) {
     let error = new Error('Failed to verify email address, '
