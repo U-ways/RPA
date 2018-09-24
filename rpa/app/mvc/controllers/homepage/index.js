@@ -1,7 +1,7 @@
 /* index controller
 ============================================================================= */
 
-// import path from 'path';
+import path from 'path';
 
 import { Router    } from 'express';
 import { recaptcha } from '../../../middleware/recaptcha.js';
@@ -19,7 +19,7 @@ router.get('/',
 ============================================================================= */
 
 /** get current file name and remove extension */
-// const fileName = path.basename(__filename).slice(0, -3);
+const fileName = path.basename(__filename).slice(0, -3);
 
 /**
  * Render the landing page.
@@ -34,12 +34,12 @@ function getLogic (req, res, next) {
     let view = {
       title: 'homepage',
       stylesheets: [
-        'stylesheets/homepage.css',
-        'stylesheets/about.css',
+        `stylesheets/homepage/${fileName}.css`,
+        'stylesheets/homepage/about.css',
       ],
       scripts: [
-        'scripts/homepage.js',
-        'scripts/login.js',
+        `scripts/homepage/${fileName}.js`,
+        'scripts/homepage/login.js',
       ],
       content: content,
       flash:   res.locals.flash,
@@ -47,7 +47,7 @@ function getLogic (req, res, next) {
       recaptcha: res.locals.recaptcha,
     };
 
-    return res.render('homepage/index' , view);
+    return res.render(`homepage/${fileName}` , view);
   });
 }
 
