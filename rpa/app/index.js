@@ -85,7 +85,7 @@ app.use(new sessionTracker, flashMessages);
 /** API setup */
 
 app.use('/app/api', blockNonAuthUsers, api);
-app.use('/app/api/graphiql', blockNonAuthUsers, blockNonVerfUsers, graphiql);
+app.use('/app/debug', blockNonAuthUsers, blockNonVerfUsers, graphiql);
 
 /* routing
 ============================================================================= */
