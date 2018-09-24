@@ -28,25 +28,12 @@ const fileName = path.basename(__filename).slice(0, -3);
  * @return {response}        render graphiql on success, error resposne otherwise
  */
 function getLogic (req, res, next) {
-  let view = {
-    // nothing needed yet
-  };
-
-  return res.render(`app/${fileName}`, view, (err, html) => {
-    // stylesheets and scripts to append to the <head>
+  return res.render(`app/${fileName}`, (err, html) => {
     let meta = {
-      stylesheets: [
-        `stylesheets/app/${fileName}.css`
-      ],
-      scripts: [
-        `scripts/app/${fileName}.js`,
-      ],
       flash: res.locals.flash,
     };
-
     return res.json({ html, meta });
   });
-
 }
 
 export default router;
