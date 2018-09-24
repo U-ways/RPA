@@ -171,7 +171,7 @@ async function passwordReset (req, res, next) {
     req.session.flash = {
       message: 'You\'ve successfully password reset your account\'s password.'
     };
-    return res.redirect('/app/dashboard');
+    return res.redirect('/app');
   }
   catch (err) {
     let error = new Error('Failed to password reset account.');

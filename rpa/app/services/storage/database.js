@@ -90,6 +90,11 @@ function connectToDevelopment () {
     console.info('[database] connected to development database');
     return mongoose.connection.db.dropDatabase( () => {
       console.warn('[database] flushed development database');
+      // TEMP
+      // let StoreData = require(`../../../test/unit/graphql/Store.test.js`);
+      // let UserData = require(`../../../test/unit/graphql/User.test.js`);
+      // StoreData.addFakeData()
+      // UserData.addFakeData()
       return createAccounts();
     });
   })

@@ -1,14 +1,10 @@
 {{>header}}
 
-<h1> {{title}} </h1>
-
 <h4> {{flash.message}} </h4>
-
-<p> {{message}} </p>
 
 <h4> Password reset your RPA account </h4>
 
-<form id="reset-form" method="POST" action="/reset">
+<form id="reset-form" method="POST" action="/app/reset">
   <input id="username" type="text" value="{{session.user.username}}" readonly/>
   <input type="password" name="password" placeholder="New password"  required/>
   <input type="submit"/>
