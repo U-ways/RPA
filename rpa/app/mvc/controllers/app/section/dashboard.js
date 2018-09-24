@@ -4,7 +4,7 @@
 import path from 'path';
 
 import { Router } from 'express';
-import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
+import { blockNonAuthUsers } from '../../../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
 

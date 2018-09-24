@@ -4,10 +4,10 @@
 import path from 'path';
 
 import { Router    } from 'express';
-import { UserModel } from '../../models/User.js';
-import { blockAuthUsers   } from '../../../middleware/blockAuthUsers.js';
-import { authenticateUser } from '../../../middleware/authenticateUser.js';
-import { preventSessionDuplication } from '../../../middleware/preventSessionDuplication.js';
+import { UserModel } from '../../../models/User.js';
+import { blockAuthUsers   } from '../../../../middleware/blockAuthUsers.js';
+import { authenticateUser } from '../../../../middleware/authenticateUser.js';
+import { preventSessionDuplication } from '../../../../middleware/preventSessionDuplication.js';
 
 const router = Router();
 

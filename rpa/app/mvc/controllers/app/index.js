@@ -1,35 +1,42 @@
-/* app controller
-
-  The app controller will be responsible for rendering the skeleton template
-  component of the application on login.
+/* web app controller
 ============================================================================= */
 
 import path from 'path';
 import { Router } from 'express';
 import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
 
-import dashboardRouter from './dashboard.js';
-import loginRouter     from './login.js';
-import logoutRouter    from './logout.js';
-import verifyRouter    from './verify.js';
-import registerRouter  from './register.js';
-import unlockRouter    from './unlock.js';
-import resetRouter     from './reset.js';
+/** web app auth */
+import loginRouter     from './auth/login.js';
+import logoutRouter    from './auth/logout.js';
+import verifyRouter    from './auth/verify.js';
+import registerRouter  from './auth/register.js';
+import unlockRouter    from './auth/unlock.js';
+import resetRouter     from './auth/reset.js';
+
+/** web app sections */
+import dashboardRouter from './section/dashboard.js';
+import databaseRouter  from './section/database.js';
+import compareRouter   from './section/compare.js';
+import graphiqlRouter  from './section/graphiql.js';
+import settingsRouter  from './section/settings.js';
 
 const router = Router();
 
-/* app routes
+/* web app routes
 ============================================================================= */
 
-router.use('/login', loginRouter);
-router.use('/logout', logoutRouter);
-
-router.use('/reset', resetRouter);
-router.use('/unlock', unlockRouter);
-router.use('/verify', verifyRouter);
-
+router.use('/login',    loginRouter);
+router.use('/logout',   logoutRouter);
+router.use('/reset',    resetRouter);
+router.use('/unlock',   unlockRouter);
+router.use('/verify',   verifyRouter);
 router.use('/register', registerRouter);
+
 router.use('/dashboard', dashboardRouter);
+router.use('/database',  databaseRouter);
+router.use('/compare',   compareRouter);
+router.use('/graphiql',  graphiqlRouter);
+router.use('/settings',  settingsRouter);
 
 router.get('/',
   blockNonAuthUsers,
@@ -43,7 +50,7 @@ router.get('/',
 const fileName = path.basename(__filename).slice(0, -3);
 
 /**
- * FIXME: Render the skeleton template.
+ * Renders the skeleton template for the web app.
  *
  * @param  {request}   req   request object
  * @param  {response}  res   response object

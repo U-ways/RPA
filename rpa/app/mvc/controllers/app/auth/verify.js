@@ -2,9 +2,9 @@
 ============================================================================= */
 
 import { Router    } from 'express';
-import { UserModel } from '../../models/User.js';
-import { emailService      } from '../../../services/email/index.js';
-import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
+import { UserModel } from '../../../models/User.js';
+import { emailService      } from '../../../../services/email/index.js';
+import { blockNonAuthUsers } from '../../../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
 

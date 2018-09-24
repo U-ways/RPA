@@ -4,10 +4,10 @@
 import path from 'path';
 
 import { Router    } from 'express';
-import { UserModel } from '../../models/User.js';
-import { emailService      } from '../../../services/email/index.js';
-import { blockAuthUsers    } from '../../../middleware/blockAuthUsers.js';
-import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
+import { UserModel } from '../../../models/User.js';
+import { emailService      } from '../../../../services/email/index.js';
+import { blockAuthUsers    } from '../../../../middleware/blockAuthUsers.js';
+import { blockNonAuthUsers } from '../../../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
 
