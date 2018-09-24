@@ -1,0 +1,7 @@
+{{>header}}
+
+{{>aside}}
+
+<main id="sub-container">
+  {{{content}}}
+</main>
