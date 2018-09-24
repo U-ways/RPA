@@ -16,10 +16,6 @@
 export function blockAuthUsers (req, res, next) {
   /** Check if user is authenticated (logged in) */
   if (req.session && req.session.auth) {
-    req.session.flash = {
-      message: `Already logged in as ${req.session.user.username}, `
-      + 'please sign out first to processed.'
-    };
     return res.status(400).redirect('/app');
   }
   else return next();
