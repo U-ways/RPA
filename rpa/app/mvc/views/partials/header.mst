@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head id="head">
   <title>RPA | {{title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- app icons -->
@@ -8,12 +8,12 @@
   <!-- app stylesheets -->
   <link rel="stylesheet" href="stylesheets/core.css" />
   {{#stylesheets}}
-    <link rel="stylesheet" href="{{.}}" />
+  <link rel="stylesheet" href="{{.}}" data-type="section-style" />
   {{/stylesheets}}
   <!-- app scripts -->
   <script type="text/javascript" src="scripts/core.js" defer></script>
   {{#scripts}}
-    <script type="text/javascript" src="{{.}}" defer></script>
+  <script type="text/javascript" src="{{.}}" data-type="section-script" defer></script>
   {{/scripts}}
 </head>
 <body>
@@ -22,7 +22,7 @@
   <header id="topbar" class="flex-r">
     <div id="chevron" title="toggle sidebar"><i class="fas fa-chevron-right"></i></div>
     <div id="user-info">
-      {{#session.user}}<h4>{{username}} | {{email}}</h4>{{/session.user}}
+      {{#session.user}}<h4>{{username}} | {{email}}</h4>         {{/session.user}}
       {{^session.user}}<h4>Retail Pricing Analyst CMS | Demo</h4>{{/session.user}}
     </div>
     <h1>{{title}}</h1>
