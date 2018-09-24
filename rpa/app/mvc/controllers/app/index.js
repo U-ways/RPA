@@ -61,7 +61,7 @@ function getLogic (req, res, next) {
   let view = {
     title:   fileName,
     scripts: [
-      'scripts/app/init.js'
+      `scripts/app/${fileName}.js`
     ],
     flash:   res.locals.flash,
     session: req.session,
