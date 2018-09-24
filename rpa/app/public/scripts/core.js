@@ -71,13 +71,15 @@ async function navigate (section) {
         style.remove();
       })
     }
-    data.meta.stylesheets.forEach(href => {
-      let style  = document.createElement('link');
-      style.rel  = 'stylesheet';
-      style.href = href;
-      style.dataset.type = 'section-style';
-      head.appendChild(style);
-    });
+    if (data.meta.stylesheets) {
+      data.meta.stylesheets.forEach(href => {
+        let style  = document.createElement('link');
+        style.rel  = 'stylesheet';
+        style.href = href;
+        style.dataset.type = 'section-style';
+        head.appendChild(style);
+      });
+    }
 
     /* update section scripts */
     let scripts = head.querySelectorAll('script[data-type=section-script]');
@@ -86,14 +88,16 @@ async function navigate (section) {
         script.remove();
       })
     }
-    data.meta.scripts.forEach(src => {
-      let script   = document.createElement('script');
-      script.type  = 'text/javascript';
-      script.src   = src;
-      script.defer = 'defer';
-      script.dataset.type = 'section-script';
-      head.appendChild(script);
-    });
+    if (data.meta.scripts) {
+      data.meta.scripts.forEach(src => {
+        let script   = document.createElement('script');
+        script.type  = 'text/javascript';
+        script.src   = src;
+        script.defer = 'defer';
+        script.dataset.type = 'section-script';
+        head.appendChild(script);
+      });
+    }
 
     return true;
   }
