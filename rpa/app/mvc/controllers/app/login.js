@@ -14,11 +14,6 @@ const router = Router();
 /** get current file name and remove extension */
 const fileName = path.basename(__filename).slice(0, -3);
 
-router.get('/',
-  blockAuthUsers,
-  getLogic,
-);
-
 router.post('/',
   blockAuthUsers,
   authenticateUser,
@@ -28,29 +23,6 @@ router.post('/',
 
 /* logic
 ============================================================================= */
-
-/**
- * TODO: redirect instead of render
- * Display a login page that can redirect on login success using the
- * `res.locals.flash.redirect` property if available.
- *
- * @param  {request}   req   request object
- * @param  {response}  res   response object
- * @param  {Function}  next  callback to the next middleware
- * @return {response}        render on success, error resposne otherwise.
- */
-function getLogic (req, res, next) {
-  let view = {
-    title: fileName,
-    scripts: [
-      `scripts/app/${fileName}.js`,
-    ],
-    flash:   res.locals.flash,
-    recaptcha: res.recaptcha,
-    session: req.session,
-  };
-  return res.render(fileName, view);
-}
 
 /**
  * Creates a new session, set the user session to authenticated,
