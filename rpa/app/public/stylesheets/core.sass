@@ -17,6 +17,11 @@ body
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif
   color: $pri-main
 
+iframe
+  width: 100%
+  height: 100%
+  border: 0
+
 // webkit ************************************************************************
 
 /** Change scrollbar style in webkit */
@@ -104,11 +109,22 @@ i
 
 /** misc *************/
 
-.hide-display
+.hide
   display: none !important
 
 .visible
   visibility: visible !important
+
+// Used to hide extra text for screen-readers accessibility
+.invisible
+  position: absolute !important
+  height: 0 !important
+  width:  0 !important
+  margin: 0
+  padding: 0
+  border:  0
+  visibility: hidden !important
+  overflow: hidden
 
 // components ******************************************************************
 
@@ -201,16 +217,23 @@ i
 
 #flash-message
   z-index: 20
+  width: auto
+  height: auto
+  margin-top: 5px
+  padding: 0 20px 0 8px
+  position: relative
   grid-column: 1 / -1
   grid-row: 2 / 2
   justify-self: end
   justify-content: flex-start
   align-items: center
-  margin-top: 5px
-  padding: 0 20px 0 8px
   color: $light-0
-  background-color: $tri-dark
+  background: $tri-dark
+  border: none
+  cursor: pointer
   opacity: 0.90
+  &:hover
+    opacity: 1
   p
     font-weight: bold
     margin-left: 8px
