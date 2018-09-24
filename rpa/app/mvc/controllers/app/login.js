@@ -4,10 +4,10 @@
 import path from 'path';
 
 import { Router    } from 'express';
-import { UserModel } from '../models/User.js';
-import { blockAuthUsers   } from '../../middleware/blockAuthUsers.js';
-import { authenticateUser } from '../../middleware/authenticateUser.js';
-import { preventSessionDuplication } from '../../middleware/preventSessionDuplication.js';
+import { UserModel } from '../../models/User.js';
+import { blockAuthUsers   } from '../../../middleware/blockAuthUsers.js';
+import { authenticateUser } from '../../../middleware/authenticateUser.js';
+import { preventSessionDuplication } from '../../../middleware/preventSessionDuplication.js';
 
 const router = Router();
 
@@ -30,6 +30,7 @@ router.post('/',
 ============================================================================= */
 
 /**
+ * TODO: redirect instead of render
  * Display a login page that can redirect on login success using the
  * `res.locals.flash.redirect` property if available.
  *
@@ -41,15 +42,11 @@ router.post('/',
 function getLogic (req, res, next) {
   let view = {
     title: fileName,
-    stylesheets: [
-      `stylesheets/${fileName}.css`
-    ],
     scripts: [
-      `scripts/${fileName}.js`,
+      `scripts/app/${fileName}.js`,
     ],
     flash:   res.locals.flash,
-    message: res.locals.message,
-    captcha: res.recaptcha,
+    recaptcha: res.recaptcha,
     session: req.session,
   };
   return res.render(fileName, view);

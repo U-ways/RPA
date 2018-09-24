@@ -4,10 +4,10 @@
 import path from 'path';
 
 import { Router    } from 'express';
-import { UserModel } from '../models/User.js';
-import { emailService      } from '../../services/email/index.js';
-import { blockAuthUsers    } from '../../middleware/blockAuthUsers.js';
-import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
+import { UserModel } from '../../models/User.js';
+import { emailService      } from '../../../services/email/index.js';
+import { blockAuthUsers    } from '../../../middleware/blockAuthUsers.js';
+import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
 
@@ -85,15 +85,8 @@ function requestPasswordReset (req, res, next) {
  */
  function getLogic (req, res, next) {
    let view = {
-     title: fileName,
-     stylesheets: [
-       `stylesheets/${fileName}.css`
-     ],
-     scripts: [
-       `scripts/${fileName}.js`,
-     ],
+     title:   fileName,
      flash:   res.locals.flash,
-     message: res.locals.message,
      session: req.session,
    };
 

@@ -2,8 +2,8 @@
 ============================================================================= */
 
 import { Router    } from 'express';
-import { UserModel } from '../models/User.js';
-import { blockAuthUsers } from '../../middleware/blockAuthUsers.js';
+import { UserModel } from '../../models/User.js';
+import { blockAuthUsers } from '../../../middleware/blockAuthUsers.js';
 
 const router = Router();
 

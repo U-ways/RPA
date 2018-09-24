@@ -2,7 +2,7 @@
 ============================================================================= */
 
 import { Router    } from 'express';
-import { UserModel } from '../models/User.js';
+import { UserModel } from '../../models/User.js';
 
 const router = Router();
 

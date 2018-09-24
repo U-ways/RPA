@@ -4,7 +4,7 @@
 import path from 'path';
 
 import { Router } from 'express';
-import { blockNonAuthUsers } from './../../middleware/blockNonAuthUsers.js';
+import { blockNonAuthUsers } from '../../../middleware/blockNonAuthUsers.js';
 
 const router = Router();
 
@@ -29,19 +29,24 @@ const fileName = path.basename(__filename).slice(0, -3);
  */
 function getLogic (req, res, next) {
   let view = {
-    title: fileName,
-    stylesheets: [
-      `stylesheets/${fileName}.css`
-    ],
-    scripts: [
-      `scripts/${fileName}.js`,
-    ],
-    flash:   res.locals.flash,
-    message: res.locals.message,
-    session: req.session,
+    // nothing needed yet
   };
 
-  return res.render(fileName, view);
+  return res.render(`app/${fileName}`, view, (err, html) => {
+    // stylesheets and scripts to append to the <head>
+    let meta = {
+      stylesheets: [
+        `stylesheets/app/${fileName}.css`
+      ],
+      scripts: [
+        `scripts/app/${fileName}.js`,
+      ],
+      flash: res.locals.flash,
+    };
+
+    return res.json({ html, meta });
+  });
+
 }
 
 export default router;
