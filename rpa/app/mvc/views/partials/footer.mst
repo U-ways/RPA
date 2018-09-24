@@ -1,12 +1,7 @@
 <footer id="footer">
-  {{#session.user}}
     <a href="./">home</a> -
     <a href="./app/graphiql">graphiql</a> -
     <a href="./app/dashboard">dashboard</a> -
     <a href="./app/verify">verify</a> -
     <a href="./app/logout">logout</a>
-  {{/session.user}}
 </footer>
-</div>
-</body>
-</html>

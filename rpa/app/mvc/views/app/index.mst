@@ -4,4 +4,6 @@
 
 <main id="sub-container"></main>
 
-{{>footer}}
+</div>
+</body>
+</html>
