@@ -27,14 +27,8 @@ import { httpError      } from './middleware/httpError.js';
 
 /** app controllers **/
 
-import landingRouter   from './mvc/controllers/landing.js';
-import loginRouter     from './mvc/controllers/login.js';
-import logoutRouter    from './mvc/controllers/logout.js';
-import verifyRouter    from './mvc/controllers/verify.js';
-import registerRouter  from './mvc/controllers/register.js';
-import dashboardRouter from './mvc/controllers/dashboard.js';
-import unlockRouter    from './mvc/controllers/unlock.js';
-import resetRouter     from './mvc/controllers/reset.js';
+import appRouter       from './mvc/controllers/app/index.js';
+import homepageRouter  from './mvc/controllers/homepage/index.js';
 
 /** turn all console logging off on production */
 // if (process.env.NODE_ENV === 'production') console.off();
@@ -90,8 +84,8 @@ app.use(new sessionTracker, flashMessages);
 
 /** API setup */
 
-app.use('/api', blockNonAuthUsers, api);
-app.use('/graphiql', blockNonAuthUsers, blockNonVerfUsers, graphiql);
+app.use('/app/api', blockNonAuthUsers, api);
+app.use('/app/graphiql', blockNonAuthUsers, blockNonVerfUsers, graphiql);
 
 /* routing
 ============================================================================= */
@@ -103,17 +97,8 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 
 /** Dynamic routes */
 
-app.use('/', landingRouter);
-
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-
-app.use('/reset', resetRouter);
-app.use('/unlock', unlockRouter);
-app.use('/verify', verifyRouter);
-
-app.use('/register', registerRouter);
-app.use('/dashboard', dashboardRouter);
+app.use('/', homepageRouter);
+app.use('/app', appRouter);
 
 /* Error handlers
 ============================================================================= */
