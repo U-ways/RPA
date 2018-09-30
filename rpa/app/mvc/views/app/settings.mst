@@ -1,3 +1,65 @@
-<p>I am the settings page... I got nothing to offer yet. But one day...</p>
+<h2>User Details and Settings:</h2>
 
-{{>footer}}
+<section id="user-info" class="flex-c">
+  <!-- check if any details changed onSubmit -->
+  <h3>User details</h3>
+  <form class="flex-c" autocomplete="off" method="post" action="./settings/update">
+    <div class="flex-r">
+      <label for="username">Username</label>
+      <input type="text" name="username" value="{{session.user.username}}" disabled>
+    </div>
+    <div class="flex-r">
+      <label for="email">Email</label>
+      <input type="email" name="email" value="{{session.user.email}}" disabled>
+    </div>
+    <div class="flex-r">
+      <!-- Should be hidden until you press change password or reset request-->
+      <label class="invisible" for="password">Password</label>
+      <input class="hide" type="password" name="password" autocomplete="new-password" placeholder="Enter new password" disabled>
+      <button id="change-pw-btn" type="button">Change password</button>
+    </div>
+
+    <!-- onclick this becomes submit and then a submit btn appears -->
+    <button id="update-btn" type="button">Update Details</button>
+  </form>
+</section>
+
+<section id="security" class="flex-c">
+  <h3>User Security</h3>
+  <article>
+    <b>Email:</b>
+    {{#verfied}}<p>Verfied</p>{{/verfied}}
+    {{^verfied}}
+    <p>Not Verfied, <button id="verify-email-btn">click here to verify your email address</button>.</p>
+    {{/verfied}}
+  </article>
+  <article>
+    <b>API key:</b>
+    {{#key}}<p>{{key}}</p><button id="request-new-key">request a new key</button>{{/key}}
+    {{^key}}
+    <p>No key generated, <button id="verify-email-btn">click here to request a new API key</button>.</p>
+    {{/key}}
+  </article>
+  <article>
+    <b>Last login:</b>
+    <time>{{lastLogin}}</time>
+  </article>
+</section>
+
+<section id="user-log" class="flex-c">
+  <h3>User Log</h3>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Activity</th>
+      <th>Description</th>
+    </tr>
+    {{#log}}
+    <tr>
+      <td>{{date}}</td>
+      <th>{{activity}}</th>
+      <td>{{description}}{{^description}}--{{/description}}</td>
+    </tr>
+    {{/log}}
+  </table>
+</section>
