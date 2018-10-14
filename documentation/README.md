@@ -4,12 +4,12 @@ Table of Content
 --------------------------------------------------------------------------------
 
 - [Development | Environment Set-up](#development-environment-set-up)
-  - [Pre-requirements](#pre-requirements-)
-  - [Build Instructions](#build-instructions-)
-  - [Project initial configurations](#project-initial-configurations-)
-    - [Cloud services](#cloud-services-)
-    - [Environment variables](#environment-variables-)
-  - [Starting the server](#starting-the-server-)
+  - [Pre-requirements](#pre-requirements)
+  - [Build Instructions](#build-instructions)
+  - [Project initial configurations](#project-initial-configurations)
+    - [Cloud services](#cloud-services)
+    - [Environment variables](#environment-variables)
+  - [Starting the server](#starting-the-server)
 - [Back-end | Overview](#back-end)
 - [Front-end | Overview](#front-end)
 
@@ -50,87 +50,86 @@ Then, there are a couple of services and API keys you need to obtain:
 <table>
 <tbody>
   <tr>
-    <th>Service</th>
+    <th width="40px">Service</th>
     <th>Instructions</th>
-    <th>Further details and tips</th>
+    <th width="30%">Further details and tips</th>
   </tr>
   <tr>
-    <td>[MongoDB Atlas][Atlas]</td>
+    <td><a href="https://www.mongodb.com/cloud/atlas">MongoDB Atlas</a></td>
     <td>
       <ol>
-        <li>[Create an Atlas account][Atlas_2].</li>
-        <li>[Create a new cluster][Atlas_3].</li>
-        <li>[Set-up a connection][Atlas_4] to the application's server.</li>
-        <li>In your dashboard, go to your `Project > Clusters > Overview`.</li>
-        <li>Click on `Connect > Connect Your Application`.</li>
-        <li>Click on `Copy the connection string` to copy `.env.sh`:</li>
+        <li><a href="https://docs.atlas.mongodb.com/getting-started/#a-create-an-service-user-account">Create an Atlas account</a>.</li>
+        <li><a href="https://docs.atlas.mongodb.com/getting-started/#b-create-an-service-free-tier-cluster">Create a new cluster</a>.</li>
+        <li><a href="https://docs.atlas.mongodb.com/driver-connection/#connect-your-application">Set-up a connection</a> to the application's server.</li>
+        <li>In your dashboard, go to your <code>Project > Clusters > Overview</code>.</li>
+        <li>Click on <code>Connect > Connect Your Application</code>.</li>
+        <li>Click on <code>Copy the connection string</code> to copy <code>.env.sh</code>:</li>
         <ul>
-          <li>Copy SRV string w/ Admin's `USERNAME` & `PASSWORD` to `DEV_DB_URI_ADMIN`.</li>
-          <li>Copy SRV string w/ User's `USERNAME` & `PASSWORD` to `DEV_DB_URI_USER`.</li>
+          <li>Copy SRV string w/ Admin's <code>USERNAME</code> & <code>PASSWORD</code> to <code>DEV_DB_URI_ADMIN</code>.</li>
+          <li>Copy SRV string w/ User's <code>USERNAME</code> & <code>PASSWORD</code> to <code>DEV_DB_URI_USER</code>.</li>
         </ul>
-        <sub>**Note:** remove `?retryWrites=true` from the [connection string][Atlas_5].</sub>
+        <sub><b>Note:</b> remove <code>?retryWrites=true</code> from the <a href="https://docs.mongodb.com/manual/reference/connection-string/">connection string</a>.</sub>
       </ol>
     </td>
     <td>
       <ul>
-        <li>You will need to create 2 users in the cluster with the following [roles][Atlas_6]:</li>
+        <li>You will need to create 2 users in the cluster with the following <a href="https://docs.atlas.mongodb.com/reference/user-roles/#project-roles">roles</a>:</li>
         <ul>
-          <li>Admin: `Atlas admin`.</li>
-          <li>User:  `Read and write to any database`.</li>
+          <li>Admin: <code>Atlas admin</code>.</li>
+          <li>User:  <code>Read and write to any database</code>.</li>
         </ul>
-        <li>Enabling the retryable writes (`?retryWrites=true`) on the [connection string][Atlas_5] can cause unpredictable errors.</li>
-        <li>MongoDB Atlas offers a [free-tier account][Atlas_1].</li>
+        <li>Enabling the retryable writes (<code>?retryWrites=true</code>) on the <a href="https://docs.mongodb.com/manual/reference/connection-string/">connection string</a> can cause unpredictable errors.</li>
+        <li>MongoDB Atlas offers a <a href="https://www.mongodb.com/cloud/atlas/pricing">free-tier account</a>.</li>
       </ul>
     </td>
   </tr>
   <tr>
-    <td>[Google reCaptcha][reCaptcha]</td>
+    <td><a href="https://developers.google.com/recaptcha/">Google reCaptcha</a></td>
     <td>
       <ol>
-        <li>First you need to have a [Google Account][reCaptcha_1].</li>
-        <li>Then you can access the [reCaptcha Admin Panel][reCaptcha_2].</li>
-        <li>Create 2 types of reCaptcha; [Checkbox][reCaptcha_3] and [Invisible][reCaptcha_4].</li>
-        <li>Copy each reCaptcha's **Site key** & **Secret key** to `.env.sh`:</li>
+        <li>First you need to have a <a href="https://accounts.google.com">Google Account</a>.</li>
+        <li>Then you can access the <a href="http://www.google.com/recaptcha/admin">reCaptcha Admin Panel</a>.</li>
+        <li>Create 2 types of reCaptcha; <a href="https://developers.google.com/recaptcha/docs/display">Checkbox</a> and <a href="https://developers.google.com/recaptcha/docs/invisible">Invisible</a>.</li>
+        <li>Copy each reCaptcha's <b>Site key</b> & <b>Secret key</b> to <code>.env.sh</code>:</li>
         <ul>
-          <li>**Checkbox**: `RECAP_SITE_KEY` & `RECAP_SECRET_KEY`.</li>
-          <li>**Invisible**: `RECAP_INVIS_SITE_KEY` & `RECAP_INVIS_SECRET_KEY`.</li>
+          <li><b>Checkbox</b>: <code>RECAP_SITE_KEY</code> & <code>RECAP_SECRET_KEY</code>.</li>
+          <li><b>Invisible</b>: <code>RECAP_INVIS_SITE_KEY</code> & <code>RECAP_INVIS_SECRET_KEY</code>.</li>
         </ul>
       </ol>
     </td>
     <td>
       <ul>
-        <li>Don't mix up the `SITE_KEY` & `SECRET_KEY` variables!</li>
-        <li>Check out reCAPTCHA's offical [Developer's Guide][reCaptcha_5].</li>
+        <li>Don't mix up the <code>SITE_KEY</code> & <code>SECRET_KEY</code> variables!</li>
+        <li>Check out reCAPTCHA's offical <a href="https://developers.google.com/recaptcha/intro">Developer's Guide</a>.</li>
       <ul>
     </td>
   </tr>
   <tr>
-    <td>[SendGrid][SendGrid]</td>
+    <td><a href="https://sendgrid.com/">SendGrid</a></td>
     <td>
       <ol>
-        <li>[Signup for a SendGrid account][SendGrid_1].</li>
-        <li>Login and go to [`Settings > API keys`][SendGrid_2].</li>
-        <li>Create an API key, name it `admin-key`.</li>
+        <li><a href="https://signup.sendgrid.com/">Signup for a SendGrid account</a>.</li>
+        <li>Login and go to <a href="https://app.sendgrid.com/settings/api_keys"><code>Settings > API keys</code></a>.</li>
+        <li>Create an API key, name it <code>admin-key</code>.</li>
         <ul>
-          <li>Give it [full access permissions][SendGrid_3].</li>
+          <li>Give it <a href="https://sendgrid.com/docs/API_Reference/Web_API_v3/API_Keys/api_key_permissions_list.html">full access permissions</a>.</li>
         </ul>
-        <li>Copy the API key to `.env.sh`:</li>
+        <li>Copy the API key to <code>.env.sh</code>:</li>
         <ul>
-          <li>Copy it to `SG_ADMIN_KEY`.</li>
+          <li>Copy it to <code>SG_ADMIN_KEY</code>.</li>
         </ul>
       </ol>
     </td>
     <td>
       <ul>
         <li>This API key is only used once on start-up, I have implemented my own API key rotation algorithm!</li>
-        <li>SendGrid provides a [Free trial][SendGrid_4] for 30 days, afterwards you have 100 emails/day limit.</li>
-        <li>Do not name your API key using the following format: `RPA-[NUMBER]` as it will expire.</li>
+        <li>SendGrid provides a <a href="https://sendgrid.com/pricing/">Free trial</a> for 30 days, afterwards you have 100 emails/day limit.</li>
+        <li>Do not name your API key using the following format: <code>RPA-[NUMBER]</code> as it will expire.</li>
       <ul>
     </td>
   </tr>
 </tbody>
 </table>
-
 
 #### Environment variables:
 Finally, you need to review and sort out the rest of the environment to your preferences:
@@ -147,7 +146,6 @@ Finally, you need to review and sort out the rest of the environment to your pre
 | `SECRET_N`    | The session cookie secret (used to sign the session ID cookie)  | A randomly generated 256-bit WEP Key |
 
 
-
 ### Starting the server:
 This is the easy bit. After the Project Initial Configurations run:
 - `npm test && npm start`
@@ -158,24 +156,3 @@ ________________________________________________________________________________
 
 [Node.js]:https://nodejs.org/en/download/
 [Redis]:https://redis.io/download
-
-[Atlas]:https://www.mongodb.com/cloud/atlas
-[Atlas_1]:https://www.mongodb.com/cloud/atlas/pricing
-[Atlas_2]:https://docs.atlas.mongodb.com/getting-started/#a-create-an-service-user-account
-[Atlas_3]:https://docs.atlas.mongodb.com/getting-started/#b-create-an-service-free-tier-cluster
-[Atlas_4]:https://docs.atlas.mongodb.com/driver-connection/#connect-your-application
-[Atlas_5]:https://docs.mongodb.com/manual/reference/connection-string/
-[Atlas_6]:https://docs.atlas.mongodb.com/reference/user-roles/#project-roles
-
-[reCaptcha]:https://developers.google.com/recaptcha/
-[reCaptcha_1]:https://accounts.google.com
-[reCaptcha_2]:http://www.google.com/recaptcha/admin
-[reCaptcha_3]:https://developers.google.com/recaptcha/docs/display
-[reCaptcha_4]:https://developers.google.com/recaptcha/docs/invisible
-[reCaptcha_5]:https://developers.google.com/recaptcha/intro
-
-[SendGrid]:https://sendgrid.com/
-[SendGrid_1]:https://signup.sendgrid.com/
-[SendGrid_2]:https://app.sendgrid.com/settings/api_keys
-[SendGrid_3]:https://sendgrid.com/docs/API_Reference/Web_API_v3/API_Keys/api_key_permissions_list.html
-[SendGrid_4]:https://sendgrid.com/pricing/
