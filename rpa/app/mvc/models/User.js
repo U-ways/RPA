@@ -48,6 +48,10 @@ const SecuritySchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  apiKey: {
+    type: String,
+    default: null
+  },
 });
 
 /**
@@ -135,6 +139,18 @@ function createLog (type, description) {
   user.logs.push(log);
 
   return log;
+}
+
+/**
+ * Get the user activity logs.
+ * If a limit is specified, limit the logs returned by that number.
+ * 
+ * @param  {Number} limit how many logs to return
+ * @return {Array}        user logs
+ */
+function getLogs (limit) {
+  let logs = this.logs;
+  return limit ? logs.slice(-limit) : logs;
 }
 
 /**
@@ -254,6 +270,7 @@ function validateToken (token) {
   else                              return user.security.token === token;
 }
 
+UserSchema.methods.getLogs          = getLogs;
 UserSchema.methods.createLog        = createLog;
 UserSchema.methods.getLastLoginDate = getLastLoginDate;
 UserSchema.methods.incLoginAttempts = incLoginAttempts;
