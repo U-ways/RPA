@@ -7,7 +7,7 @@ Application set-up
 - **Server-side:**
   - [Node.js][Node.js] (`8.x LTS` release)
   - [Redis][Redis] (`4.0 Stable` release)
-- **Client-side:** Any modern browser:
+- **Client-side:**
   - Firefox.
   - Chrome/Chromium.
 
