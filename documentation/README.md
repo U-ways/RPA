@@ -1,11 +1,15 @@
 RPA - Documentation
 ================================================================================
-Application set-up 
+Application set-up
 --------------------------------------------------------------------------------
 
 ### Pre-requirements:
-- **Server-side:** [Node.js][Node.js] (`8.x LTS` release)
-- **Client-side:** Any modern browser; Firefox or Chrome/Chromium.
+- **Server-side:**
+  - [Node.js][Node.js] (`8.x LTS` release)
+  - [Redis][Redis] (`4.0 Stable` release)
+- **Client-side:** Any modern browser:
+  - Firefox.
+  - Chrome/Chromium.
 
 
 ### Build Instructions:
@@ -20,3 +24,4 @@ Application set-up
 ________________________________________________________________________________
 
 [Node.js]:https://nodejs.org/en/download/
+[Redis]:https://redis.io/download
