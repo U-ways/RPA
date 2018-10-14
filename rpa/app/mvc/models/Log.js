@@ -14,6 +14,16 @@ export const LogSchema = new mongoose.Schema({
     type: Number,
     min: 0, max: 5,
     required: [true, 'required.'],
+    get(n) {
+      switch(n) {
+        case 0: return "LOGIN";  break;
+        case 1: return "LOGOUT"; break;
+        case 2: return "CREATE"; break;
+        case 3: return "READ";   break;
+        case 4: return "UPDATE"; break;
+        case 5: return "DELETE"; break;
+      }
+    }
   },
   date: {
     type: Date,
