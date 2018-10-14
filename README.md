@@ -3,7 +3,7 @@ Retail Pricing Analyst (RPA)
 Overview
 --------------------------------------------------------------------------------
 
-- Active branch: [`v0.0.0 alpha`](https://github.com/U-ways/RPA/tree/0.0.0)
+- Main development branch: [`v0.0.0 alpha`](https://github.com/U-ways/RPA/tree/0.0.0)
 - Documentation: [`./documentation/README.md`](./documentation/README.md)
 - Kanban board:  [RPA board](https://github.com/U-ways/RPA/projects/1)
 
