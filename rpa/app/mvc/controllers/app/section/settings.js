@@ -5,6 +5,7 @@ import path from 'path';
 
 import { Router } from 'express';
 import { blockNonAuthUsers } from '../../../../middleware/blockNonAuthUsers.js';
+import { UserModel } from '../../../models/User.js';
 
 const router = Router();
 
@@ -27,9 +28,17 @@ const fileName = path.basename(__filename).slice(0, -3);
  * @param  {Function}  next  callback to the next middleware
  * @return {response}        render settings on success, error resposne otherwise
  */
-function getLogic (req, res, next) {
+async function getLogic (req, res, next) {
+  
+  /** find the user with the active session */
+  let user = await UserModel.findById(req.session.user.id);
+  
   let view = {
-    // nothing needed yet
+    session: req.session,
+    verfied: user.security.verified,
+    key: user.security.apiKey,
+    log: user.getLogs(10),
+    lastLogin: user.getLastLoginDate(),
   };
 
   return res.render(`app/${fileName}`, view, (err, html) => {
