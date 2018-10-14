@@ -17,31 +17,12 @@ import {
 
 /** Log **/
 
-const ActivityType = new GraphQLEnumType({
-  name: 'ActivityType',
-  values: {
-    Login:  { value: 0 },
-    Logout: { value: 1 },
-    Create: { value: 2 },
-    Read:   { value: 3 },
-    Update: { value: 4 },
-    Delete: { value: 5 }
-  }
-});
-
 const LogType = new GraphQLObjectType({
   name: 'LogType',
   fields: () => ({
-    activity:    { type: new GraphQLNonNull(ActivityType) },
-    date:        { type: GraphQLTimestamp                 },
-    description: { type: GraphQLString                    }
-  })
-});
-const LogTypeInput = new GraphQLInputObjectType({
-  name: 'LogTypeInput',
-  fields: () => ({
-    activity:    { type: new GraphQLNonNull(ActivityType) },
-    description: { type: GraphQLString                    }
+    activity:    { type: new GraphQLNonNull(GraphQLString) },
+    date:        { type: GraphQLTimestamp                  },
+    description: { type: GraphQLString                     }
   })
 });
 
