@@ -110,7 +110,7 @@ Then, there are a couple of services and API keys you need to obtain:
       <ol>
         <li><a href="https://signup.sendgrid.com/">Signup for a SendGrid account</a>.</li>
         <li>Login and go to <a href="https://app.sendgrid.com/settings/api_keys"><code>Settings > API keys</code></a>.</li>
-        <li>Create an API key, name it <code>admin-key</code>.</li>
+        <li>Create an API key and name it <code>admin-key</code>.</li>
         <ul>
           <li>Give it <a href="https://sendgrid.com/docs/API_Reference/Web_API_v3/API_Keys/api_key_permissions_list.html">full access permissions</a>.</li>
         </ul>
