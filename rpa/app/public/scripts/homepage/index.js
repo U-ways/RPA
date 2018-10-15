@@ -29,6 +29,7 @@ function toggleResetForm (event) {
     form.action = '/app/login'
     form.method = 'POST'
     btn.innerHTML = 'Login';
+    btn.title     = 'Login';
     p.removeAttribute('data-toggle');
     p.innerHTML   = 'Forgotten your password?';
     psw.setAttribute('name', 'password');
@@ -40,6 +41,7 @@ function toggleResetForm (event) {
     form.action = '/app/reset/request'
     form.method = 'GET'
     btn.innerHTML = 'Request';
+    btn.title     = 'Request a password reset';
     p.setAttribute('data-toggle', true);
     p.innerHTML   = 'Back to Login...';
     psw.removeAttribute('name');
