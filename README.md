@@ -1,7 +1,7 @@
 Retail Pricing Analyst (RPA)
 ================================================================================
 
-[![Development branch ](https://badgen.net/badge/development%20branch/v0.0.0%20alpha%20-%20300+%20commits/orange)](https://github.com/U-ways/RPA/tree/0.0.0)
+[![Development branch ](https://badgen.net/badge/development%20branch/v0.0.0%20alpha%20-%20300+%20commits/orange)](https://github.com/U-ways/RPA/tree/0.0.0/rpa)
 
 [![GitHub issues ](https://badgen.net/github/open-issues/U-ways/RPA)](https://github.com/U-ways/RPA/issues)
 [![GitHub license ](https://badgen.net/badge/license/MIT/blue)](https://github.com/U-ways/RPA/blob/master/LICENSE)
