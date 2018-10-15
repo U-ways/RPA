@@ -53,6 +53,9 @@ This is my first back-end and full-stack applciation. I wanted something that ot
 - Scale (there is so much to build within a CMS)
 - Force good practices and architecture (the quickest way to build software)
 
+
+Checkout the [app's documentation](./documentation/README.md) for further information.
+
 ________________________________________________________________________________
 
 [1]:https://blog.blackcurve.com/what-makes-a-great-pricing-analyst
