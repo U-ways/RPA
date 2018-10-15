@@ -1,9 +1,22 @@
 Retail Pricing Analyst (RPA)
 ================================================================================
+
+[![Development branch ](https://badgen.net/badge/development%20branch/v0.0.0%20alpha%20-%20300+%20commits/orange)](https://github.com/U-ways/RPA/tree/0.0.0)
+
+[![GitHub issues ](https://badgen.net/github/open-issues/U-ways/RPA)](https://github.com/U-ways/RPA/issues)
+[![GitHub license ](https://badgen.net/badge/license/MIT/blue)](https://github.com/U-ways/RPA/blob/master/LICENSE)
+[![Node version ](https://badgen.net/badge/node/v8.12.0%20LTS/blue)](https://nodejs.org/en/blog/release/v8.12.0/)
+[![NPM version ](https://badgen.net/badge/npm/v6.4.1/blue)](https://www.npmjs.com/package/npm/v/6.4.1)
+
+<!-- TODO: Fix all CC issues
+[![CodeClimate Overview ](https://badgen.net/codeclimate/maintainability/U-ways/RPA?icon=codeclimate&color=yellow)](https://codeclimate.com/github/U-ways/RPA)
+[![CodeClimate Issues ](https://badgen.net/codeclimate/issues/U-ways/RPA?icon=codeclimate&color=yellow)](https://codeclimate.com/github/U-ways/RPA/issues)
+-->
+
+
 Overview
 --------------------------------------------------------------------------------
 
-- Main development branch: [`v0.0.0 alpha`](https://github.com/U-ways/RPA/tree/0.0.0)
 - Documentation: [`./documentation/README.md`](./documentation/README.md)
 - Kanban board:  [RPA board](https://github.com/U-ways/RPA/projects/1)
 
@@ -14,8 +27,7 @@ Also, I started this project while studying software engineering practices. Ther
 
 So please don't reference my code as guidance before first release and sorry for the disappointment if you came across this repository for a full maintainable solution.
 
-**Expected first release date:** Summer 2019. 
-<br>(Unless my professors for this year go easy on us, I don't think I can :shipit: anytime sooner.)
+**Expected first release date:** Summer 2019.
 
 
 ### Project description:
@@ -40,7 +52,6 @@ This is my first back-end and full-stack applciation. I wanted something that ot
 - Play with numbers (statistical analysis)
 - Scale (there is so much to build within a CMS)
 - Force good practices and architecture (the quickest way to build software)
-- Learn more (:
 
 ________________________________________________________________________________
 
