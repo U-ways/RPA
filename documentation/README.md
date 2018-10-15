@@ -10,8 +10,10 @@ Table of Content
     - [Cloud services](#cloud-services)
     - [Environment variables](#environment-variables)
   - [Starting the server](#starting-the-server)
-- [Back-end | Overview](#back-end)
-- [Front-end | Overview](#front-end)
+- [Application - Overview](#application---overview)
+  - [Architecture](#architecture)
+  - [Dependencies](#dependencies)
+  - [Back-end](#back-end)
 
 <sub>**NOTE:** Documentation will be provided for production environment on first release.</sub>
 
@@ -52,7 +54,7 @@ Then, there are a couple of services and API keys you need to obtain:
   <tr>
     <th width="40px">Service</th>
     <th>Instructions</th>
-    <th width="30%">Further details and tips</th>
+    <th width="33%">Further details and tips</th>
   </tr>
   <tr>
     <td><a href="https://www.mongodb.com/cloud/atlas">MongoDB Atlas</a></td>
@@ -147,10 +149,97 @@ Finally, you need to review and sort out the rest of the environment to your pre
 
 
 ### Starting the server:
-This is the easy bit. After the Project Initial Configurations run:
+This is the easy bit, after the project initial configurations, run:
 - `npm test && npm start`
 
 All tests should pass and the server should start listening to whatever hostname and port number you specified for HTTP. (If not, please open an issue with as many details as possible.)
+
+
+
+Application - Overview
+--------------------------------------------------------------------------------
+
+A quick overview of the application architecture, features and services.
+
+### Architecture:
+
+#### Root folder:
+```
+.
+├── app
+│   ├── graphql
+│   ├── middleware
+│   ├── mvc
+│   ├── public
+│   ├── services
+│   └── index.js
+├── bin
+│   └── www
+├── modules
+├── test
+│   ├── integration
+│   └── unit
+└── package.json
+```
+
+#### App folder:
+```
+.
+├── graphql
+│   ├── scalars
+│   ├── Store
+│   └── index.js
+├── middleware
+├── mvc
+│   ├── controllers
+│   ├── models
+│   └── views
+├── public
+│   ├── scripts
+│   └── stylesheets
+├── services
+│   ├── email
+│   └── storage
+└── index.js
+```
+
+
+### Dependencies:
+- Express
+- Graphql
+- Mongoose
+- Mustache
+- Redis
+- Bcrypt
+- Sendgrid API
+- Sass-middleware
+
+
+### Back-End:
+
+#### Cloud services implemented:
+- Email:   SendGrid (for transactional emails)
+- Storage: MongoDB Atlas
+
+#### Security implemented:
+- Email Verification
+- Password reset
+- User lockout
+- Bruteforce prevention
+- Password Hashing
+- Limited lifespan Tokens
+- User session tracking
+- Bots and spam prevention (reCaptcha)
+- API key rotation
+- HTTP logger with rotation
+- User input validation
+- Separate development and production error handling
+- Enforce data schema conventions through ODM (Mongoose)
+
+#### GraphQL API:
+- Implemented for both the Store and User model
+- Built programmatically instead of using the "GraphQL schema language" for more internal flexibility
+- GraphQLi debugger access available for email verified users only
 
 ________________________________________________________________________________
 
