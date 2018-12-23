@@ -19,7 +19,7 @@ Overview
 
 - Development documentation: [`./documentation/README.md`](./documentation/README.md)
 - Development branch: [`RPA/tree/0.0.0/rpa`](https://github.com/U-ways/RPA/tree/0.0.0/rpa)
-- Kanban board: [RPA board](https://github.com/U-ways/RPA/projects/1)
+- Scrum board: [RPA board](https://github.com/U-ways/RPA/projects/1)
 
 ### Heads up!
 Although core backend features are complete, this project is still far from finished. I don't like publishing incomplete work, but since I am applying for internships/work-placements I need to showcase some of my recent skills.
