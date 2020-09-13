@@ -26,11 +26,11 @@ Overview
 ### Heads up!
 Although core backend features are complete, this project is still far from finished. I don't like publishing incomplete work, but since I am applying for internships/work-placements I need to showcase some of my recent skills.
 
-Also, I started this project while studying software engineering practices. There are a couple of things that I am now aware of that I would like to change/improve in regards to my development workflow, documentation and architecture.
+Also, I started this project while studying software engineering practices. There are a couple of things that I am now aware of that I would like to change/improve in regards to my development workflow, documentation and architecture. So please don't reference my code as guidance before first release. 
 
-So please don't reference my code as guidance before first release and sorry for the disappointment if you came across this repository for a full maintainable solution.
+Although I am busy with my final year project at the moment, I might work on this on christmas and finish an MVP that might be useful to some. I also might fully convert this to **Deno.land**, because why not? :D
 
-**Expected first release date:** Summer 2019.
+**Expected completion date:** Summer 2021-22.
 
 
 ### Project description:
